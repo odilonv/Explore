@@ -25,8 +25,6 @@ class ConfigurationBDDPostgreSQL implements ConfigurationBDDInterface
     }
 
     public function getOptions() : array {
-        return array(
-            PDO::ATTR_PERSISTENT => true
-        );
+        return array();
     }
 }
