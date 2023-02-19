@@ -4,6 +4,8 @@ namespace App\PlusCourtChemin\Configuration;
 
 use Exception;
 
+//test4
+
 class Configuration
 {
 
