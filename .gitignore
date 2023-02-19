@@ -1,1 +1,4 @@
-/src/Configuration/
+
+/src/Configuration/Configuration.php
+/src/Configuration/ConfigurationBDDInterface.php
+/src/Configuration/ConfigurationBDDPostgreSQL.php
