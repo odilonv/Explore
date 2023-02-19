@@ -17,7 +17,7 @@ class ConfigurationBDDPostgreSQL implements ConfigurationBDDInterface
 
     public function getMotDePasse(): string
     {
-        return "test";
+        return "test2";
     }
 
     public function getDSN() : string{
