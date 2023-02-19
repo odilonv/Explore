@@ -4,7 +4,7 @@ namespace App\PlusCourtChemin\Configuration;
 
 use Exception;
 
-class Configuration_Test2
+class Configuration
 {
 
     // la variable debug est un boolean
