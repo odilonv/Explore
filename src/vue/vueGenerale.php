@@ -22,6 +22,7 @@
                 if (!ConnexionUtilisateur::estConnecte()) {
                     echo <<<HTML
                     <li>
+                    <br>
                         <a href="controleurFrontal.php?action=afficherFormulaireConnexion&controleur=utilisateur">
                             <img alt="login" src="../ressources/img/enter.png" width="18">
                         </a>
