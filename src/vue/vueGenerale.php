@@ -14,6 +14,7 @@
                 </li>
                 <li>
                     <a href="controleurFrontal.php?action=afficherListe&controleur=noeudCommune">Communes</a>
+                    <br>
                 </li>
                 <?php
 
