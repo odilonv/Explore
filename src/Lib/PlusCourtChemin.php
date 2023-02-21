@@ -28,7 +28,7 @@ class PlusCourtChemin
         while (count($this->noeudsALaFrontiere) !== 0) {
             $noeudRoutierGidCourant = $this->noeudALaFrontiereDeDistanceMinimale();
 
-            // Fini
+            // trajet Fini
             if ($noeudRoutierGidCourant === $this->noeudRoutierArriveeGid) {
                 return $this->distances[$noeudRoutierGidCourant];
             }
