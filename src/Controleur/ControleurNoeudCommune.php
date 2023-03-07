@@ -58,8 +58,6 @@ class ControleurNoeudCommune extends ControleurGenerique
 
 
         if (!empty($_POST)) {
-            Utils::startTimer();
-
             $nomCommuneDepart = $_POST["nomCommuneDepart"];
             $nomCommuneArrivee = $_POST["nomCommuneArrivee"];
 
@@ -85,6 +83,7 @@ class ControleurNoeudCommune extends ControleurGenerique
             $parametres["distance"] = $distance;
 
             Utils::endTimer();
+            Utils::log('temps total: ' . Utils::getDuree());
         }
 
         ControleurNoeudCommune::afficherVue('vueGenerale.php', $parametres);

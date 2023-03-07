@@ -12,12 +12,12 @@ class ConfigurationBDDPostgreSQL implements ConfigurationBDDInterface
 
     public function getLogin(): string
     {
-        return "vidalo";
+        return "souvignetn";
     }
 
     public function getMotDePasse(): string
     {
-        return "test4";
+        return "060781121EK";
     }
 
     public function getDSN() : string{

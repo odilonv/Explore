@@ -64,8 +64,10 @@
     <main>
         <?php
         if(\App\PlusCourtChemin\Lib\Utils::$debug==true){
-            echo 'info debug: <br>' .
-                'timer: ' . (\App\PlusCourtChemin\Lib\Utils::getDuree());
+            echo 'info debug: <br>';
+            foreach (\App\PlusCourtChemin\Lib\Utils::getLogs() as $message){
+                echo $message . '<br>';
+            }
         }
         /**
          * @var string $cheminVueBody

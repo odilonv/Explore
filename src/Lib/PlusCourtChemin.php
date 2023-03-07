@@ -18,14 +18,19 @@ class PlusCourtChemin
 
     public function calculer(bool $affichageDebug = false): float
     {
+        Utils::startTimer();
         $noeudRoutierRepository = new NoeudRoutierRepository();
+        Utils::log('-1 : ' . Utils::getDuree());
 
         // Distance en km, table indexé par NoeudRoutier::gid
         $this->distances = [$this->noeudRoutierDepartGid => 0];
+        Utils::log('-2 : ' . Utils::getDuree());
 
         $this->noeudsALaFrontiere[$this->noeudRoutierDepartGid] = true;
+        Utils::log('-3 : ' . Utils::getDuree());
 
         while (count($this->noeudsALaFrontiere) !== 0) {
+            Utils::log('-while deb : ' . Utils::getDuree());
             $noeudRoutierGidCourant = $this->noeudALaFrontiereDeDistanceMinimale();
 
             // Fini
@@ -50,6 +55,7 @@ class PlusCourtChemin
                     $this->noeudsALaFrontiere[$noeudVoisinGid] = true;
                 }
             }
+            Utils::log('-while fin : ' . Utils::getDuree());
         }
         return 0;
     }
