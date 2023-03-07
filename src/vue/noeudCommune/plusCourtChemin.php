@@ -18,6 +18,5 @@
 
 <?php if (!empty($_POST)) { ?>
     <p>
-        Le plus court chemin entre <?= $nomCommuneDepart ?> et <?= $nomCommuneArrivee ?> mesure <?= $distance ?>km.
-    </p>
+        Le plus court chemin entre <?= $nomCommuneDepart ?> et <?= $nomCommuneArrivee ?> mesure <?= $distance ?>km. </p>
 <?php } ?>

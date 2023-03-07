@@ -63,6 +63,10 @@
     </header>
     <main>
         <?php
+        if(\App\PlusCourtChemin\Lib\Utils::$debug==true){
+            echo 'info debug: <br>' .
+                'timer: ' . (\App\PlusCourtChemin\Lib\Utils::getDuree());
+        }
         /**
          * @var string $cheminVueBody
          */

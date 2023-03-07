@@ -51,6 +51,7 @@ class PlusCourtChemin
                 }
             }
         }
+        return 0;
     }
 
     private function noeudALaFrontiereDeDistanceMinimale()
