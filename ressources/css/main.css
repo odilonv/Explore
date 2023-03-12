@@ -1,0 +1,97 @@
+@import url('https://fonts.cdnfonts.com/css/poppins');
+
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #fff2f2;
+}
+
+.nav {
+    width: 100%;
+    height: 100px;
+    background-color: #efeeee;
+    box-shadow: 10px 10px 12px 0 rgba(0, 0, 0, 0.07);
+    border-radius: 0 0 10px 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 3rem;
+    list-style-type: none;
+}
+.nav li.logo {
+    margin-right: auto;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    color: black;
+    font-weight: 700;/*
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), -2px -2px 4px white;*/
+}
+.nav li:not(.logo){
+    cursor: pointer;
+}
+.nav li:not(.logo), .contain, input {
+    margin: 0 1rem;
+    padding: 0.5rem 1.5rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 4px 4px 6px 0 rgba(0, 0, 0, 0.1), -4px -4px 6px white;
+    border-radius: 10px;
+    font-family: "Roboto", sans-serif;
+    transition: color 0.2s ease-out, transform 0.2s ease-out;
+    color: dimgray;
+}
+.nav li:not(.logo):hover, .contain, input:hover {
+    transform: scale(1.05);
+    box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, 0.1), -4px -4px 10px white;
+}
+.nav li:not(.logo):focus, .contain, input:focus {
+    outline: none;
+    transform: scale(0.95);
+    box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, 0.1), -4px -4px 10px white, 4px 4px 10px 0 rgba(0, 0, 0, 0.1) inset, -4px -4px 10px white inset;
+}
+
+
+.icons{
+    width: 20px;
+    height: 20px;
+}
+
+img{
+    width: 100%;
+    position: relative;
+}
+
+section{
+    height: 100vh;
+
+    display: flex;
+    align-items: start;
+    justify-content: start;
+}
+
+.contain{
+    margin-top: 50px;
+    margin-left: 7%;
+    background: #efeeee;
+    width: 45%;
+    height: 60%;
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+
+input{
+    width: 80%;
+    height: 40px;
+}
+
+
