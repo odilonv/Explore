@@ -92,7 +92,7 @@
 </head>
 <body>
 <ul class="nav">
-    <li class="logo">Explor</li>
+    <li class="logo">Explore</li>
     <li><img src="../ressources/img/icons/user-solid.svg" alt="user" class="icons"></li>
     <li><img src="../ressources/img/icons/compass-solid.svg" alt="compass" class="icons" </li>
 </ul>
