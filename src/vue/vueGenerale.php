@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title><?= $pagetitle ?></title>
+    <title><?/*= $pagetitle */?></title>
     <link rel="stylesheet" href="../ressources/css/navstyle.css">
 </head>
 <body>
@@ -17,7 +17,7 @@
                     <br>
                 </li>
                 <?php
-
+/*
                 use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
 
                 if (!ConnexionUtilisateur::estConnecte()) {
@@ -45,12 +45,12 @@
                     </li>
                     HTML;
                 }
-                ?>
+                */?>
             </ul>
         </nav>
         <div>
             <?php
-            foreach (["success", "info", "warning", "danger"] as $type) {
+/*            foreach (["success", "info", "warning", "danger"] as $type) {
                 foreach ($messagesFlash[$type] as $messageFlash) {
                     echo <<<HTML
                     <div class="alert alert-$type">
@@ -59,16 +59,16 @@
                     HTML;
                 }
             }
-            ?>
+            */?>
         </div>
     </header>
     <main>
         <?php
-        /**
+/*        /**
          * @var string $cheminVueBody
          */
-        require __DIR__ . "/{$cheminVueBody}";
-        ?>
+        /*require __DIR__ . "/{$cheminVueBody}";
+        */?>
     </main>
     <footer>
         <p>
@@ -77,4 +77,32 @@
     </footer>
 </body>
 
+</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title><?= $pagetitle ?></title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Roboto:400,900&amp;display=swap');
+    </style>
+    <link rel="stylesheet" href="../ressources/css/main.css">
+</head>
+<body>
+<ul class="nav">
+    <li class="logo">Explor</li>
+    <li><img src="../ressources/img/icons/user-solid.svg" alt="user" class="icons"></li>
+    <li><img src="../ressources/img/icons/compass-solid.svg" alt="compass" class="icons" </li>
+</ul>
+<?php
+        /**
+         * @var string $cheminVueBody
+         */
+require __DIR__ . "/{$cheminVueBody}";
+?>
+
+
+</body>
 </html>
