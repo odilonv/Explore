@@ -30,7 +30,8 @@ class PlusCourtChemin
         Utils::log('-3 : ' . Utils::getDuree());
 
         while (count($this->noeudsALaFrontiere) !== 0) {
-            Utils::log('-while deb : ' . Utils::getDuree());
+            Utils::log(' while: <br>[');
+            $deb = Utils::getDuree();
             $noeudRoutierGidCourant = $this->noeudALaFrontiereDeDistanceMinimale();
 
             // Fini
@@ -43,8 +44,10 @@ class PlusCourtChemin
 
             /** @var NoeudRoutier $noeudRoutierCourant */
             $noeudRoutierCourant = $noeudRoutierRepository->recupererParClePrimaire($noeudRoutierGidCourant);
+            Utils::log('  juste apres select noeud : ' . (Utils::getDuree() - $deb));
             $voisins = $noeudRoutierCourant->getVoisins();
 
+            Utils::log('  av foreach : ' . (Utils::getDuree() - $deb));
             foreach ($voisins as $voisin) {
                 $noeudVoisinGid = $voisin["noeud_routier_gid"];
                 $distanceTroncon = $voisin["longueur"];
@@ -55,7 +58,7 @@ class PlusCourtChemin
                     $this->noeudsALaFrontiere[$noeudVoisinGid] = true;
                 }
             }
-            Utils::log('-while fin : ' . Utils::getDuree());
+            Utils::log('  total : ' . (Utils::getDuree() - $deb) . '<br>]');
         }
         return 0;
     }
