@@ -20,14 +20,13 @@ class PlusCourtChemin
     {
         Utils::startTimer();
         $noeudRoutierRepository = new NoeudRoutierRepository();
-        Utils::log('-1 : ' . Utils::getDuree());
 
         // Distance en km, table indexé par NoeudRoutier::gid
         $this->distances = [$this->noeudRoutierDepartGid => 0];
-        Utils::log('-2 : ' . Utils::getDuree());
 
         $this->noeudsALaFrontiere[$this->noeudRoutierDepartGid] = true;
-        Utils::log('-3 : ' . Utils::getDuree());
+
+        $precharges = $noeudRoutierRepository->getInRange($this->noeudRoutierDepartGid, 50);
 
         while (count($this->noeudsALaFrontiere) !== 0) {
             Utils::log(' while: <br>[');
@@ -75,4 +74,64 @@ class PlusCourtChemin
         }
         return $noeudRoutierDistanceMinimaleGid;
     }
+
+
+    // fct pour actualiser les distances de tous les pts par rapport à un noeud
+
+    private array $gidAParcourir;
+    private array $gidParcouru;
+
+    // [gid => distance]
+    private array $noeudsDistance;
+    //
+    private array $cache;
+    private NoeudRoutier $nrCourant;
+
+    public function calculer2(){
+        $this->cache = (new NoeudRoutierRepository())->getInRange($this->noeudRoutierDepartGid, 50);
+        $this->gidAParcourir = [$this->noeudRoutierDepartGid => true];
+        $this->noeudsDistance = [$this->noeudRoutierDepartGid => 0];
+        $this->gidParcouru = [];
+
+        while(sizeof($this->gidAParcourir)>0){
+
+            foreach ($this->noeudsDistance as $gid=>$distance){
+                if(in_array($gid, $this->gidAParcourir)){
+                    if(isset($this->cache[$gid])){
+                        $this->nrCourant = $this->cache[$gid];
+                    }
+                    break;
+                }
+            }
+
+            unset($this->gidAParcourir[$this->nrCourant->getGid()]);
+            $this->gidParcouru[$this->nrCourant->getGid()] = true;
+
+            $this->actualiserDistanceMinimal();
+
+            if($this->nrCourant->getGid() == $this->noeudRoutierArriveeGid){
+                return $this->noeudsDistance[$this->noeudRoutierArriveeGid];
+            }
+        }
+    }
+
+    private function actualiserDistanceMinimal(){
+        $distCourant = $this->noeudsDistance[$this->nrCourant->getGid()];
+        foreach ($this->nrCourant->getVoisins() as $gid => $infos){
+            if(!in_array($gid, $this->gidAParcourir) && !in_array($gid, $this->gidParcouru)){
+                $this->gidAParcourir[$gid] = true;
+            }
+            if(!in_array($gid, $this->noeudsDistance)){
+                $this->noeudsDistance[$gid] = PHP_FLOAT_MAX;
+            }
+            if($distCourant + $infos['longueur']<$this->noeudsDistance[$gid]){
+                $this->noeudsDistance[$gid] = $distCourant + $infos['longueur'];
+            }
+        }
+        asort($this->noeudsDistance);
+    }
+
+    // liste qui associe pour chaque pts, la distance la plus courte qui le relie au point d'origine
+    // parcourir la liste des voisins du pt dont la distance et la plus courte et qui n'a pas encore été parcouru
+    // si la longueur de l'arete qui relie le pt au voisin + la distance du pt < distance minimal voisin -> sa distance minimale devient ce point
 }

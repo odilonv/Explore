@@ -106,21 +106,21 @@ class NoeudRoutierRepository extends AbstractRepository
         foreach ($pdoStatement as $rowValue){
             // les valeurs ne concernent plus le meme noeud
             // dans ce cas on commence a accumuler les infos pour le noeud d'après et on instancie l'ancien noeud si possible
-            if($rowValue['gidOrigine']!=$previousNRInfos['gid']){
+            if($rowValue['gid']!=$previousNRInfos['gid']){
                 if($previousNRInfos['gid']!='') {
                     $nr = new NoeudRoutier($previousNRInfos['gid'],
                         $previousNRInfos['id_rte500'],
                         $previousNRInfos['voisins']);
-                    $noeuds_routiers[] = $nr;
+                    $noeuds_routiers[$nr->getGid()] = $nr;
                 }
-                $previousNRInfos['gid'] = $rowValue['gidOrigine'];
+                $previousNRInfos['gid'] = $rowValue['gid'];
                 $previousNRInfos['id_rte500'] = $rowValue['id_rte500'];
                 $previousNRInfos['voisins'] = [];
             }
             // memes infos que pour getVoisins
             // `noeud_routier_gid`, `troncon_gid`, `longueur`
-            $previousNRInfos['voisins'][] = ['noeud_routier_gid'=>$rowValue['gidVoisin']
-                                            , 'troncon_gid' => $rowValue['gidTR']
+            $previousNRInfos['voisins'][$rowValue['gidvoisin']] = ['noeud_routier_gid'=>$rowValue['gidvoisin']
+                                            , 'troncon_gid' => $rowValue['gidtr']
                                             , 'longueur' => $rowValue['longueur']];
         }
         return $noeuds_routiers;
