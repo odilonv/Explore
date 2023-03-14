@@ -54,15 +54,14 @@ class NoeudRoutierRepository extends AbstractRepository
     /**
      * Renvoie le tableau des voisins d'un noeud routier
      *
-     * Chaque voisin est un tableau avec les 3 champs
-     * `noeud_routier_gid`, `troncon_gid`, `longueur`
+     * pour chaque voisin, le gid du voisin est une clé associé au gid du troncon ainsi que la longueur
+     * [ gidVoisin => [gidTR, longueur]]
      *
      * @param int $noeudRoutierGid
      * @return String[][]
      **/
     public function getVoisins(int $noeudRoutierGid): array
     {
-        $deb = Utils::getDuree();
         $requeteSQL = <<<SQL
         (select gidA as noeud_routier_gid, gidTR as troncon_gid, longueur
         from areteGID 
@@ -76,10 +75,17 @@ class NoeudRoutierRepository extends AbstractRepository
         $pdoStatement->execute(array(
             "gidTag" => $noeudRoutierGid
         ));
-        Utils::log('get voisins: ' . (Utils::getDuree()-$deb));
+        Utils::log("methode getVoisin de nrRepo appellé (pas opti)");
         return $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * @param string $gidCentre
+     * @param float $range
+     * @return array
+     * pour chaque voisin, le gid du voisin est une clé associé au gid du troncon ainsi que la longueur
+     * [ gidVoisin => [gidNR, gidTR, longueur]]
+     */
     public function getInRange(string $gidCentre, float $range): array
     {
         $requeteSQL = <<<SQL

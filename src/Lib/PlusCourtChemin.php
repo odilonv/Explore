@@ -88,47 +88,49 @@ class PlusCourtChemin
     private NoeudRoutier $nrCourant;
 
     public function calculer2(){
-        $this->cache = (new NoeudRoutierRepository())->getInRange($this->noeudRoutierDepartGid, 50);
-        $this->gidAParcourir = [$this->noeudRoutierDepartGid => true];
-        $this->noeudsDistance = [$this->noeudRoutierDepartGid => 0];
+        $this->cache = (new NoeudRoutierRepository())->getInRange($this->noeudRoutierDepartGid, 500); // s'assurer que la méthode marche pleinement
+        $this->gidAParcourir[] = $this->noeudRoutierDepartGid;
+        $this->noeudsDistance = [];
         $this->gidParcouru = [];
 
+        foreach ($this->cache as $key => $value){
+            $this->noeudsDistance[$key] = PHP_FLOAT_MAX;
+        }
+        $this->noeudsDistance[$this->noeudRoutierDepartGid] = 0;
+
         while(sizeof($this->gidAParcourir)>0){
-
-            foreach ($this->noeudsDistance as $gid=>$distance){
-                if(in_array($gid, $this->gidAParcourir)){
-                    if(isset($this->cache[$gid])){
-                        $this->nrCourant = $this->cache[$gid];
-                    }
-                    break;
-                }
-            }
-
-            unset($this->gidAParcourir[$this->nrCourant->getGid()]);
-            $this->gidParcouru[$this->nrCourant->getGid()] = true;
+            $this->nrCourant = $this->cache[$this->gidAParcourir[0]];
 
             $this->actualiserDistanceMinimal();
+
 
             if($this->nrCourant->getGid() == $this->noeudRoutierArriveeGid){
                 return $this->noeudsDistance[$this->noeudRoutierArriveeGid];
             }
+
+            $this->gidParcouru[] = $this->gidAParcourir[0];
+            unset($this->gidAParcourir[0]);
+
+            $this->actualiserDistanceMinimal();
         }
+        return 0;
     }
 
     private function actualiserDistanceMinimal(){
         $distCourant = $this->noeudsDistance[$this->nrCourant->getGid()];
-        foreach ($this->nrCourant->getVoisins() as $gid => $infos){
+        foreach ($this->nrCourant->getVoisins() as $gid => $values){
+            $gidNR = $values['noeud_routier_gid'];
+            $gidTR = $values['troncon_gid'];
+            $longueur = $values['longueur'];
             if(!in_array($gid, $this->gidAParcourir) && !in_array($gid, $this->gidParcouru)){
-                $this->gidAParcourir[$gid] = true;
+                $this->gidAParcourir[$gid] = $gid;
             }
-            if(!in_array($gid, $this->noeudsDistance)){
-                $this->noeudsDistance[$gid] = PHP_FLOAT_MAX;
-            }
-            if($distCourant + $infos['longueur']<$this->noeudsDistance[$gid]){
-                $this->noeudsDistance[$gid] = $distCourant + $infos['longueur'];
+
+            var_dump($this->noeudsDistance);
+            if($distCourant + $longueur<$this->noeudsDistance[$gid]){
+                $this->noeudsDistance[$gid] = $distCourant + $longueur;
             }
         }
-        asort($this->noeudsDistance);
     }
 
     // liste qui associe pour chaque pts, la distance la plus courte qui le relie au point d'origine
