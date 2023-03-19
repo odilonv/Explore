@@ -3,7 +3,7 @@
 
 use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
 
-$login = $utilisateur->getLogin();
+$login = $utilisateur->getIdUser();
 $loginHTML = htmlspecialchars($login);
 $prenomHTML = htmlspecialchars($utilisateur->getPrenom());
 $nomHTML = htmlspecialchars($utilisateur->getNom());

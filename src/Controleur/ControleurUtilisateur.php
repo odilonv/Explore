@@ -99,9 +99,14 @@ class ControleurUtilisateur extends ControleurGenerique
                 ControleurUtilisateur::rediriger("utilisateur", "afficherFormulaireCreation");
             }
 
-            $utilisateur = Utilisateur::construireDepuisFormulaire($_REQUEST);
+            $tableauFormulaire = ["idUser"=>$_REQUEST['login'],
+                "mdp"=>$_REQUEST['mdp'],
+                "emailUser"=>$_REQUEST['email'],
+                "nom"=>$_REQUEST['nom'],
+                "prenom"=>$_REQUEST['prenom']];
+            $utilisateur = Utilisateur::construireDepuisFormulaire($tableauFormulaire);
 
-            VerificationEmail::envoiEmailValidation($utilisateur);
+            //VerificationEmail::envoiEmailValidation($utilisateur);
 
             $utilisateurRepository = new UtilisateurRepository();
             $succesSauvegarde = $utilisateurRepository->ajouter($utilisateur);
@@ -136,7 +141,7 @@ class ControleurUtilisateur extends ControleurGenerique
             $loginHTML = htmlspecialchars($login);
             $prenomHTML = htmlspecialchars($utilisateur->getPrenom());
             $nomHTML = htmlspecialchars($utilisateur->getNom());
-            $emailHTML = htmlspecialchars($utilisateur->getEmail());
+            $emailHTML = htmlspecialchars($utilisateur->getEmailUser());
             ControleurUtilisateur::afficherVue('vueGenerale.php', [
                 "pagetitle" => "Mise à jour d'un utilisateur",
                 "cheminVueBody" => "utilisateur/formulaireMiseAJour.php",
@@ -200,7 +205,7 @@ class ControleurUtilisateur extends ControleurGenerique
             $utilisateur->setEstAdmin(isset($_REQUEST["estAdmin"]));
         }
 
-        if ($_REQUEST["email"] !== $utilisateur->getEmail()) {
+        if ($_REQUEST["email"] !== $utilisateur->getEmailUser()) {
             $utilisateur->setEmailAValider($_REQUEST["email"]);
             $utilisateur->setNonce(MotDePasse::genererChaineAleatoire());
 
@@ -247,7 +252,7 @@ class ControleurUtilisateur extends ControleurGenerique
             ControleurUtilisateur::rediriger("utilisateur", "afficherFormulaireConnexion");
         }
 
-        ConnexionUtilisateur::connecter($utilisateur->getLogin());
+        ConnexionUtilisateur::connecter($utilisateur->getIdUser());
         MessageFlash::ajouter("success", "Connexion effectuée.");
         ControleurUtilisateur::rediriger("utilisateur", "afficherDetail", ["login" => $_REQUEST["login"]]);
     }
@@ -281,6 +286,7 @@ class ControleurUtilisateur extends ControleurGenerique
             ControleurUtilisateur::rediriger("utilisateur", "afficherListe");
         }
     }
+
 
 
 }

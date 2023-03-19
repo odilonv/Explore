@@ -25,29 +25,29 @@ class UtilisateurRepository extends AbstractRepository
     {
         return new Utilisateur(
             $utilisateurTableau["login"],
+            $utilisateurTableau["mdp_hache"],
+            $utilisateurTableau["email"],
             $utilisateurTableau["nom"],
             $utilisateurTableau["prenom"],
-            $utilisateurTableau["mdp_hache"],
-            $utilisateurTableau["est_admin"],
-            $utilisateurTableau["email"],
-            $utilisateurTableau["email_a_valider"],
-            $utilisateurTableau["nonce"],
+
+            $utilisateurTableau["est_admin"]
+
         );
     }
 
     public function getNomTable(): string
     {
-        throw new Exception("À vous de créer votre table utilisateur !");
-        return 'utilisateur';
+
+        return 'users';
     }
 
     protected function getNomClePrimaire(): string
     {
-        return 'login';
+        return 'idUser';
     }
 
     protected function getNomsColonnes(): array
     {
-        return ["login", "nom", "prenom", "mdp_hache", "est_admin", "email", "email_a_valider", "nonce"];
+        return ["idUser", "mdphache", "emailUser", "nom","prenom"];
     }
 }

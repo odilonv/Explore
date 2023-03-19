@@ -7,57 +7,53 @@ use App\PlusCourtChemin\Lib\MotDePasse;
 class Utilisateur extends AbstractDataObject
 {
 
-    private string $login;
+    private string $idUser;
+    private string $mdpHache;
+    private string $emailUser;
     private string $nom;
     private string $prenom;
-    private string $mdpHache;
     private bool $estAdmin;
-    private string $email;
-    private string $emailAValider;
-    private string $nonce;
+
 
     public function __construct(
-        string $login,
+        string $idUser,
+        string $mdpHache,
+        string $email,
         string $nom,
         string $prenom,
-        string $mdpHache,
-        bool $estAdmin,
-        string $email,
-        string $emailAValider,
-        string $nonce,
+
+        bool   $estAdmin
     ) {
-        $this->login = $login;
+        $this->idUser = $idUser;
+        $this->mdpHache = $mdpHache;
+        $this->emailUser = $email;
         $this->nom = $nom;
         $this->prenom = $prenom;
-        $this->mdpHache = $mdpHache;
+
         $this->estAdmin = $estAdmin;
-        $this->email = $email;
-        $this->emailAValider = $emailAValider;
-        $this->nonce = $nonce;
     }
 
     public static function construireDepuisFormulaire (array $tableauFormulaire) : Utilisateur
     {
         return new Utilisateur(
-            $tableauFormulaire["login"],
+            $tableauFormulaire["idUser"],
+            MotDePasse::hacher($tableauFormulaire["mdp"]),
+            $tableauFormulaire["emailUser"],
             $tableauFormulaire["nom"],
             $tableauFormulaire["prenom"],
-            MotDePasse::hacher($tableauFormulaire["mdp"]),
-            isset($tableauFormulaire["estAdmin"]),
-            "",
-            $tableauFormulaire["email"],
-            MotDePasse::genererChaineAleatoire(),
+
+            isset($tableauFormulaire["estAdmin"])
         );
     }
 
-    public function getLogin(): string
+    public function getIdUser(): string
     {
-        return $this->login;
+        return $this->idUser;
     }
 
-    public function setLogin(string $login): void
+    public function setIdUser(string $idUser): void
     {
-        $this->login = $login;
+        $this->idUser = $idUser;
     }
 
     public function getNom(): string
@@ -99,16 +95,17 @@ class Utilisateur extends AbstractDataObject
         $this->estAdmin = $estAdmin;
     }
 
-    public function getEmail(): string
+    public function getEmailUser(): string
     {
-        return $this->email;
+        return $this->emailUser;
     }
 
-    public function setEmail(string $email): void
+    public function setEmailUser(string $emailUser): void
     {
-        $this->email = $email;
+        $this->emailUser = $emailUser;
     }
 
+    /*
     public function getEmailAValider(): string
     {
         return $this->emailAValider;
@@ -118,7 +115,9 @@ class Utilisateur extends AbstractDataObject
     {
         $this->emailAValider = $emailAValider;
     }
+    */
 
+    /*
     public function getNonce(): string
     {
         return $this->nonce;
@@ -128,18 +127,18 @@ class Utilisateur extends AbstractDataObject
     {
         $this->nonce = $nonce;
     }
+    */
 
     public function exporterEnFormatRequetePreparee(): array
     {
         return array(
-            "login_tag" => $this->login,
+            "idUser_tag" => $this->idUser,
+            "mdp_hache_tag" => $this->mdpHache,
+            "email_user_tag" => $this->emailUser,
             "nom_tag" => $this->nom,
             "prenom_tag" => $this->prenom,
-            "mdp_hache_tag" => $this->mdpHache,
-            "est_admin_tag" => $this->estAdmin ? "1" : "0",
-            "email_tag" => $this->email,
-            "nonce_tag" => $this->nonce,
-            "email_a_valider_tag" => $this->emailAValider,
+
+            "est_admin_tag" => $this->estAdmin ? "1" : "0"
         );
     }
 }

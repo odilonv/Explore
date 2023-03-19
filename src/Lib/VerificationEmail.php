@@ -10,7 +10,7 @@ class VerificationEmail
 {
     public static function envoiEmailValidation(Utilisateur $utilisateur): void
     {
-        $loginURL = rawurlencode($utilisateur->getLogin());
+        $loginURL = rawurlencode($utilisateur->getIdUser());
         $nonceURL = rawurlencode($utilisateur->getNonce());
         $absoluteURL = Configuration::getAbsoluteURL();
         $lienValidationEmail = "$absoluteURL?action=validerEmail&controleur=utilisateur&login=$loginURL&nonce=$nonceURL";
@@ -39,7 +39,7 @@ class VerificationEmail
             return false;
         }
 
-        $utilisateur->setEmail($utilisateur->getEmailAValider());
+        $utilisateur->setEmailUser($utilisateur->getEmailAValider());
         $utilisateur->setEmailAValider("");
         $utilisateur->setNonce("");
 
@@ -49,6 +49,6 @@ class VerificationEmail
 
     public static function aValideEmail(Utilisateur $utilisateur): bool
     {
-        return $utilisateur->getEmail() !== "";
+        return $utilisateur->getEmailUser() !== "";
     }
 }

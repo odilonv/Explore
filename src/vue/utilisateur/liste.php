@@ -3,8 +3,8 @@ echo "<h3>Liste des utilisateurs :</h3>\n";
 echo "<ul>\n";
 /** @var \App\PlusCourtChemin\Modele\DataObject\Utilisateur[] $utilisateurs */
 foreach ($utilisateurs as $utilisateur) {
-    $loginHTML = htmlspecialchars($utilisateur->getLogin());
-    $loginURL = rawurlencode($utilisateur->getLogin());
+    $loginHTML = htmlspecialchars($utilisateur->getIdUser());
+    $loginURL = rawurlencode($utilisateur->getIdUser());
     echo <<< HTML
         <li>
             Utilisateur de login $loginHTML
