@@ -2,6 +2,7 @@
 
 namespace App\PlusCourtChemin\Lib;
 
+use App\PlusCourtChemin\Modele\DataObject\CacheNR;
 use App\PlusCourtChemin\Modele\DataObject\NoeudRoutier;
 use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
 
@@ -80,55 +81,51 @@ class PlusCourtChemin
 
     private array $gidAParcourir;
     private array $gidParcouru;
+    private gidParcours $gidParcours;
 
     // [gid => distance]
     private array $noeudsDistance;
     //
-    private array $cache;
+    private CacheNR $cache;
     private NoeudRoutier $nrCourant;
+    private string $gidCourant;
 
     public function calculer2(){
-        $this->cache = (new NoeudRoutierRepository())->getInRange($this->noeudRoutierDepartGid, 500); // s'assurer que la méthode marche pleinement
-        $this->gidAParcourir[] = $this->noeudRoutierDepartGid;
+        $this->gidParcours = new gidParcours();
+        $this->cache = (new NoeudRoutierRepository())->getInRange("0101000020E61000000112967685E2E03FEE072CA6DD674540", 100000); // s'assurer que la méthode marche pleinement
+        $this->gidParcours->addToParcours($this->noeudRoutierDepartGid);
+//        $this->gidAParcourir[] = $this->noeudRoutierDepartGid;
         $this->noeudsDistance = [];
-        $this->gidParcouru = [];
+//        $this->gidParcouru = [];
 
-        foreach ($this->cache as $key => $value){
+        foreach ($this->cache->getInfos() as $key => $value){
             $this->noeudsDistance[$key] = PHP_FLOAT_MAX;
         }
         $this->noeudsDistance[$this->noeudRoutierDepartGid] = 0;
 
-        while(sizeof($this->gidAParcourir)>0){
-            $this->nrCourant = $this->cache[$this->gidAParcourir[0]];
+        while($this->gidParcours->hasNext()){
+            $this->gidCourant = $this->gidParcours->next();
 
             $this->actualiserDistanceMinimal();
 
-
-            if($this->nrCourant->getGid() == $this->noeudRoutierArriveeGid){
+            if($this->gidCourant == $this->noeudRoutierArriveeGid){
                 return $this->noeudsDistance[$this->noeudRoutierArriveeGid];
             }
-
-            $this->gidParcouru[] = $this->gidAParcourir[0];
-            unset($this->gidAParcourir[0]);
-
-            $this->actualiserDistanceMinimal();
         }
         return 0;
     }
 
     private function actualiserDistanceMinimal(){
-        $distCourant = $this->noeudsDistance[$this->nrCourant->getGid()];
-        foreach ($this->nrCourant->getVoisins() as $gid => $values){
-            $gidNR = $values['noeud_routier_gid'];
-            $gidTR = $values['troncon_gid'];
+        $distCourant = $this->noeudsDistance[$this->gidCourant];
+        foreach ($this->cache->getVoisins($this->gidCourant) as  $gidDepart => $values){
+            $gidVoisin = $values['voisin'];
             $longueur = $values['longueur'];
-            if(!in_array($gid, $this->gidAParcourir) && !in_array($gid, $this->gidParcouru)){
-                $this->gidAParcourir[$gid] = $gid;
-            }
+            $this->gidParcours->addToParcours($gidVoisin);
 
-            var_dump($this->noeudsDistance);
-            if($distCourant + $longueur<$this->noeudsDistance[$gid]){
-                $this->noeudsDistance[$gid] = $distCourant + $longueur;
+            if(!isset($this->noeudsDistance[$gidVoisin]))$this->noeudsDistance[$gidVoisin] = PHP_FLOAT_MAX;
+
+            if($distCourant + $longueur<$this->noeudsDistance[$gidVoisin]){
+                $this->noeudsDistance[$gidVoisin] = $distCourant + $longueur;
             }
         }
     }
@@ -136,4 +133,27 @@ class PlusCourtChemin
     // liste qui associe pour chaque pts, la distance la plus courte qui le relie au point d'origine
     // parcourir la liste des voisins du pt dont la distance et la plus courte et qui n'a pas encore été parcouru
     // si la longueur de l'arete qui relie le pt au voisin + la distance du pt < distance minimal voisin -> sa distance minimale devient ce point
+}
+
+class gidParcours{
+    private array $gids=[];
+    private array $gidParcouru = [];//ptetre enlever
+    private int $idx=-1;
+
+    public function addToParcours(string $gid){
+        if(!in_array($gid, $this->gids)) $this->gids[] = $gid;
+    }
+    public function getCurrentGid():string{
+        return $this->gids[$this->idx];
+    }
+    public function next(){
+        $this->idx++;
+        return $this->getCurrentGid();
+    }
+    public function parcouru(string $gid):bool{
+        return in_array($gid, $this->gidParcouru);
+    }
+    public function hasNext():bool{
+        return $this->idx<sizeof($this->gids)-1;
+    }
 }

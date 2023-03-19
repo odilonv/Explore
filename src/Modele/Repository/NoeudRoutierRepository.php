@@ -4,6 +4,7 @@ namespace App\PlusCourtChemin\Modele\Repository;
 
 use App\PlusCourtChemin\Lib\Utils;
 use App\PlusCourtChemin\Modele\DataObject\AbstractDataObject;
+use App\PlusCourtChemin\Modele\DataObject\CacheNR;
 use App\PlusCourtChemin\Modele\DataObject\NoeudRoutier;
 use PDO;
 
@@ -86,20 +87,17 @@ class NoeudRoutierRepository extends AbstractRepository
      * pour chaque voisin, le gid du voisin est une clé associé au gid du troncon ainsi que la longueur
      * [ gidVoisin => [gidNR, gidTR, longueur]]
      */
-    public function getInRange(string $gidCentre, float $range): array
+    public function getInRange(string $geomCentre, float $range): CacheNR
     {
         $requeteSQL = <<<SQL
-        select gidOrigine as gid, nrB.id_rte500, gidVoisin, gidTR, longueur
-        from vue_voisins vv
-        join noeud_routier nrA on nrA.gid=:gidCentre
-        join noeud_routier nrB on vv.gidOrigine=nrB.gid
-        where st_distancesphere(nrA.geom, nrB.geom)<:range
-        order by gidOrigine;
+        select gidDepart, gidVoisin, gidTR, longueur
+        from voisins
+        where st_distancesphere(:geomCentre, localisation) < :range
         SQL;
         $pdoStatement = ConnexionBaseDeDonnees::getPdo()->prepare($requeteSQL);
 
         $pdoStatement->execute(
-            ['gidCentre'=>$gidCentre,
+            ['geomCentre'=>$geomCentre,
                 'range'=>$range]);
 
         // array simple pour stocker tous les noeuds routier concerné
@@ -109,26 +107,29 @@ class NoeudRoutierRepository extends AbstractRepository
             'id_rte500'=>'',
             'voisins'=>[]
         ];
+
+        $cache = new CacheNR();
         foreach ($pdoStatement as $rowValue){
-            // les valeurs ne concernent plus le meme noeud
-            // dans ce cas on commence a accumuler les infos pour le noeud d'après et on instancie l'ancien noeud si possible
-            if($rowValue['gid']!=$previousNRInfos['gid']){
-                if($previousNRInfos['gid']!='') {
-                    $nr = new NoeudRoutier($previousNRInfos['gid'],
-                        $previousNRInfos['id_rte500'],
-                        $previousNRInfos['voisins']);
-                    $noeuds_routiers[$nr->getGid()] = $nr;
-                }
-                $previousNRInfos['gid'] = $rowValue['gid'];
-                $previousNRInfos['id_rte500'] = $rowValue['id_rte500'];
-                $previousNRInfos['voisins'] = [];
-            }
-            // memes infos que pour getVoisins
-            // `noeud_routier_gid`, `troncon_gid`, `longueur`
-            $previousNRInfos['voisins'][$rowValue['gidvoisin']] = ['noeud_routier_gid'=>$rowValue['gidvoisin']
-                                            , 'troncon_gid' => $rowValue['gidtr']
-                                            , 'longueur' => $rowValue['longueur']];
+            $cache->addInfo($rowValue['giddepart'], $rowValue['gidvoisin'], $rowValue['gidtr'], $rowValue['longueur']);
+//            // les valeurs ne concernent plus le meme noeud
+//            // dans ce cas on commence a accumuler les infos pour le noeud d'après et on instancie l'ancien noeud si possible
+//            if($rowValue['gid']!=$previousNRInfos['gid']){
+//                if($previousNRInfos['gid']!='') {
+//                    $nr = new NoeudRoutier($previousNRInfos['gid'],
+//                        $previousNRInfos['id_rte500'],
+//                        $previousNRInfos['voisins']);
+//                    $noeuds_routiers[$nr->getGid()] = $nr;
+//                }
+//                $previousNRInfos['gid'] = $rowValue['gid'];
+//                $previousNRInfos['id_rte500'] = $rowValue['id_rte500'];
+//                $previousNRInfos['voisins'] = [];
+//            }
+//            // memes infos que pour getVoisins
+//            // `noeud_routier_gid`, `troncon_gid`, `longueur`
+//            $previousNRInfos['voisins'][$rowValue['gidvoisin']] = ['noeud_routier_gid'=>$rowValue['gidvoisin']
+//                                            , 'troncon_gid' => $rowValue['gidtr']
+//                                            , 'longueur' => $rowValue['longueur']];
         }
-        return $noeuds_routiers;
+        return $cache;
     }
 }
