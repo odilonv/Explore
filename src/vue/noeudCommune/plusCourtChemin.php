@@ -1,9 +1,11 @@
 <form action="" method="post">
     <fieldset>
         <legend>Plus court chemin </legend>
+        <script src="../ressources/JS/autocompletion.js" defer></script>
         <p class="InputAddOn">
             <label class="InputAddOn-item" for="nomCommuneDepart_id">Nom de la commune de départ</label>
             <input class="InputAddOn-field" type="text" value="" placeholder="Ex : Menton" name="nomCommuneDepart" id="nomCommuneDepart_id" required>
+            <div id="autocompletion"></div>
         </p>
         <p class="InputAddOn">
             <label class="InputAddOn-item" for="nomCommuneArrivee_id">Nom de la commune de départ</label>

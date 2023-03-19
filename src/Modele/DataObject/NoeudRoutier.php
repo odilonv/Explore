@@ -31,10 +31,14 @@ class NoeudRoutier extends AbstractDataObject
         return $this->voisins;
     }
 
+
+
     public function exporterEnFormatRequetePreparee(): array
     {
         // Inutile car pas d'ajout ni de màj
         throw new Exception("Vous ne devriez pas appeler cette fonction car il n'y a pas de modification des noeuds routiers");
         return [];
     }
+
+
 }

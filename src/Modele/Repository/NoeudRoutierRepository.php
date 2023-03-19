@@ -94,4 +94,6 @@ class NoeudRoutierRepository extends AbstractRepository
         ));
         return $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
 }

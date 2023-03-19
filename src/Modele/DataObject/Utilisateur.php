@@ -133,12 +133,10 @@ class Utilisateur extends AbstractDataObject
     {
         return array(
             "idUser_tag" => $this->idUser,
-            "mdp_hache_tag" => $this->mdpHache,
-            "email_user_tag" => $this->emailUser,
+            "mdphache_tag" => $this->mdpHache,
+            "emailUser_tag" => $this->emailUser,
             "nom_tag" => $this->nom,
             "prenom_tag" => $this->prenom,
-
-            "est_admin_tag" => $this->estAdmin ? "1" : "0"
         );
     }
 }
