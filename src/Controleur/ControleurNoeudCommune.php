@@ -58,6 +58,7 @@ class ControleurNoeudCommune extends ControleurGenerique
 
 
         if (!empty($_POST)) {
+            Utils::startTimer();
             $nomCommuneDepart = $_POST["nomCommuneDepart"];
             $nomCommuneArrivee = $_POST["nomCommuneArrivee"];
 

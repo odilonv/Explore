@@ -9,7 +9,7 @@
             <label class="InputAddOn-item" for="nomCommuneArrivee_id">Nom de la commune de départ</label>
             <input class="InputAddOn-field" type="text" value="" placeholder="Ex : Menton" name="nomCommuneArrivee" id="nomCommuneArrivee_id" required>
         </p>
-        <input type="hidden" name="XDEBUG_TRIGGER">
+        <input type="hidden" name="XDEBUG_PROFILE">
         <p>
             <input class="InputAddOn-field" type="submit" value="Calculer" />
         </p>

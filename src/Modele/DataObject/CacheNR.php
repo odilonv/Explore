@@ -8,8 +8,8 @@ class CacheNR
 {
     private array $infos;
 
-    public function setInfos(array $values):void{
-        $infos = $values;
+    public function setInfosPDO(array $values):void{
+        $this->infos = $values;
     }
 
     public function addInfo(string $gidA, string $gidVoisin, string $gidTR, float $longueur){

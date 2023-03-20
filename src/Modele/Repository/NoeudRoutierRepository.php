@@ -84,15 +84,16 @@ class NoeudRoutierRepository extends AbstractRepository
      * @param string $gidCentre
      * @param float $range
      * @return array
+     * range est le rayon en metre
      * pour chaque voisin, le gid du voisin est une clé associé au gid du troncon ainsi que la longueur
      * [ gidVoisin => [gidNR, gidTR, longueur]]
      */
     public function getInRange(string $geomCentre, float $range): CacheNR
     {
         $requeteSQL = <<<SQL
-        select gidDepart, gidVoisin, gidTR, longueur
+        select gidDepart, gidvoisin as voisin, gidTR as troncon, longueur
         from voisins
-        where st_distancesphere(:geomCentre, localisation) < :range
+        where sqrt(pow(st_x(:geomCentre)-x, 2) + pow(st_y(:geomCentre)-y, 2))<:range * 100000
         SQL;
         $pdoStatement = ConnexionBaseDeDonnees::getPdo()->prepare($requeteSQL);
 
@@ -100,36 +101,11 @@ class NoeudRoutierRepository extends AbstractRepository
             ['geomCentre'=>$geomCentre,
                 'range'=>$range]);
 
-        // array simple pour stocker tous les noeuds routier concerné
-        $noeuds_routiers = [];
-        $previousNRInfos = [
-            'gid'=>'',
-            'id_rte500'=>'',
-            'voisins'=>[]
-        ];
-
         $cache = new CacheNR();
-        foreach ($pdoStatement as $rowValue){
+        $cache->setInfosPDO($pdoStatement->fetchAll(PDO::FETCH_ASSOC | PDO::FETCH_GROUP));
+        /*foreach ($pdoStatement as $rowValue){
             $cache->addInfo($rowValue['giddepart'], $rowValue['gidvoisin'], $rowValue['gidtr'], $rowValue['longueur']);
-//            // les valeurs ne concernent plus le meme noeud
-//            // dans ce cas on commence a accumuler les infos pour le noeud d'après et on instancie l'ancien noeud si possible
-//            if($rowValue['gid']!=$previousNRInfos['gid']){
-//                if($previousNRInfos['gid']!='') {
-//                    $nr = new NoeudRoutier($previousNRInfos['gid'],
-//                        $previousNRInfos['id_rte500'],
-//                        $previousNRInfos['voisins']);
-//                    $noeuds_routiers[$nr->getGid()] = $nr;
-//                }
-//                $previousNRInfos['gid'] = $rowValue['gid'];
-//                $previousNRInfos['id_rte500'] = $rowValue['id_rte500'];
-//                $previousNRInfos['voisins'] = [];
-//            }
-//            // memes infos que pour getVoisins
-//            // `noeud_routier_gid`, `troncon_gid`, `longueur`
-//            $previousNRInfos['voisins'][$rowValue['gidvoisin']] = ['noeud_routier_gid'=>$rowValue['gidvoisin']
-//                                            , 'troncon_gid' => $rowValue['gidtr']
-//                                            , 'longueur' => $rowValue['longueur']];
-        }
+        }*/
         return $cache;
     }
 }

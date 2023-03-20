@@ -92,7 +92,7 @@ class PlusCourtChemin
 
     public function calculer2(){
         $this->gidParcours = new gidParcours();
-        $this->cache = (new NoeudRoutierRepository())->getInRange("0101000020E61000000112967685E2E03FEE072CA6DD674540", 100000); // s'assurer que la méthode marche pleinement
+        $this->cache = (new NoeudRoutierRepository())->getInRange("0101000020E61000000112967685E2E03FEE072CA6DD674540", 1000); // s'assurer que la méthode marche pleinement
         $this->gidParcours->addToParcours($this->noeudRoutierDepartGid);
 //        $this->gidAParcourir[] = $this->noeudRoutierDepartGid;
         $this->noeudsDistance = [];
