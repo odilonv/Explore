@@ -7,62 +7,30 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
+    text-decoration: none;
 }
 
 body {
     background-color: #efeeee;
+    background-image: url("../img/background-test.png");
 }
 
-.nav {
-    width: 100%;
-    height: 100px;
-    background-color: #efeeee;
-    box-shadow: 10px 10px 12px 0 rgba(0, 0, 0, 0.07);
-    border-radius: 0 0 10px 10px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 0 3rem;
-    list-style-type: none;
-}
-.nav li.logo {
-    margin-right: auto;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.5rem;
-    color: black;
-    font-weight: 700;/*
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), -2px -2px 4px white;*/
-}
-.nav li:not(.logo){
-    cursor: pointer;
-    margin: 0 1rem;
-}
 
-.nav li:not(.logo), .contain, input {
 
-    padding: 0.5rem 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 4px 4px 6px 0 rgba(0, 0, 0, 0.1), -4px -4px 6px white;
-    border-radius: 10px;
-    transition: color 0.2s ease-out, transform 0.2s ease-out;
-
-}
 
 .icons{
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
 }
 
-.imgC{
-    height: 35vh;
+.imgGlobe{
+    height: 30vh;
     position: absolute;
-    right: 200px;
-    top: 10px;
+    right: 380px;
+
 }
-
 section{
-    height: 50vh;
-
+    height: 25vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -70,71 +38,47 @@ section{
 
 .contain{
     background: #efeeee;
-    width: 60%;
-    height: 30vh;
-    left: 150px;
-    position: absolute;
+    width: 35%;
+    height: 15vh;
+    position: relative;
+    left: -30px;
     display: flex;
     align-items: center;
-    padding: 50px;
+    padding: 0 0 0 30px;
+    box-shadow: 4px 4px 6px 0 rgba(0, 0, 0, 0.3), -4px -4px 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
 
 }
 
-.divide{
-    display: flex;
-    width: 100%;
+.insideDivide{
+    width: 75%;
     height: 100%;
-    flex-direction: column;
-    align-items: start;
     justify-content: center;
-}
-
-.insidedivide{
-    width: 60%;
     display: flex;
-    gap: 5px;
     flex-direction: column;
 }
-
-.iconslocation{
+.iconsLocation{
     height: 20px;
     width: 20px ;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
-
-.iconslocationstart{
+.iconsLocationStart{
     height: 15px;
     width: 15px;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
-
-.circleunder{
-    height: 5px;
-    width: 5px;
+.circleTransition{
+    height: 3px;
+    width: 3px;
 }
 .circles{
     display: flex;
     flex-direction: column;
     width: 15px;
-    gap: 6px;
+    gap: 1px;
     position: relative;
     align-items: center;
-    margin-bottom: 8px;
-
-}
-
-
-
-
-
-
-h1{
-    font-size: 2em;
-    color: black;
-    margin-bottom: 30px;
-}
-img#car{
-    height: 20px;
+    margin-bottom: 3px;
 }
 
 button{
@@ -145,23 +89,16 @@ button{
     justify-content: center;
     border-radius: 10px;
     width: 20%;
-    height: 45px;
+    height: 100%;
     padding: 5px;
     text-align: center;
     background: #82cdd6;
-}
-
-.line{
-    height: 3px;
-    background: black;
-    border-radius: 10px;
-    width: 60%;
-    display: flex;
+    cursor: pointer;
 }
 
 .underlineTravel{
     display: flex;
-    height: 20px;
+    height: 30%;
     align-items: center;
     justify-content: center;
     gap: 15px;
@@ -169,13 +106,49 @@ button{
 
 #search input{
     width: 100%;
+    height: 100%;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 4px 4px 6px 0 rgba(0, 0, 0, 0.1), -4px -4px 6px white;
+    border-radius: 10px;
 }
 
+#connectFooter, #echelleFooter, #signFooter{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    position: absolute;
 
-.location{
-
+    height: 4%;
+    border-radius: 15px;
+    background-color: #efeeee;
+    box-shadow: 4px 4px 6px 0 rgba(0, 0, 0, 0.3), -4px -4px 6px rgba(0, 0, 0, 0.3);
 }
 
+h2{
+    font-size: 0.9em;
+}
 
+#connectFooter{
+    left: 20px;
+}
+#echelleFooter{
+    width: 5%;
+    bottom: 65px;
+}
 
+#signFooter, #connectFooter{
+    bottom: 25px;
+    width: 10%;
+}
+#echelleFooter, #signFooter{
+    right: 20px;
+}
+#echelleFooter .icons{
+    margin-top: 5px;
+}
+
+a{
+    color: black;
+}
 

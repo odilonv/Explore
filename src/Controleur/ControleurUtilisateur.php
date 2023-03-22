@@ -31,7 +31,7 @@ class ControleurUtilisateur extends ControleurGenerique
     public static function accueil(): void
     {
         ControleurUtilisateur::afficherVue('vueGenerale.php', [
-            "pagetitle" => "Accueil",
+            "pagetitle" => "Explore",
             "cheminVueBody" => "utilisateur/accueil.php"
         ]);
     }
