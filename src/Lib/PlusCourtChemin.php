@@ -92,7 +92,9 @@ class PlusCourtChemin
 
     public function calculer2(){
         $this->gidParcours = new gidParcours();
-        $this->cache = (new NoeudRoutierRepository())->getInRange("0101000020E61000000112967685E2E03FEE072CA6DD674540", 100); // s'assurer que la méthode marche pleinement
+        $ts = Utils::getDuree();
+        $this->cache = (new NoeudRoutierRepository())->getInRange("0101000020E61000000112967685E2E03FEE072CA6DD674540", 1000); // s'assurer que la méthode marche pleinement
+        Utils::log("temps récup noeuds in range: " . Utils::getDuree()-$ts);
         $this->gidParcours->addToParcours($this->noeudRoutierDepartGid);
 //        $this->gidAParcourir[] = $this->noeudRoutierDepartGid;
         $this->noeudsDistance = [];
@@ -103,12 +105,15 @@ class PlusCourtChemin
         }
         $this->noeudsDistance[$this->noeudRoutierDepartGid] = 0;
 
+        $ts = Utils::getDuree();
         while($this->gidParcours->hasNext()){
             $this->gidCourant = $this->gidParcours->next();
 
             $this->actualiserDistanceMinimal();
 
             if($this->gidCourant == $this->noeudRoutierArriveeGid){
+                Utils::log("temps while: " . Utils::getDuree()-$ts);
+                (new NoeudRoutierRepository())->getForStar("0101000020E61000000112967685E2E03FEE072CA6DD674540", "0101000020E61000000112967685E2E03FEE072CA6DD674540");
                 return $this->noeudsDistance[$this->noeudRoutierArriveeGid];
             }
         }

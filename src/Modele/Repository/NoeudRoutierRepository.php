@@ -6,6 +6,7 @@ use App\PlusCourtChemin\Lib\Utils;
 use App\PlusCourtChemin\Modele\DataObject\AbstractDataObject;
 use App\PlusCourtChemin\Modele\DataObject\CacheNR;
 use App\PlusCourtChemin\Modele\DataObject\NoeudRoutier;
+use NoeudStar;
 use PDO;
 
 class NoeudRoutierRepository extends AbstractRepository
@@ -97,15 +98,17 @@ class NoeudRoutierRepository extends AbstractRepository
         SQL;
         $pdoStatement = ConnexionBaseDeDonnees::getPdo()->prepare($requeteSQL);
 
+        $ts = Utils::getDuree();
         $pdoStatement->execute(
             ['geomCentre'=>$geomCentre,
                 'range'=>$range]);
+        Utils::log("temps requete: " . Utils::getDuree()-$ts);
 
         $cache = new CacheNR();
+        $ts = Utils::getDuree();
         $cache->setInfosPDO($pdoStatement->fetchAll(PDO::FETCH_ASSOC | PDO::FETCH_GROUP));
-        /*foreach ($pdoStatement as $rowValue){
-            $cache->addInfo($rowValue['giddepart'], $rowValue['gidvoisin'], $rowValue['gidtr'], $rowValue['longueur']);
-        }*/
+        Utils::log("temps setCache: " . Utils::getDuree()-$ts . '  // taille cache: ' . sizeof($cache->getInfos()));
+
         return $cache;
     }
 
@@ -120,10 +123,15 @@ class NoeudRoutierRepository extends AbstractRepository
         $pdoStatement = ConnexionBaseDeDonnees::getPdo()->prepare($requeteSQL);
         $pdoStatement->execute(['geomGoal' => $goalPoint]);
 
-        $result = $pdoStatement->fetchAll(PDO::FETCH_ASSOC | PDO::FETCH_GROUP);
+        $result = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
 
+        Utils::log("alo?");
+        var_dump($result);
+
+        $noeuds = [];
         foreach ($result as $key => $infos){
-            $noeud = new NoeudAStar();
+            $noeud = new NoeudStar($key, $infos['distancefromgoal']);
+            $noeuds[$key] = $noeud;
         }
     }
 }
@@ -147,59 +155,4 @@ class CacheAStar extends \SplPriorityQueue{
  * on met a jour la valeur d'un noeud dès qu'un voisin est sélectionné
  *
  */
-class NoeudAStar{
-    private string $depart;
 
-    // [gid, gidTR, longueur]
-    private array $voisins;
-
-    private float $distFinal;
-    private float $distDebut;
-
-
-    public function __construct($depart, $voisins)
-    {
-        $this->depart = $depart;
-        $this->voisins = $voisins;
-
-    }
-
-    public function recalculer($gidVoisin, $newValeur){
-        if($this->distDebut > $this->voisins[$gidVoisin]['longueur'] + $newValeur){
-            $this->distDebut = $this->voisins[$gidVoisin]['longueur'] + $newValeur;
-        }
-    }
-}
-
-class noeudA{
-    private string $gid;
-
-    private array $noeudsVoisins;
-
-    private float $distanceDebut;
-    private float $distanceFin;
-
-    public function __construct(string $gid, float $distanceFin)
-    {
-        $this->distanceFin = $distanceFin;
-        $this->gid = $gid;
-    }
-
-    public function addVoisin(noeudA $voisin, float $longueur, string $gidTR){
-        $this->noeudsVoisins[] = ['voisin' => $voisin,
-                                    'distance' => $longueur,
-                                    'gidTR' => $gidTR];
-    }
-
-    // idée: cette fonction est appellé si un voisin recalcule sa valeur. dans ce cas ce noeud recalcul sa valeur et préviens ses voisins
-    // problème: très vite les appels risquent de se multiplier
-    public function recalculer(float $nouvelleValeurDepuisVoisin){
-        $dd = $this->distanceDebut;
-        $this->distanceDebut = $dd > $nouvelleValeurDepuisVoisin?$nouvelleValeurDepuisVoisin:$dd;
-        foreach ($this->noeudsVoisins as $infos){
-            $infos['voisin']->recalculer($this->distanceDebut + $infos['distance']);
-        }
-    }
-    // comment on met a jour la priority queue si je fais comme ca?
-
-}
