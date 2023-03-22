@@ -86,12 +86,26 @@
 <head>
     <meta charset="utf-8">
     <title><?= $pagetitle ?></title>
+    <link rel="shortcut icon" type="image/png" href="../ressources/img/3d-illustration-travel-location.png"/>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Roboto:400,900&amp;display=swap');
     </style>
     <link rel="stylesheet" href="../ressources/css/main.css">
 </head>
 <body>
+<div>
+    <?php
+                foreach (["success", "info", "warning", "danger"] as $type) {
+                    foreach ($messagesFlash[$type] as $messageFlash) {
+                        echo <<<HTML
+                        <div class="alert alert-$type">
+                            $messageFlash
+                        </div>
+                        HTML;
+                    }
+                }
+                ?>
+</div>
 <?php
         /**
          * @var string $cheminVueBody
