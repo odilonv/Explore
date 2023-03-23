@@ -135,6 +135,19 @@ class PlusCourtChemin
         }
     }
 
+    public function calculer3(){
+        $prio = (new NoeudRoutierRepository())->getForStar($this->noeudRoutierDepartGid, $this->noeudRoutierArriveeGid);
+
+        $dernierNoeud = null;
+        while($prio->valid() && $prio->current()->getGid() != $this->noeudRoutierArriveeGid){
+            $dernierNoeud = $prio->next();
+            $dernierNoeud->selectionner();
+            $prio->recoverFromCorruption();
+        }
+
+        return $dernierNoeud->getDistanceDebut();
+    }
+
     // liste qui associe pour chaque pts, la distance la plus courte qui le relie au point d'origine
     // parcourir la liste des voisins du pt dont la distance et la plus courte et qui n'a pas encore été parcouru
     // si la longueur de l'arete qui relie le pt au voisin + la distance du pt < distance minimal voisin -> sa distance minimale devient ce point

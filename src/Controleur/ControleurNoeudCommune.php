@@ -77,7 +77,7 @@ class ControleurNoeudCommune extends ControleurGenerique
             ])[0]->getGid();
 
             $pcc = new PlusCourtChemin($noeudRoutierDepartGid, $noeudRoutierArriveeGid);
-            $distance = $pcc->calculer2();
+            $distance = $pcc->calculer3();
 
             $parametres["nomCommuneDepart"] = $nomCommuneDepart;
             $parametres["nomCommuneArrivee"] = $nomCommuneArrivee;

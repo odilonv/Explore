@@ -1,10 +1,14 @@
 <?php
 
-class NoeudStar extends \SAE\Lib\ObserverPattern\Observable
+namespace App\PlusCourtChemin\Modele\DataObject\aStar;
+
+class NoeudStar
 {
     private string $gid;
 
     private EtatNoeud $etat = EtatNoeud::PAUSE; // possible: vérifié, possible, pause
+
+    private QueueStar $prioQ;
 
     private array $noeudsVoisins;
 
@@ -16,6 +20,10 @@ class NoeudStar extends \SAE\Lib\ObserverPattern\Observable
     {
         $this->distanceFin = $distanceFin;
         $this->gid = $gid;
+    }
+
+    public function setPrioQ(QueueStar $p){
+        $this->prioQ = $p;
     }
 
     /**
@@ -39,13 +47,6 @@ class NoeudStar extends \SAE\Lib\ObserverPattern\Observable
         return $this->distanceDebut + $this->distanceFin;
     }
 
-    public function notifyAll()
-    {
-        foreach ($this->observers as $observer){
-            $observer->update($this->etat->value);
-        }
-    }
-
 
     public function addVoisin(NoeudStar $voisin, float $longueur, string $gidTR){
         $this->noeudsVoisins[] = ['voisin' => $voisin,
@@ -67,6 +68,8 @@ class NoeudStar extends \SAE\Lib\ObserverPattern\Observable
             }
         }
         elseif ($this->etat == EtatNoeud::PAUSE){
+            $this->etat = EtatNoeud::POSSIBLE;
+            $this->prioQ->insert($this);
             $this->distanceDebut = $nouvelleValeurDepuisVoisin;
         }
     }
