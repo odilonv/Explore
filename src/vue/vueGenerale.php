@@ -113,6 +113,6 @@
 require __DIR__ . "/{$cheminVueBody}";
 ?>
 
-
+<script defer type="text/javascript" src="../ressources/js/connect.js"></script>
 </body>
 </html>

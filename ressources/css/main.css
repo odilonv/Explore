@@ -104,6 +104,14 @@ button{
     gap: 15px;
 }
 
+footer{
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    height: 20%;
+    width: 100%;
+}
+
 #search input{
     width: 100%;
     height: 100%;
@@ -113,31 +121,37 @@ button{
     border-radius: 10px;
 }
 
-#connectFooter, #echelleFooter, #signFooter{
+.connectFooter, #echelleFooter, #signFooter{
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     position: absolute;
-
-    height: 4%;
     border-radius: 15px;
     background-color: #efeeee;
     box-shadow: 4px 4px 6px 0 rgba(0, 0, 0, 0.3), -4px -4px 6px rgba(0, 0, 0, 0.3);
 }
+.connectFooter, #echelleFooter, #signFooter{
+    height: 20%;
+}
+
+
+
 
 h2{
     font-size: 0.9em;
 }
 
-#connectFooter{
+.connectFooter{
     left: 20px;
+    cursor: pointer;
 }
+
 #echelleFooter{
     width: 5%;
     bottom: 65px;
 }
 
-#signFooter, #connectFooter{
+#signFooter, .connectFooter{
     bottom: 25px;
     width: 10%;
 }
@@ -146,6 +160,15 @@ h2{
 }
 #echelleFooter .icons{
     margin-top: 5px;
+}
+
+
+.formConnect{
+    height: 100%;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    gap: 10%;
 }
 
 a{

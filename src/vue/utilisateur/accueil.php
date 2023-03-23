@@ -31,13 +31,11 @@
 
     if (!ConnexionUtilisateur::estConnecte()) {
         echo <<<HTML
-                            
-                                <a href="controleurFrontal.php?action=afficherFormulaireConnexion&controleur=utilisateur" id="connectFooter">
-                                    <img src="../ressources/img/icons/user-solid.svg" class="icons">
-                                    <h2>Connexion</h2>
-                                </a>
-                            
-                            HTML;
+                <div class="connectFooter">
+                    <img src="../ressources/img/icons/user-solid.svg" class="icons">
+                    <h2>Connexion</h2>
+                </div>
+                HTML;
     } else {
         $loginHTML = htmlspecialchars(ConnexionUtilisateur::getLoginUtilisateurConnecte());
         $loginURL = rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte());
