@@ -12,9 +12,9 @@ $loader->register();
 
 // Syntaxe alternative
 // The null coalescing operator returns its first operand if it exists and is not null
-$action = $_REQUEST['action'] ?? 'plusCourtChemin';
+$action = $_REQUEST['action'] ?? 'accueil';
 
-$controleur = $_REQUEST['controleur'] ?? "noeudCommune";
+$controleur = $_REQUEST['controleur'] ?? "utilisateur";
 
 $controleurClassName = 'App\PlusCourtChemin\Controleur\Controleur' . ucfirst($controleur);
 

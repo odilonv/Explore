@@ -114,5 +114,36 @@ require __DIR__ . "/{$cheminVueBody}";
 ?>
 
 <script defer type="text/javascript" src="../ressources/js/connect.js"></script>
+
+<footer>
+    <?php
+    use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
+
+    if (!ConnexionUtilisateur::estConnecte()) {
+        echo <<<HTML
+                <div class="connectFooter">
+                    <img src="../ressources/img/icons/user-solid.svg" class="icons">
+                    <h2 id="h2Connexion">Connexion</h2>
+                </div>
+                HTML;
+    } else {
+        $loginHTML = htmlspecialchars(ConnexionUtilisateur::getLoginUtilisateurConnecte());
+        $loginURL = rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte());
+        echo <<<HTML
+                                <a href="controleurFrontal.php?action=afficherDetail&controleur=utilisateur&login=$loginURL" id="connectFooter">
+                                    <img src="../ressources/img/icons/user-solid.svg" class="icons">
+                                    <h2>$loginHTML</h2>
+                                </a>
+                            HTML;
+    }
+    ?>
+    <div id="echelleFooter">
+        <a href=""><img src="../ressources/img/icons/minus-solid.svg" class="icons"></a>
+        <a href=""><img src="../ressources/img/icons/plus-solid.svg" class="icons"></a>
+    </div>
+    <a id="signFooter" href="">
+        <h2>Explore</h2>
+    </a>
+</footer>
 </body>
 </html>
