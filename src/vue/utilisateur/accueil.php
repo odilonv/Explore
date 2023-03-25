@@ -12,7 +12,7 @@
             <div class="underlineTravel">
                 <img src="../ressources/img/icons/location-dot-solid.svg" class="iconsLocation">
                 <input placeholder="Où allons-nous ?" type="text" name="nomCommuneArrivee">
-                <button type="submit" value="Calculer"><img src="../ressources/img/icons/location-arrow-solid.svg" class="icons"></button>
+                <button type="submit" id='searchButton'value="Calculer"><img src="../ressources/img/icons/location-arrow-solid.svg" class="icons"></button>
             </div>
 
 

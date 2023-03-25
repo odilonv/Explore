@@ -8,11 +8,22 @@
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
     text-decoration: none;
+
 }
 
 body {
-    background-color: #efeeee;
-    background-image: url("../img/background-test.png");
+    /*background-color: #efeeee;
+    background-image: url("../img/background-test.png");*/height: 100%;
+}
+
+#mapContainer{
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 }
 
 
@@ -24,12 +35,12 @@ body {
 }
 
 .imgGlobe{
-    height: 30vh;
+    height: 25vh;
     position: absolute;
-    right: 380px;
+    right: 420px;
 
 }
-section{
+section#search{
     height: 25vh;
     display: flex;
     align-items: center;
@@ -38,15 +49,15 @@ section{
 
 .contain{
     background: #efeeee;
-    width: 35%;
-    height: 15vh;
+    width: 30%;
+    height: 14vh;
     position: relative;
-    left: -30px;
+    left: -25px;
     display: flex;
     align-items: center;
     padding: 0 0 0 30px;
-    box-shadow: 4px 4px 6px 0 rgba(0, 0, 0, 0.3), -4px -4px 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
+    box-shadow: 0em 0 0.4em 0 rgba(15, 22, 33, 0.6);
+    border-radius: 0.5em;
 
 }
 
@@ -82,18 +93,45 @@ section{
 }
 
 button{
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 4px 4px 6px 0 rgba(0, 0, 0, 0.1), -4px -4px 6px white;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
+    border-radius: 0.5em;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 4px 4px 6px 0 rgba(0, 0, 0, 0.1), -4px -4px 6px white;
+    font-family: Poppins, serif;
+    cursor: pointer;
+
+}
+
+#searchButton{
     width: 20%;
     height: 100%;
     padding: 5px;
-    text-align: center;
     background: #82cdd6;
     cursor: pointer;
+}
+
+.registerButton{
+    width: 25%;
+    height: 100%;
+    background: white;
+    margin-left: 50%;
+    color: rgba(15, 22, 33, 0.6);
+}
+
+.connectButton{
+    width: 100%;
+    height: 25%;
+    background: #62b5bb;
+    color: white;
+
+}
+
+.exitButton{
+    width: 10%;
+    height: 100%;
+    background: white;
 }
 
 .underlineTravel{
@@ -103,14 +141,14 @@ button{
     justify-content: center;
     gap: 15px;
 }
-
+/*
 footer{
     display: flex;
     position: absolute;
     bottom: 0;
-    height: 20%;
+    height: 30%;
     width: 100%;
-}
+}*/
 
 #search input{
     width: 100%;
@@ -118,7 +156,7 @@ footer{
     padding: 10px;
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 4px 4px 6px 0 rgba(0, 0, 0, 0.1), -4px -4px 6px white;
-    border-radius: 10px;
+    border-radius: 0.5em;
 }
 
 .connectFooter, #echelleFooter, #signFooter{
@@ -126,36 +164,48 @@ footer{
     align-items: center;
     justify-content: space-evenly;
     position: absolute;
-    border-radius: 15px;
-    background-color: #efeeee;
-    box-shadow: 4px 4px 6px 0 rgba(0, 0, 0, 0.3), -4px -4px 6px rgba(0, 0, 0, 0.3);
+    border-radius: 0.5em;
+    background-color: #fff;
+    box-shadow: 0em 0 0.4em 0 rgba(15, 22, 33, 0.6);
 }
 .connectFooter, #echelleFooter, #signFooter{
-    height: 20%;
+    height: 40px;
+}
+.connectFooter > div{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 10%;
+    height: 25%;
 }
 
-
-
-
-h2{
-    font-size: 0.9em;
+.clickable{
+    cursor: pointer;
+}
+.connectFooter h2{
+    font-size: 0.8em;
 }
 
 .connectFooter{
     left: 20px;
-    cursor: pointer;
     flex-direction: row;
+    color: rgba(15, 22, 33, 0.6);
 }
-
-#echelleFooter{
-    width: 5%;
-    bottom: 65px;
-}
-
 #signFooter, .connectFooter{
     bottom: 25px;
     width: 10%;
 }
+
+
+
+
+#echelleFooter{
+    width: 5%;
+    bottom: 70px;
+}
+
+
 #echelleFooter, #signFooter{
     right: 20px;
 }
@@ -164,24 +214,32 @@ h2{
 }
 
 
+
+
 .formConnect{
-    height: 100%;
+    height: 200px;
     width: 25%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 10px;
+    padding: 15px;
     gap: 10%;
 }
+
+
 
 .lines{
     display: flex;
     width: 100%;
-    height: 40%;
+    height: 20%;
     padding: 10px;
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 4px 4px 6px 0 rgba(0, 0, 0, 0.1), -4px -4px 6px white;
-    border-radius: 10px;
+    border-radius: 0.5em;
+}
+
+button#connexion{
+
 }
 
 a{
