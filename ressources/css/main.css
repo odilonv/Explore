@@ -92,7 +92,7 @@ section#search{
     margin-bottom: 3px;
 }
 
-button{
+button, .registerButton, .exitButton{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -118,6 +118,8 @@ button{
     background: white;
     margin-left: 50%;
     color: rgba(15, 22, 33, 0.6);
+    font-size: 0.8em;
+    font-weight: bold;
 }
 
 .connectButton{
@@ -125,6 +127,7 @@ button{
     height: 25%;
     background: #62b5bb;
     color: white;
+
 
 }
 
@@ -176,8 +179,11 @@ footer{
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    height: 100%;
+}
+.connectHeader{
+
     padding: 0 10%;
-    height: 25%;
 }
 
 .clickable{
@@ -217,7 +223,7 @@ footer{
 
 
 .formConnect{
-    height: 200px;
+    height: 220px;
     width: 25%;
     display: flex;
     flex-direction: column;

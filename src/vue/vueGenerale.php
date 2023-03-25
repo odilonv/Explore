@@ -44,10 +44,12 @@
 
         if (!ConnexionUtilisateur::estConnecte()) {
             echo <<<HTML
-                    <form class="connectFooter clickable">
-                        <div><img src="../ressources/img/icons/user-solid.svg" class="icons">
-                        <h2 id="h2Connexion">Se connecter</h2></div>
-                    </form>
+                    <div class="connectFooter clickable">
+                    <div class="connectHeader">
+                        <img src="../ressources/img/icons/user-solid.svg" class="icons">
+                        <h2 id="h2Connexion">Se connecter</h2>
+                      </div>
+                    </div>
                     HTML;
         } else {
             $loginHTML = htmlspecialchars(ConnexionUtilisateur::getLoginUtilisateurConnecte());
