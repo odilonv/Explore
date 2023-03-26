@@ -129,56 +129,35 @@ class NoeudRoutierRepository extends AbstractRepository
 
         $geomArrivee = '';
         if($coordonnees[0][2] == $gidArrivee){$geomArrivee=$coordonnees[0][3];}else{$geomArrivee=$coordonnees[1][3];}
-        $vecteurAB = ["x" => $coordonnees[0][0]-$coordonnees[1][0],
-                    "y" => $coordonnees[0][1]-$coordonnees[1][1]];
-
-        $ABRotated = ['x' => $vecteurAB['y'], 'y' => -$vecteurAB['x']];
-
-        $origine = ['x' => $coordonnees[0][0], 'y' => $coordonnees[0][1]];
-        $agrandissement = ['x' => 1, 'y' => 1];
-        $pt1 = ['x' => $origine['x'] - $ABRotated['x']/2, 'y' => $origine['y'] - $ABRotated['y']/2];
-        $pt2 = ['x' => $pt1['x'] + $vecteurAB['x'], 'y' => $pt1['y'] + $vecteurAB['y']];
-        $pt3 = ['x' => $pt2['x'] + $ABRotated['x'], 'y' => $pt2['y'] + $ABRotated['y']];
-        $pt4 = ['x' => $pt3['x'] - $vecteurAB['x'], 'y' => $pt3['y'] - $vecteurAB['y']];
+//        $vecteurAB = ["x" => $coordonnees[0][0]-$coordonnees[1][0],
+//                    "y" => $coordonnees[0][1]-$coordonnees[1][1]];
+//
+//        $ABRotated = ['x' => $vecteurAB['y'], 'y' => -$vecteurAB['x']];
+//
+//        $origine = ['x' => $coordonnees[1][0], 'y' => $coordonnees[1][1]];
+//        $agrandissement = ['x' => 1, 'y' => 1];
+//        $pt1 = ['x' => $origine['x'] - $ABRotated['x']/2, 'y' => $origine['y'] - $ABRotated['y']/2];
+//        $pt2 = ['x' => $pt1['x'] + $vecteurAB['x'], 'y' => $pt1['y'] + $vecteurAB['y']];
+//        $pt3 = ['x' => $pt2['x'] + $ABRotated['x'], 'y' => $pt2['y'] + $ABRotated['y']];
+//        $pt4 = ['x' => $pt3['x'] - $vecteurAB['x'], 'y' => $pt3['y'] - $vecteurAB['y']];
 
         $requeteArea = <<<SQL
         select ST_MakePolygon( ST_GeomFromText(:points, 4326));
-SQL;
+        SQL;
         $pdoStatement = $pdo->prepare($requeteArea);
 
-        $points = 'LINESTRING(' . $pt1['x'] . ' ' . $pt1['y'] . ',' .
-        $pt2['x'] . ' ' . $pt2['y'] . ',' .
-        $pt3['x'] . ' ' . $pt3['y'] . ',' .
-        $pt4['x'] . ' ' . $pt4['y'] . ',' .
-        $pt1['x'] . ' ' . $pt1['y'] . ')';
+        $points = $this->genererChaineZone(['x' =>$coordonnees[0][0], 'y' => $coordonnees[0][1]], ['x' => $coordonnees[1][0], 'y' => $coordonnees[1][1]]);
+
+//        $points = 'LINESTRING(' . $pt1['x'] . ' ' . $pt1['y'] . ',' .
+//        $pt2['x'] . ' ' . $pt2['y'] . ',' .
+//        $pt3['x'] . ' ' . $pt3['y'] . ',' .
+//        $pt4['x'] . ' ' . $pt4['y'] . ',' .
+//        $pt1['x'] . ' ' . $pt1['y'] . ')';
 
         $pdoStatement->execute(
             ['points' => $points]);
 
         $area = $pdoStatement->fetch()[0];
-
-
-//        $left = null;
-//        $right = null;
-//        $top = null;
-//        $bottom = null;
-//
-//        if($coordonnees[0][0] >= $coordonnees[1][0]){
-//            $right = $coordonnees[0][0];
-//            $left = $coordonnees[1][0];
-//        }
-//        else{
-//            $right = $coordonnees[1][0];
-//            $left = $coordonnees[0][0];
-//        }
-//        if($coordonnees[0][1] >= $coordonnees[1][1]){
-//            $bottom = $coordonnees[0][1];
-//            $top = $coordonnees[1][1];
-//        }
-//        else{
-//            $bottom = $coordonnees[1][1];
-//            $top = $coordonnees[0][1];
-//        }
 
 
         $starQueue = new QueueStar();
@@ -227,6 +206,23 @@ SQL;
             }
         }
         return $starQueue;
+    }
+
+    public function genererChaineZone(array $startPoint, array $endPoint){
+
+        $direction = ['x' => $endPoint['x']-$startPoint['x'], 'y' => $endPoint['y']-$startPoint['y']];
+        $perpendiculaire = ['x' => $direction['y'], 'y' => -$direction['x']];
+
+        $pt1 = ['x' => $startPoint['x'] - $direction['x'] - $perpendiculaire['x'], 'y' => $startPoint['y'] - $direction['y'] - $perpendiculaire['y']];
+        $pt2 = ['x' => $pt1['x'] + $direction['x'] * 3, 'y' => $pt1['y'] + $direction['y'] * 3];
+        $pt3 = ['x' => $pt2['x'] + $perpendiculaire['x'] * 3, 'y' => $pt2['y'] + $perpendiculaire['y'] * 3];
+        $pt4 = ['x' => $pt3['x'] - $direction['x'] * 3, 'y' => $pt3['y'] - $direction['y'] * 3];
+
+        return 'LINESTRING(' . $pt1['x'] . ' ' . $pt1['y'] . ',' .
+            $pt2['x'] . ' ' . $pt2['y'] . ',' .
+            $pt3['x'] . ' ' . $pt3['y'] . ',' .
+            $pt4['x'] . ' ' . $pt4['y'] . ',' .
+            $pt1['x'] . ' ' . $pt1['y'] . ')';
     }
 }
 
