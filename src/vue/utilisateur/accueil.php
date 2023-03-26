@@ -1,5 +1,5 @@
 
-<section id="search">
+
     <div class="contain">
         <form action="controleurFrontal.php?action=plusCourtChemin&controleur=noeudCommune" class="insideDivide" method="post">
             <div class="underlineTravel">
@@ -11,7 +11,7 @@
             </div>
             <div class="underlineTravel">
                 <img src="../ressources/img/icons/location-dot-solid.svg" class="iconsLocation">
-                <input placeholder="Où allons-nous ?" type="text" name="nomCommuneArrivee">
+                <input placeholder="Où allons-nous ?" type="text" name="nomCommuneArrivee" class="nomCommuneArrivee">
                 <button type="submit" id='searchButton'value="Calculer"><img src="../ressources/img/icons/location-arrow-solid.svg" class="icons"></button>
             </div>
 
@@ -24,5 +24,5 @@
         </form>
 
     </div>
-    <img src="../ressources/img/3d-illustration-travel-location.png" class="imgGlobe">
-</section>
+    <!--<img src="../ressources/img/3d-illustration-travel-location.png" class="imgGlobe">-->
+

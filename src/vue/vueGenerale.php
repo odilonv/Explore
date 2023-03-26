@@ -16,7 +16,13 @@
     <link rel="stylesheet" href="../ressources/css/main.css">
 </head>
 <body>
+
+
+
 <div id="mapContainer"></div>
+<div id="logo">
+    <h1>Explore</h1>
+</div>
     <div>
         <?php
                     foreach (["success", "info", "warning", "danger"] as $type) {
@@ -77,6 +83,7 @@
 
 <script defer type="text/javascript" src="../ressources/js/connect.js"></script>
 <script defer type="text/javascript" src="../ressources/js/map.js"></script>
+<script defer type="text/javascript" src="../ressources/js/search.js"></script>
 
 </body>
 </html>

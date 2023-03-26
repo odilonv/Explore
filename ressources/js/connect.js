@@ -20,13 +20,9 @@ function addForm() {
     connect.appendChild(newHeader);
 
 
-
     addInput('Ex: Bernard', '*******');
-
     addConnectButton('se connecter');
-
     addRegisterButton('s\'inscrire');
-
     addExitButton();
 }
 

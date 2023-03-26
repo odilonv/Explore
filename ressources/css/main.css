@@ -16,6 +16,8 @@ body {
     background-image: url("../img/background-test.png");*/height: 100%;
 }
 
+
+
 #mapContainer{
     height: 100vh;
     width: 100%;
@@ -37,32 +39,30 @@ body {
 .imgGlobe{
     height: 25vh;
     position: absolute;
-    right: 420px;
+    left: 24%;
 
 }
-section#search{
-    height: 25vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+
 
 .contain{
     background: #efeeee;
-    width: 30%;
-    height: 14vh;
+    width: 25%;
+    height: 100%;
     position: relative;
-    left: -25px;
+    top: 25px;
+    left: 20px;
     display: flex;
     align-items: center;
-    padding: 0 0 0 30px;
+    flex-direction: column;
+    padding: 20px 20px 20px 20px;
     box-shadow: 0em 0 0.4em 0 rgba(15, 22, 33, 0.6);
     border-radius: 0.5em;
 
 }
 
+
 .insideDivide{
-    width: 75%;
+    width: 100%;
     height: 100%;
     justify-content: center;
     display: flex;
@@ -108,7 +108,7 @@ button, .registerButton, .exitButton{
     width: 20%;
     height: 100%;
     padding: 5px;
-    background: #82cdd6;
+    background: #ffae9e;
     cursor: pointer;
 }
 
@@ -124,11 +124,9 @@ button, .registerButton, .exitButton{
 
 .connectButton{
     width: 100%;
-    height: 25%;
-    background: #62b5bb;
+    height: 100%;
+    background: #ffae9e;
     color: white;
-
-
 }
 
 .exitButton{
@@ -139,9 +137,10 @@ button, .registerButton, .exitButton{
 
 .underlineTravel{
     display: flex;
-    height: 30%;
+    height: 30px;
     align-items: center;
     justify-content: center;
+    position: relative;
     gap: 15px;
 }
 /*
@@ -153,7 +152,8 @@ footer{
     width: 100%;
 }*/
 
-#search input{
+
+.contain input{
     width: 100%;
     height: 100%;
     padding: 10px;
@@ -162,17 +162,37 @@ footer{
     border-radius: 0.5em;
 }
 
-.connectFooter, #echelleFooter, #signFooter{
+.contain .addDest{
+    width: 100%;
+    height: 25%;
+    padding: 10px;
+    font-size: 0.7em;
+}
+
+#logo{
+    right: 20px;
+    height: 40px;
+    top: 25px;
+    width: 10%;
+    background-color: #ffae9e;
+}
+#logo > h1{
+    font-size: 1em;
+    color: white;
+}
+
+.connectFooter, #echelleFooter, #signFooter, #logo{
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     position: absolute;
     border-radius: 0.5em;
-    background-color: #fff;
+
     box-shadow: 0em 0 0.4em 0 rgba(15, 22, 33, 0.6);
 }
 .connectFooter, #echelleFooter, #signFooter{
     height: 40px;
+    background-color: #fff;
 }
 .connectFooter > div{
     display: flex;
@@ -182,7 +202,6 @@ footer{
     height: 100%;
 }
 .connectHeader{
-
     padding: 0 10%;
 }
 
@@ -228,6 +247,7 @@ footer{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    background: #efeeee;
     padding: 15px;
     gap: 10%;
 }
