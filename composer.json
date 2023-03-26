@@ -3,5 +3,10 @@
        "psr-4": {
           "Explore\\": "src"
        }
+    },
+    "require": {
+        "symfony/http-foundation": "^6.2",
+        "symfony/routing": "^6.2",
+        "symfony/http-kernel": "^6.2"
     }
- }
+}
