@@ -32,15 +32,7 @@ contain.style.height = '29%';
 nomCommuneArrivee.addEventListener('click', addSearchInput);
 
 function addSearchInput() {
-    nomCommuneArrivee.placeholder = 'Un point d\'arrêt ?';
-    nomCommuneArrivee.classList.remove('nomCommuneArrivee');
     nomCommuneArrivee.removeEventListener('click', addSearchInput);
-    iconLocation.src = '../ressources/img/icons/circle-solid.svg';
-    iconLocation.classList.add('iconsLocationStart');
-    iconLocation.classList.remove('iconsLocation');
-    circleAdd.classList.remove('iconsLocationStart');
-    circleAdd.classList.add('iconsLocation');
-    circleAdd.src = '../ressources/img/icons/location-dot-solid.svg';
 
     insideDivide.appendChild(circles);
     lineTravel.appendChild(circleAdd);
@@ -51,6 +43,17 @@ function addSearchInput() {
 }
 
 function addInputDest() {
+    nomCommuneArrivee.placeholder = 'Un point d\'arrêt ?';
+    nomCommuneArrivee.classList.remove('nomCommuneArrivee');
+
+    iconLocation.src = '../ressources/img/icons/circle-solid.svg';
+    iconLocation.classList.add('iconsLocationStart');
+    iconLocation.classList.remove('iconsLocation');
+
+    circleAdd.classList.remove('iconsLocationStart');
+    circleAdd.classList.add('iconsLocation');
+    circleAdd.src = '../ressources/img/icons/location-dot-solid.svg';
+
     const input = document.createElement('input');
     input.classList.add('nomCommuneArrivee');
     input.placeholder = 'Où allons-nous ?';
