@@ -2,9 +2,12 @@
 
 namespace App\PlusCourtChemin\Modele\DataObject\aStar;
 
+use App\PlusCourtChemin\Lib\Utils;
+
 class NoeudStar
 {
     private string $gid;
+    private ?NoeudStar $precedentVoisin = null;
 
     private EtatNoeud $etat = EtatNoeud::PAUSE; // possible: vérifié, possible, pause
 
@@ -76,28 +79,29 @@ class NoeudStar
     // idée: cette fonction est appellé si un voisin recalcule sa valeur. dans ce cas ce noeud recalcul sa valeur et préviens ses voisins
     // problème: très vite les appels risquent de se multiplier
     // methode appellé depuis les autres noeuds
-    public function recalculer(float $nouvelleValeurDepuisVoisin){
-        if($this->etat == EtatNoeud::POSSIBLE) {
+    public function recalculer(float $nouvelleValeurDepuisVoisin, NoeudStar $voisin){
+        if($this->distanceDebut == PHP_FLOAT_MAX){
+            $this->prioQ->insert($this, $this);
+            $this->distanceDebut = $nouvelleValeurDepuisVoisin;
+            $this->precedentVoisin = $voisin;
+        }
+        else{
             $dd = $this->distanceDebut;
             if($dd > $nouvelleValeurDepuisVoisin){
                 $this->distanceDebut = $nouvelleValeurDepuisVoisin;
+                $this->precedentVoisin = $voisin;
                 foreach ($this->noeudsVoisins as $infos) {
-                    $infos['voisin']->recalculer($this->distanceDebut + $infos['distance']);
+                    if($infos['voisin']->gid != $voisin->gid)
+                    $infos['voisin']->recalculer($this->distanceDebut + $infos['distance'], $this);
                 }
             }
-        }
-        elseif ($this->etat == EtatNoeud::PAUSE){
-            $this->etat = EtatNoeud::POSSIBLE;
-            $this->prioQ->insert($this, $this);
-            $this->distanceDebut = $nouvelleValeurDepuisVoisin;
         }
     }
 
     public function selectionner(){
         $this->valeurFinal = $this->distanceDebut + $this->distanceFin;
-        $this->etat = EtatNoeud::VERIFIE;
         foreach ($this->noeudsVoisins as $infos) {
-            $infos['voisin']->recalculer($this->distanceDebut + $infos['distance']);
+            $infos['voisin']->recalculer($this->distanceDebut + $infos['distance'], $this);
         }
     }
 
@@ -109,4 +113,15 @@ class NoeudStar
         return $this->noeudsVoisins;
     }
 
+    public function refaireChemin():array
+    {
+        $chemin = [];
+        $noeud = $this;
+        while(isset($noeud->precedentVoisin)){
+            $chemin[] = $noeud;
+            $noeud = $this->precedentVoisin;
+        }
+
+        return $chemin;
+    }
 }

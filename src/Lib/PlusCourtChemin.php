@@ -139,14 +139,12 @@ class PlusCourtChemin
         $prio = (new NoeudRoutierRepository())->getForStar($this->noeudRoutierDepartGid, $this->noeudRoutierArriveeGid);
 
         $dernierNoeud = null;
-        while($prio->valid() && $prio->current()->getGid() != $this->noeudRoutierArriveeGid){
-            $dernierNoeud = $prio->current();
+        while($prio->getSize()>0 && $prio->getTop()->getGid() != $this->noeudRoutierArriveeGid){
+            $dernierNoeud = $prio->getTop();
             $dernierNoeud->selectionner();
 
-            $prio->recoverFromCorruption();
-            $prio->next();
+            $prio->removeTop();
         }
-
         return $dernierNoeud->getDistanceDebut();
     }
 
