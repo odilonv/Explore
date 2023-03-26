@@ -1,0 +1,274 @@
+@import url('https://fonts.cdnfonts.com/css/poppins');
+
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+
+}
+
+body {
+    /*background-color: #efeeee;
+    background-image: url("../img/background-test.png");*/height: 100%;
+}
+
+
+
+#mapContainer{
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+
+
+
+.icons{
+    width: 15px;
+    height: 15px;
+}
+
+.imgGlobe{
+    height: 25vh;
+    position: absolute;
+    left: 24%;
+
+}
+
+
+.contain{
+    background: #efeeee;
+    width: 25%;
+    height: 100%;
+    position: relative;
+    top: 25px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px 20px 20px 20px;
+    box-shadow: 0em 0 0.4em 0 rgba(15, 22, 33, 0.6);
+    border-radius: 0.5em;
+
+}
+
+
+.insideDivide{
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+.iconsLocation{
+    height: 20px;
+    width: 20px ;
+    margin-bottom: 4px;
+}
+.iconsLocationStart{
+    height: 15px;
+    width: 15px;
+    margin-bottom: 4px;
+}
+.circleTransition{
+    height: 3px;
+    width: 3px;
+}
+.circles{
+    display: flex;
+    flex-direction: column;
+    width: 15px;
+    gap: 1px;
+    position: relative;
+    align-items: center;
+    margin-bottom: 3px;
+}
+
+button, .registerButton, .exitButton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5em;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 4px 4px 6px 0 rgba(0, 0, 0, 0.1), -4px -4px 6px white;
+    font-family: Poppins, serif;
+    cursor: pointer;
+
+}
+
+#searchButton{
+    width: 20%;
+    height: 100%;
+    padding: 5px;
+    background: #ffae9e;
+    cursor: pointer;
+}
+
+.registerButton{
+    width: 25%;
+    height: 100%;
+    background: white;
+    margin-left: 50%;
+    color: rgba(15, 22, 33, 0.6);
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.connectButton{
+    width: 100%;
+    height: 100%;
+    background: #ffae9e;
+    color: white;
+}
+
+.exitButton{
+    width: 10%;
+    height: 100%;
+    background: white;
+}
+
+.underlineTravel{
+    display: flex;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    gap: 15px;
+}
+/*
+footer{
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    height: 30%;
+    width: 100%;
+}*/
+
+
+.contain input{
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 4px 4px 6px 0 rgba(0, 0, 0, 0.1), -4px -4px 6px white;
+    border-radius: 0.5em;
+}
+
+.contain .addDest{
+    width: 100%;
+    height: 25%;
+    padding: 10px;
+    font-size: 0.7em;
+}
+
+#logo{
+    right: 20px;
+    height: 40px;
+    top: 25px;
+    width: 10%;
+    background-color: #ffae9e;
+}
+#logo > h1{
+    font-size: 1em;
+    color: white;
+}
+
+.connectFooter, #echelleFooter, #signFooter, #logo{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    position: absolute;
+    border-radius: 0.5em;
+
+    box-shadow: 0em 0 0.4em 0 rgba(15, 22, 33, 0.6);
+}
+.connectFooter, #echelleFooter, #signFooter{
+    height: 40px;
+    background-color: #fff;
+}
+.connectFooter > div{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+}
+.connectHeader{
+    padding: 0 10%;
+}
+
+.clickable{
+    cursor: pointer;
+}
+.connectFooter h2{
+    font-size: 0.8em;
+}
+
+.connectFooter{
+    left: 20px;
+    flex-direction: row;
+    color: rgba(15, 22, 33, 0.6);
+}
+#signFooter, .connectFooter{
+    bottom: 25px;
+    width: 10%;
+}
+
+
+
+
+#echelleFooter{
+    width: 5%;
+    bottom: 70px;
+}
+
+
+#echelleFooter, #signFooter{
+    right: 20px;
+}
+#echelleFooter .icons{
+    margin-top: 5px;
+}
+
+
+
+
+.formConnect{
+    height: 220px;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: #efeeee;
+    padding: 15px;
+    gap: 10%;
+}
+
+
+
+.lines{
+    display: flex;
+    width: 100%;
+    height: 20%;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 4px 4px 6px 0 rgba(0, 0, 0, 0.1), -4px -4px 6px white;
+    border-radius: 0.5em;
+}
+
+button#connexion{
+
+}
+
+a{
+    color: black;
+}
+

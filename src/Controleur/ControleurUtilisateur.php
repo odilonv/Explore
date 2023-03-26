@@ -28,6 +28,13 @@ class ControleurUtilisateur extends ControleurGenerique
             "cheminVueBody" => "utilisateur/liste.php"
         ]);
     }
+    public static function accueil(): void
+    {
+        ControleurUtilisateur::afficherVue('vueGenerale.php', [
+            "pagetitle" => "Explore",
+            "cheminVueBody" => "utilisateur/accueil.php"
+        ]);
+    }
 
     public static function afficherDetail(): void
     {
