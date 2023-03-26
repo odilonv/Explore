@@ -118,7 +118,7 @@ class NoeudRoutierRepository extends AbstractRepository
         $pdo = ConnexionBaseDeDonnees::getPdo();
 
         $requeteXY = <<<SQL
-        select st_x(geom) as x, st_y(geom) as y, gid
+        select st_x(geom) as x, st_y(geom) as y, gid, geom
         from noeud_routier
         where gid = :gidDepart OR gid = :gidArrivee;
         SQL;
@@ -127,13 +127,15 @@ class NoeudRoutierRepository extends AbstractRepository
         $pdoStatement->execute(['gidDepart' => $gidDep, 'gidArrivee' => $gidArrivee]);
         $coordonnees = $pdoStatement->fetchAll();
 
+        $geomArrivee = '';
+        if($coordonnees[0][2] == $gidArrivee){$geomArrivee=$coordonnees[0][3];}else{$geomArrivee=$coordonnees[1][3];}
         $vecteurAB = ["x" => $coordonnees[0][0]-$coordonnees[1][0],
                     "y" => $coordonnees[0][1]-$coordonnees[1][1]];
 
         $ABRotated = ['x' => $vecteurAB['y'], 'y' => -$vecteurAB['x']];
 
         $origine = ['x' => $coordonnees[0][0], 'y' => $coordonnees[0][1]];
-
+        $agrandissement = ['x' => 1, 'y' => 1];
         $pt1 = ['x' => $origine['x'] - $ABRotated['x']/2, 'y' => $origine['y'] - $ABRotated['y']/2];
         $pt2 = ['x' => $pt1['x'] + $vecteurAB['x'], 'y' => $pt1['y'] + $vecteurAB['y']];
         $pt3 = ['x' => $pt2['x'] + $ABRotated['x'], 'y' => $pt2['y'] + $ABRotated['y']];
@@ -181,49 +183,49 @@ SQL;
 
         $starQueue = new QueueStar();
         $requeteDist = <<<SQL
-            select gidDepart, (sqrt(pow(:xGoal - x, 2) + pow(:yGoal - y, 2))) as distanceFromGoal
-            from voisins v
-            join noeud_routier nr on nr.gid=v.giddepart
+            select gid, st_distancesphere(geom, :geomGoal) / 1000 as distanceFromGoal
+            from noeud_routier nr
             where st_intersects(:areaGeom, geom);
         SQL;
 
 
         $pdoStatement = $pdo->prepare($requeteDist);
-        $pdoStatement->execute(['xGoal' => $coordonnees[0][2]==$gidArrivee?$coordonnees[0][0]:$coordonnees[1][0],
-                                'yGoal' => $coordonnees[0][2]==$gidArrivee?$coordonnees[0][1]:$coordonnees[1][1],
+        $pdoStatement->execute(['geomGoal' => $geomArrivee,
                                 'areaGeom' => $area]);
 
         $noeudsDist = [];
         $result = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
         foreach($result as $infos){
             $dist = $infos['distancefromgoal'];
-            $gid = $infos['giddepart'];
+            $gid = $infos['gid'];
             $noeud = new NoeudStar($gid, $dist);
             $noeudsDist[$gid] = $noeud;
             $noeud->setPrioQ($starQueue);
-            if($starQueue->count()==0 && $gid==$gidDep){
-                $starQueue->insert($noeudsDist[$gid], $noeudsDist[$gid]);
-            }
         }
 
         // regarder si st_x est exécuté pour chaque ligne dans la requete (l'optimiseur doit s'en  occuper jpense)
         $requeteSQL = <<<SQL
         select gidDepart, gidvoisin as gidvoisin, gidtr as troncon, longueur
-        from voisins
+        from voisins v 
+        join noeud_routier nrA on nrA.gid=v.giddepart
+        where st_intersects(:areaGeom, geom);
         SQL;
 
         $pdoStatement = $pdo->prepare($requeteSQL);
-        $pdoStatement->execute();
+        $pdoStatement->execute(['areaGeom' => $area]);
 
         $result = $pdoStatement->fetchAll(PDO::FETCH_ASSOC | PDO::FETCH_GROUP);
-        foreach ($result as $key => $infos){
+        foreach ($result as $key => $infos) {
             foreach ($infos as $voisin) {
-                if(isset($noeudsDist[$key]) && isset($noeudsDist[$voisin['gidvoisin']])) {
+                if (isset($noeudsDist[$key]) && isset($noeudsDist[$voisin['gidvoisin']])) {
                     $noeudsDist[$key]->addVoisin($noeudsDist[$voisin['gidvoisin']], $voisin['longueur'], $voisin['troncon']);
                 }
             }
+            if($key == $gidDep){
+                $noeudsDist[$key]->setDistanceDebut(0);
+                $starQueue->insert($noeudsDist[$key], $noeudsDist[$key]);
+            }
         }
-
         return $starQueue;
     }
 }

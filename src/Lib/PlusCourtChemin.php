@@ -142,6 +142,7 @@ class PlusCourtChemin
         while($prio->valid() && $prio->current()->getGid() != $this->noeudRoutierArriveeGid){
             $dernierNoeud = $prio->current();
             $dernierNoeud->selectionner();
+
             $prio->recoverFromCorruption();
             $prio->next();
         }

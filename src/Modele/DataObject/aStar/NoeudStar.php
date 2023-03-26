@@ -22,6 +22,16 @@ class NoeudStar
         $this->gid = $gid;
     }
 
+    /**
+     * @param float $distanceDebut
+     */
+    public function setDistanceDebut(float $distanceDebut): void
+    {
+        $this->distanceDebut = $distanceDebut;
+    }
+
+
+
     public function setPrioQ(QueueStar $p){
         $this->prioQ = $p;
     }
@@ -78,7 +88,7 @@ class NoeudStar
         }
         elseif ($this->etat == EtatNoeud::PAUSE){
             $this->etat = EtatNoeud::POSSIBLE;
-            $this->prioQ->insert($this);
+            $this->prioQ->insert($this, $this);
             $this->distanceDebut = $nouvelleValeurDepuisVoisin;
         }
     }
@@ -90,4 +100,13 @@ class NoeudStar
             $infos['voisin']->recalculer($this->distanceDebut + $infos['distance']);
         }
     }
+
+    /**
+     * @return array
+     */
+    public function getNoeudsVoisins(): array
+    {
+        return $this->noeudsVoisins;
+    }
+
 }
