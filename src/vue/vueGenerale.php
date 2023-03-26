@@ -14,9 +14,9 @@
 
 
     <link rel="stylesheet" href="../ressources/css/main.css">
+    <link rel="stylesheet" href="../ressources/css/navstyle.css">
 </head>
 <body>
-
 
 
 <div id="mapContainer"></div>
