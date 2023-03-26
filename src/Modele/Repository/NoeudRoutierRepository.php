@@ -211,7 +211,7 @@ class NoeudRoutierRepository extends AbstractRepository
     public function genererChaineZone(array $startPoint, array $endPoint){
 
         $direction = ['x' => $endPoint['x']-$startPoint['x'], 'y' => $endPoint['y']-$startPoint['y']];
-        $perpendiculaire = ['x' => $direction['y'], 'y' => -$direction['x']];
+        $perpendiculaire = ['x' => $direction['y'] / 2, 'y' => -$direction['x'] / 2];
 
         $pt1 = ['x' => $startPoint['x'] - $direction['x'] - $perpendiculaire['x'], 'y' => $startPoint['y'] - $direction['y'] - $perpendiculaire['y']];
         $pt2 = ['x' => $pt1['x'] + $direction['x'] * 3, 'y' => $pt1['y'] + $direction['y'] * 3];

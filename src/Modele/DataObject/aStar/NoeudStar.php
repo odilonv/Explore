@@ -9,8 +9,6 @@ class NoeudStar
     private string $gid;
     private ?NoeudStar $precedentVoisin = null;
 
-    private EtatNoeud $etat = EtatNoeud::PAUSE; // possible: vérifié, possible, pause
-
     private QueueStar $prioQ;
 
     private array $noeudsVoisins = [];
@@ -85,15 +83,13 @@ class NoeudStar
             $this->distanceDebut = $nouvelleValeurDepuisVoisin;
             $this->precedentVoisin = $voisin;
         }
-        else{
-            $dd = $this->distanceDebut;
-            if($dd > $nouvelleValeurDepuisVoisin){
-                $this->distanceDebut = $nouvelleValeurDepuisVoisin;
-                $this->precedentVoisin = $voisin;
-                foreach ($this->noeudsVoisins as $infos) {
-                    if($infos['voisin']->gid != $voisin->gid)
-                    $infos['voisin']->recalculer($this->distanceDebut + $infos['distance'], $this);
-                }
+        $dd = $this->distanceDebut;
+        if($dd > $nouvelleValeurDepuisVoisin){
+            $this->distanceDebut = $nouvelleValeurDepuisVoisin;
+            $this->precedentVoisin = $voisin;
+            foreach ($this->noeudsVoisins as $infos) {
+                if($infos['voisin']->gid != $voisin->gid)
+                $infos['voisin']->recalculer($this->distanceDebut + $infos['distance'], $this);
             }
         }
     }
