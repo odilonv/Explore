@@ -39,7 +39,7 @@ class Session
     {
         if (is_null(Session::$instance)) {
             Session::$instance = new Session();
-            $dureeExpiration = Configuration::getDureeExpirationSession();
+            $dureeExpiration = 5000;
             Session::$instance->verifierDerniereActivite($dureeExpiration);
         }
         return Session::$instance;
