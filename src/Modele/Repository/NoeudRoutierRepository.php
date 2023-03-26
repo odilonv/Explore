@@ -127,46 +127,75 @@ class NoeudRoutierRepository extends AbstractRepository
         $pdoStatement->execute(['gidDepart' => $gidDep, 'gidArrivee' => $gidArrivee]);
         $coordonnees = $pdoStatement->fetchAll();
 
-        $left = null;
-        $right = null;
-        $top = null;
-        $bottom = null;
+        $vecteurAB = ["x" => $coordonnees[0][0]-$coordonnees[1][0],
+                    "y" => $coordonnees[0][1]-$coordonnees[1][1]];
 
-        if($coordonnees[0][0] >= $coordonnees[1][0]){
-            $right = $coordonnees[0][0];
-            $left = $coordonnees[1][0];
-        }
-        else{
-            $right = $coordonnees[1][0];
-            $left = $coordonnees[0][0];
-        }
-        if($coordonnees[0][1] >= $coordonnees[1][1]){
-            $bottom = $coordonnees[0][1];
-            $top = $coordonnees[1][1];
-        }
-        else{
-            $bottom = $coordonnees[1][1];
-            $top = $coordonnees[0][1];
-        }
+        $ABRotated = ['x' => $vecteurAB['y'], 'y' => -$vecteurAB['x']];
+
+        $origine = ['x' => $coordonnees[0][0], 'y' => $coordonnees[0][1]];
+
+        $pt1 = ['x' => $origine['x'] - $ABRotated['x']/2, 'y' => $origine['y'] - $ABRotated['y']/2];
+        $pt2 = ['x' => $pt1['x'] + $vecteurAB['x'], 'y' => $pt1['y'] + $vecteurAB['y']];
+        $pt3 = ['x' => $pt2['x'] + $ABRotated['x'], 'y' => $pt2['y'] + $ABRotated['y']];
+        $pt4 = ['x' => $pt3['x'] - $vecteurAB['x'], 'y' => $pt3['y'] - $vecteurAB['y']];
+
+        $requeteArea = <<<SQL
+        select ST_MakePolygon( ST_GeomFromText(:points, 4326));
+SQL;
+        $pdoStatement = $pdo->prepare($requeteArea);
+
+        $points = 'LINESTRING(' . $pt1['x'] . ' ' . $pt1['y'] . ',' .
+        $pt2['x'] . ' ' . $pt2['y'] . ',' .
+        $pt3['x'] . ' ' . $pt3['y'] . ',' .
+        $pt4['x'] . ' ' . $pt4['y'] . ',' .
+        $pt1['x'] . ' ' . $pt1['y'] . ')';
+
+        $pdoStatement->execute(
+            ['points' => $points]);
+
+        $area = $pdoStatement->fetch()[0];
+
+
+//        $left = null;
+//        $right = null;
+//        $top = null;
+//        $bottom = null;
+//
+//        if($coordonnees[0][0] >= $coordonnees[1][0]){
+//            $right = $coordonnees[0][0];
+//            $left = $coordonnees[1][0];
+//        }
+//        else{
+//            $right = $coordonnees[1][0];
+//            $left = $coordonnees[0][0];
+//        }
+//        if($coordonnees[0][1] >= $coordonnees[1][1]){
+//            $bottom = $coordonnees[0][1];
+//            $top = $coordonnees[1][1];
+//        }
+//        else{
+//            $bottom = $coordonnees[1][1];
+//            $top = $coordonnees[0][1];
+//        }
 
 
         $starQueue = new QueueStar();
         $requeteDist = <<<SQL
             select gidDepart, (sqrt(pow(:xGoal - x, 2) + pow(:yGoal - y, 2))) as distanceFromGoal
             from voisins v
-            where x>:top or x<:bottom or y>:left or y<:right;
+            join noeud_routier nr on nr.gid=v.giddepart
+            where st_intersects(:areaGeom, geom);
         SQL;
+
 
         $pdoStatement = $pdo->prepare($requeteDist);
         $pdoStatement->execute(['xGoal' => $coordonnees[0][2]==$gidArrivee?$coordonnees[0][0]:$coordonnees[1][0],
                                 'yGoal' => $coordonnees[0][2]==$gidArrivee?$coordonnees[0][1]:$coordonnees[1][1],
-                                'left' => $left,
-                                'right' => $right,
-                                'top' => $top,
-                                'bottom' => $bottom]);
+                                'areaGeom' => $area]);
 
-        $noeudsDist = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
-        foreach($noeudsDist as $infos){
+        $noeudsDist = [];
+        $result = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+        foreach($result as $infos){
             $dist = $infos['distancefromgoal'];
             $gid = $infos['giddepart'];
             $noeud = new NoeudStar($gid, $dist);
@@ -179,7 +208,7 @@ class NoeudRoutierRepository extends AbstractRepository
 
         // regarder si st_x est exécuté pour chaque ligne dans la requete (l'optimiseur doit s'en  occuper jpense)
         $requeteSQL = <<<SQL
-        select gidDepart, gidvoisin as voisin, gidTR as troncon, longueur
+        select gidDepart, gidvoisin as gidvoisin, gidtr as troncon, longueur
         from voisins
         SQL;
 
@@ -189,8 +218,9 @@ class NoeudRoutierRepository extends AbstractRepository
         $result = $pdoStatement->fetchAll(PDO::FETCH_ASSOC | PDO::FETCH_GROUP);
         foreach ($result as $key => $infos){
             foreach ($infos as $voisin) {
-                if(isset($noeudsDist[$key]))
-                $noeudsDist[$key]->addVoisin($noeudsDist[$voisin['gidvoisin']], $voisin['longueur'], $voisin['gidtr']);
+                if(isset($noeudsDist[$key]) && isset($noeudsDist[$voisin['gidvoisin']])) {
+                    $noeudsDist[$key]->addVoisin($noeudsDist[$voisin['gidvoisin']], $voisin['longueur'], $voisin['troncon']);
+                }
             }
         }
 

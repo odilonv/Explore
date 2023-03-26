@@ -10,7 +10,7 @@ class NoeudStar
 
     private QueueStar $prioQ;
 
-    private array $noeudsVoisins;
+    private array $noeudsVoisins = [];
 
     private float $distanceDebut = PHP_FLOAT_MAX;
     private float $distanceFin;
@@ -25,6 +25,15 @@ class NoeudStar
     public function setPrioQ(QueueStar $p){
         $this->prioQ = $p;
     }
+
+    /**
+     * @return string
+     */
+    public function getGid(): string
+    {
+        return $this->gid;
+    }
+
 
     /**
      * @return float

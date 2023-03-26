@@ -140,9 +140,10 @@ class PlusCourtChemin
 
         $dernierNoeud = null;
         while($prio->valid() && $prio->current()->getGid() != $this->noeudRoutierArriveeGid){
-            $dernierNoeud = $prio->next();
+            $dernierNoeud = $prio->current();
             $dernierNoeud->selectionner();
             $prio->recoverFromCorruption();
+            $prio->next();
         }
 
         return $dernierNoeud->getDistanceDebut();
