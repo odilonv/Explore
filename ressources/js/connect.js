@@ -55,6 +55,7 @@ function addRegisterButton(text) {
     const registerButton = document.createElement('a');
     registerButton.classList.add('registerButton');
     registerButton.textContent = text;
+    registerButton.href="./inscription";
     newHeader.appendChild(registerButton);
 }
 
