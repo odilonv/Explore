@@ -4,26 +4,25 @@
 // </div>
 
 let organisation = document.getElementById("organisation");
-let etapes = document.getElementById("ajouterEtape");
-
-
-ajouterEtape.addEventListener("click", ajouterEtape());
+let bouttonAjouterEtape = document.getElementById("ajouterEtape");
 
 let etapes;
-let bouttonsRetirerEtape;
 let nbEtapes = 0;
+
+bouttonAjouterEtape.addEventListener("click", ()=>{ajouterEtape()});
+
+
 function ajouterEtape()
 {
     let nouvelleEtape = document.createElement("div");
     nouvelleEtape.classList.add("etape");
-    let bouttonMoins = document.createElement("div");
     let iconeMoins = document.createElement("img");
-    iconeMoins.src = "src/";
+    iconeMoins.src ="../ressources/img/moins.png";
     nouvelleEtape.appendChild(iconeMoins);
-    bouttonMoins.index = nbEtapes;
+    nouvelleEtape.setAttribute("index",nbEtapes)
     nbEtapes++;
 
-    bouttonMoins.addEventListener("click",() => {retirerEtape(bouttonMoins)})
+    iconeMoins.addEventListener("click",() => {retirerEtape(nouvelleEtape)})
 
 
     etapes =  document.getElementsByClassName("etape");
@@ -33,13 +32,15 @@ function ajouterEtape()
 
 function retirerEtape(etapeARetirer)
 {
-    let indexEtapeARetirer = etapeARetirer.index;
+    nbEtapes--;
     for(let etape of etapes)
     {
-        if(etape.index > indexEtapeARetirer){
-            etape.index -= 1;
+        if(etape.getAttribute("index") > etapeARetirer.getAttribute("index")){
+            etape.setAttribute("index",etape.getAttribute("index")-1);
         }
     }
+
+    etapeARetirer.remove();
 }
 
 
