@@ -39,10 +39,10 @@ class Session
     {
         if (is_null(Session::$instance)) {
             Session::$instance = new Session();
-            $dureeExpiration = 5000
+            $dureeExpiration = 5000;
             Session::$instance->verifierDerniereActivite($dureeExpiration);
         }
-        return $this->ins
+        return Session::$instance;
     }
 
     public function existeCle($cle): bool
