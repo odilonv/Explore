@@ -27,4 +27,3 @@ if (class_exists($controleurClassName)) {
 } else {
     App\PlusCourtChemin\Controleur\ControleurGenerique::afficherErreur("Erreur de contrôleur");
 }
-
