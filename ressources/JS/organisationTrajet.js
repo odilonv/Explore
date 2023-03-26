@@ -14,6 +14,7 @@ bouttonAjouterEtape.addEventListener("click", ()=>{ajouterEtape()});
 
 function ajouterEtape()
 {
+    console.log("cc");
     let nouvelleEtape = document.createElement("div");
     nouvelleEtape.classList.add("etape");
     let iconeMoins = document.createElement("img");

@@ -29,7 +29,7 @@ addDest.textContent = 'Ajouter une destination';
 
 contain.style.height = '29%';
 
-nomCommuneArrivee.addEventListener('click', addSearchInput);
+//nomCommuneArrivee.addEventListener('click', addSearchInput);
 
 function addSearchInput() {
     nomCommuneArrivee.removeEventListener('click', addSearchInput);
