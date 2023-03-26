@@ -1,3 +1,16 @@
+<?php
+
+use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
+use App\PlusCourtChemin\Lib\Conteneur;
+use Symfony\Component\HttpFoundation\UrlHelper;
+use Symfony\Component\Routing\Generator\UrlGenerator;
+
+/** @var UrlGenerator $generateurUrl */
+$generateurUrl = Conteneur::recupererService("generateur");
+/** @var UrlHelper $assistantUrl */
+$assistantUrl = Conteneur::recupererService("assistant");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,7 +58,7 @@
 
     <footer>
         <?php
-        use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
+
 
         if (!ConnexionUtilisateur::estConnecte()) {
             echo <<<HTML
