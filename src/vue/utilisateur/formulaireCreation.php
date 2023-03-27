@@ -1,6 +1,9 @@
 <section class="fond-page">
     <form class="box-inscription" method="<?= $method ?>" action="controleurFrontal.php">
-                <label for="login_id">Login&#42;
+        <div class="exitLine">
+        <div class="exitButton"><img class="icons" src="../ressources/img/icons/xmark-solid.svg" alt="exit"></div>
+        </div>
+        <label for="login_id">Login&#42;
                 <input type="text" value="" placeholder="Ex : rlebreton" name="login" id="login_id" required>
             </label>
 

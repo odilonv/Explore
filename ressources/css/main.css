@@ -72,7 +72,7 @@ body {
 .box-inscription{
     display: flex;
     width: 30%;
-    height: 80%;
+    height: 85%;
     padding: 20px 30px;
     z-index: 1;
     position: relative;
@@ -143,6 +143,13 @@ button, .registerButton, .exitButton{
     transition: 0.5s;
 }
 
+.exitLine{
+    height: 20%;
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+
 #searchButton:hover > img{
     transform: rotate(45deg);
 }
@@ -186,7 +193,7 @@ button, .registerButton, .exitButton{
 }
 .inscriptionButton{
     width: 80%;
-    height: 50%;
+    height: 60%;
     border-radius: 0.5em;
     border: none;
     position: relative;
