@@ -73,7 +73,8 @@ $assistantUrl = Conteneur::recupererService("assistant");
         $loginURL = rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte());
         echo <<<HTML
                                 <form class="connectFooter clickable">
-                                    <a href="controleurFrontal.php?action=afficherDetail&controleur=utilisateur&login=$loginURL" id="connectFooter">
+                                    <!--<a href="controleurFrontal.php?action=afficherDetail&controleur=utilisateur&login=$loginURL" id="connectFooter">¡-->
+                                    <a href="/utilisateur/{idUser}" id="connectFooter">
                                         <img src="../ressources/img/icons/user-solid.svg" class="icons">
                                         <h2>$loginHTML</h2>
                                     </a>

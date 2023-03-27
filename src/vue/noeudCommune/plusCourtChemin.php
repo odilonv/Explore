@@ -26,7 +26,8 @@
 
 
 <div class="contain">
-    <form action="controleurFrontal.php?action=plusCourtChemin&controleur=noeudCommune" class="insideDivide" method="post">
+    <!-- regler le lien du form pour que ça prenne en parametre les inputs-->
+    <form action="./" class="insideDivide" method="post">
         <label class="underlineTravel">
             <img src="../ressources/img/icons/circle-solid.svg" class="iconsLocationStart">
             <input placeholder="Une ville de départ ? Ex: Montpellier" name="nomCommuneDepart" type="text"></label>
