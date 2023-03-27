@@ -26,6 +26,7 @@
 
 
 <div class="contain">
+    
     <!-- regler le lien du form pour que ça prenne en parametre les inputs-->
     <form action="./" class="insideDivide" method="post">
         <label class="underlineTravel">
