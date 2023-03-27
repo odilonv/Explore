@@ -189,8 +189,8 @@ button, .registerButton, .exitButton{
     height: 50%;
     border-radius: 0.5em;
     border: none;
-    font-size: 1.2em;
     position: relative;
+    cursor: pointer;
 
 }
 

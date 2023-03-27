@@ -22,9 +22,5 @@
                 </p>
             <?php } ?>
         </form>
-
     </div>
-    <!--<img src="../ressources/img/3d-illustration-travel-location.png" class="imgGlobe">-->
-
-
     <script defer type="text/javascript" src="../ressources/js/search.js"></script>
