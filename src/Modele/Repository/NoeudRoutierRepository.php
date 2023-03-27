@@ -2,7 +2,6 @@
 
 namespace App\PlusCourtChemin\Modele\Repository;
 
-use App\PlusCourtChemin\Lib\Utils;
 use App\PlusCourtChemin\Modele\DataObject\AbstractDataObject;
 use App\PlusCourtChemin\Modele\DataObject\aStar\NoeudStar;
 use App\PlusCourtChemin\Modele\DataObject\aStar\QueueStar;
@@ -78,7 +77,6 @@ class NoeudRoutierRepository extends AbstractRepository
         $pdoStatement->execute(array(
             "gidTag" => $noeudRoutierGid
         ));
-        Utils::log("methode getVoisin de nrRepo appellé (pas opti)");
         return $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -99,16 +97,12 @@ class NoeudRoutierRepository extends AbstractRepository
         SQL;
         $pdoStatement = ConnexionBaseDeDonnees::getPdo()->prepare($requeteSQL);
 
-        $ts = Utils::getDuree();
         $pdoStatement->execute(
             ['geomCentre'=>$geomCentre,
                 'range'=>$range]);
-        Utils::log("temps requete: " . Utils::getDuree()-$ts);
 
         $cache = new CacheNR();
-        $ts = Utils::getDuree();
         $cache->setInfosPDO($pdoStatement->fetchAll(PDO::FETCH_ASSOC | PDO::FETCH_GROUP));
-        Utils::log("temps setCache: " . Utils::getDuree()-$ts . '  // taille cache: ' . sizeof($cache->getInfos()));
 
         return $cache;
     }
@@ -202,7 +196,7 @@ class NoeudRoutierRepository extends AbstractRepository
             }
             if($key == $gidDep){
                 $noeudsDist[$key]->setDistanceDebut(0);
-                $starQueue->insert($noeudsDist[$key], $noeudsDist[$key]);
+                $starQueue->insert($noeudsDist[$key]);
             }
         }
         return $starQueue;

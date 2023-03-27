@@ -12,7 +12,7 @@ class Utils
     private static array $logs = [];
 
     static function startTimer(){
-        Utils::$running=true;
+        Utils::$running = true;
         Utils::$startTime = microtime(true);
     }
 

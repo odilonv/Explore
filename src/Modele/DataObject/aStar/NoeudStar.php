@@ -12,6 +12,7 @@ class NoeudStar
     private QueueStar $prioQ;
 
     private array $noeudsVoisins = [];
+    private array $noeudVoisinsAvisiter = [];
 
     private float $distanceDebut = PHP_FLOAT_MAX;
     private float $distanceFin;
@@ -72,6 +73,7 @@ class NoeudStar
         $this->noeudsVoisins[] = ['voisin' => $voisin,
             'distance' => $longueur,
             'gidTR' => $gidTR];
+        $this->noeudVoisinsAvisiter[$voisin->gid] = true;
     }
 
     // idée: cette fonction est appellé si un voisin recalcule sa valeur. dans ce cas ce noeud recalcul sa valeur et préviens ses voisins
@@ -79,7 +81,7 @@ class NoeudStar
     // methode appellé depuis les autres noeuds
     public function recalculer(float $nouvelleValeurDepuisVoisin, NoeudStar $voisin){
         if($this->distanceDebut == PHP_FLOAT_MAX){
-            $this->prioQ->insert($this, $this);
+            $this->prioQ->insert($this);
             $this->distanceDebut = $nouvelleValeurDepuisVoisin;
             $this->precedentVoisin = $voisin;
         }
@@ -88,15 +90,21 @@ class NoeudStar
             $this->distanceDebut = $nouvelleValeurDepuisVoisin;
             $this->precedentVoisin = $voisin;
             foreach ($this->noeudsVoisins as $infos) {
-                if($infos['voisin']->gid != $voisin->gid)
+                if($this->noeudVoisinsAvisiter[$voisin->gid])
                 $infos['voisin']->recalculer($this->distanceDebut + $infos['distance'], $this);
             }
         }
     }
 
+    public function verouiller(string $gid)
+    {
+        $this->noeudVoisinsAvisiter[$gid] = false;
+    }
+
     public function selectionner(){
         $this->valeurFinal = $this->distanceDebut + $this->distanceFin;
         foreach ($this->noeudsVoisins as $infos) {
+            $infos['voisin']->verouiller($this->gid);
             $infos['voisin']->recalculer($this->distanceDebut + $infos['distance'], $this);
         }
     }
@@ -113,9 +121,11 @@ class NoeudStar
     {
         $chemin = [];
         $noeud = $this;
+        $c = 0;
         while(isset($noeud->precedentVoisin)){
             $chemin[] = $noeud;
-            $noeud = $this->precedentVoisin;
+            $c++;
+            $noeud = $noeud->precedentVoisin;
         }
 
         return $chemin;

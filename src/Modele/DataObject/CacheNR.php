@@ -20,8 +20,7 @@ class CacheNR
 
     public function getVoisins(string $gidDepart): array{
         $result = [];
-        if(!isset($this->infos[$gidDepart])){Utils::log("le noeud n'es pas chargé " . $gidDepart);}
-        else {
+        if(isset($this->infos[$gidDepart])){
             foreach ($this->infos[$gidDepart] as $inf) {
                 $result[] = $inf;
             }

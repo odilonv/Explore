@@ -4,7 +4,6 @@ namespace App\PlusCourtChemin\Controleur;
 
 use App\PlusCourtChemin\Lib\MessageFlash;
 use App\PlusCourtChemin\Lib\PlusCourtChemin;
-use App\PlusCourtChemin\Lib\Utils;
 use App\PlusCourtChemin\Modele\DataObject\NoeudCommune;
 use App\PlusCourtChemin\Modele\Repository\NoeudCommuneRepository;
 use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
@@ -58,7 +57,6 @@ class ControleurNoeudCommune extends ControleurGenerique
 
 
         if (!empty($_POST)) {
-            Utils::startTimer();
             $nomCommuneDepart = $_POST["nomCommuneDepart"];
             $nomCommuneArrivee = $_POST["nomCommuneArrivee"];
 
@@ -83,8 +81,6 @@ class ControleurNoeudCommune extends ControleurGenerique
             $parametres["nomCommuneArrivee"] = $nomCommuneArrivee;
             $parametres["distance"] = $distance;
 
-            Utils::endTimer();
-            Utils::log('temps total: ' . Utils::getDuree());
         }
 
         ControleurNoeudCommune::afficherVue('vueGenerale.php', $parametres);
