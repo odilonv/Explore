@@ -46,19 +46,16 @@ class ControleurGenerique {
 
     }
 
-    public static function afficherErreur($errorMessage = "", $controleur = ""): void
+    public static function afficherErreur($errorMessage = "", $statusCode = 400): Response
     {
-        $errorMessageView = "Problème";
-        if ($controleur !== "")
-            $errorMessageView .= " avec le contrôleur $controleur";
-        if ($errorMessage !== "")
-            $errorMessageView .= " : $errorMessage";
-
-        ControleurGenerique::afficherVue('vueGenerale.php', [
+        $reponse = ControleurGenerique::afficherVue('vueGenerale.php', [
             "pagetitle" => "Problème",
             "cheminVueBody" => "erreur.php",
-            "errorMessage" => $errorMessageView
+            "errorMessage" => $errorMessage
         ]);
+
+        $reponse->setStatusCode($statusCode);
+        return $reponse;
     }
 
 }
