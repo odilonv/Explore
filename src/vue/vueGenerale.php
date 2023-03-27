@@ -12,7 +12,7 @@ $assistantUrl = Conteneur::recupererService("assistant");
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
