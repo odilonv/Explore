@@ -157,7 +157,8 @@ class RouteurURL
         *  @throws \RuntimeException When no value could be provided for a required argument
         */
 
-        $rep = call_user_func_array($controleur, $arguments);
+        $response = call_user_func_array($controleur, $arguments);
+        $response->send();
 
     }
 
