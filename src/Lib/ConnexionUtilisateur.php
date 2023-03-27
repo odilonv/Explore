@@ -10,6 +10,7 @@ class ConnexionUtilisateur
 {
     private static string $cleConnexion = "_utilisateurConnecte";
 
+
     public static function connecter(string $loginUtilisateur): void
     {
         $session = Session::getInstance();

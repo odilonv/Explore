@@ -51,7 +51,7 @@ class ControleurNoeudCommune extends ControleurGenerique
     public static function plusCourtChemin(): void
     {
         $parametres = [
-            "pagetitle" => "Plus court chemin",
+            "pagetitle" => "Explore",
             "cheminVueBody" => "noeudCommune/plusCourtChemin.php",
         ];
 
