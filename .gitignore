@@ -3,4 +3,4 @@ src/Configuration/
 /vendor/
 /composer.lock
 
-/.idea
+/.idea/
