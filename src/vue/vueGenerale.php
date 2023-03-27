@@ -58,7 +58,6 @@ $assistantUrl = Conteneur::recupererService("assistant");
 
     <footer>
         <?php
-        use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
 
     if (!ConnexionUtilisateur::estConnecte()) {
         echo <<<HTML
