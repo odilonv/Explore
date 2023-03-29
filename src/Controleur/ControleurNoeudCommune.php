@@ -56,6 +56,9 @@ class ControleurNoeudCommune extends ControleurGenerique
             "cheminVueBody" => "noeudCommune/plusCourtChemin.php",
         ];
 
+        $depart = $depart??$_POST['nomCommuneDepart'];
+        $arrivee = $arrivee??$_POST['nomCommuneArrivee'];
+
 
         if ($depart != null && $arrivee != null) {
             $nomCommuneDepart = $_POST["nomCommuneDepart"];
