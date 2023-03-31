@@ -56,11 +56,7 @@ class ControleurNoeudCommune extends ControleurGenerique
             "cheminVueBody" => "noeudCommune/plusCourtChemin.php",
         ];
 
-        $depart = $depart??$_POST['nomCommuneDepart'];
-        $arrivee = $arrivee??$_POST['nomCommuneArrivee'];
-
-
-        if ($depart != null && $arrivee != null) {
+        if (isset($_POST['nomCommuneDepart']) && isset($_POST['nomCommuneArrivee'])) {
             $nomCommuneDepart = $_POST["nomCommuneDepart"];
             $nomCommuneArrivee = $_POST["nomCommuneArrivee"];
 
@@ -79,7 +75,16 @@ class ControleurNoeudCommune extends ControleurGenerique
             ])[0]->getGid();
 
             $pcc = new PlusCourtChemin($noeudRoutierDepartGid, $noeudRoutierArriveeGid);
-            $distance = $pcc->calculer3();
+
+            // $distance = $pcc->calculer();
+
+            $dernierNoeud = $pcc->calculer3();
+            $multiline = [];
+            foreach ($dernierNoeud->refaireChemin() as $noeud){
+                $coords = $noeud->getCoords();
+                $multiline[] = ['lat'=>$coords['latitude'], 'lng'=>$coords['longitude']];
+            }
+            $distance = $dernierNoeud->getDistanceDebut();
 
             $parametres["nomCommuneDepart"] = $nomCommuneDepart;
             $parametres["nomCommuneArrivee"] = $nomCommuneArrivee;
@@ -88,5 +93,45 @@ class ControleurNoeudCommune extends ControleurGenerique
         }
 
         ControleurNoeudCommune::afficherVue('vueGenerale.php', $parametres);
+    }
+
+    public static function requetePlusCourt($depart, $arrivee){
+        $parametres = [];
+
+        $nomCommuneDepart = $depart;
+        $nomCommuneArrivee = $arrivee;
+
+        $noeudCommuneRepository = new NoeudCommuneRepository();
+        /** @var NoeudCommune $noeudCommuneDepart */
+        $noeudCommuneDepart = $noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart])[0];
+        /** @var NoeudCommune $noeudCommuneArrivee */
+        $noeudCommuneArrivee = $noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee])[0];
+
+        $noeudRoutierRepository = new NoeudRoutierRepository();
+        $noeudRoutierDepartGid = $noeudRoutierRepository->recupererPar([
+            "id_rte500" => $noeudCommuneDepart->getId_nd_rte()
+        ])[0]->getGid();
+        $noeudRoutierArriveeGid = $noeudRoutierRepository->recupererPar([
+            "id_rte500" => $noeudCommuneArrivee->getId_nd_rte()
+        ])[0]->getGid();
+
+        $pcc = new PlusCourtChemin($noeudRoutierDepartGid, $noeudRoutierArriveeGid);
+
+        // $distance = $pcc->calculer();
+
+        $dernierNoeud = $pcc->calculer3();
+        $multiline = [];
+        foreach ($dernierNoeud->refaireChemin() as $noeud){
+            $coords = $noeud->getCoords();
+            $multiline[] = ['lat'=>$coords['latitude'], 'lng'=>$coords['longitude']];
+        }
+        $distance = $dernierNoeud->getDistanceDebut();
+
+        $parametres['multiline'] = $multiline;
+        $parametres["nomCommuneDepart"] = $nomCommuneDepart;
+        $parametres["nomCommuneArrivee"] = $nomCommuneArrivee;
+        $parametres["distance"] = $distance;
+
+        echo json_encode($parametres);
     }
 }

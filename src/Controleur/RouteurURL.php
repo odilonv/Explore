@@ -120,9 +120,14 @@ class RouteurURL
 
         $route = new Route("/{depart}/{arrivee}", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurNoeudCommune::plusCourtChemin",
-            
         ]);
         $routes->add("plusCourtChemin", $route);
+
+
+        $route = new Route("/getPlusCourt/{depart}/{arrivee}", [
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurNoeudCommune::requetePlusCourt"
+        ]);
+        $routes->add("requetePlusCourt", $route);
 
 
 

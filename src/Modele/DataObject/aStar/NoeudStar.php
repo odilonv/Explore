@@ -7,6 +7,8 @@ use App\PlusCourtChemin\Lib\Utils;
 class NoeudStar
 {
     private string $gid;
+    /* @var double[] $coords */
+    private array $coords;
     private ?NoeudStar $precedentVoisin = null;
 
     private QueueStar $prioQ;
@@ -18,10 +20,20 @@ class NoeudStar
     private float $distanceFin;
     private float $valeurFinal = PHP_FLOAT_MAX;
 
-    public function __construct(string $gid, float $distanceFin)
+    /* @var double[] $coords*/
+    public function __construct(string $gid, array $coords, float $distanceFin)
     {
+        $this->coords = $coords;
         $this->distanceFin = $distanceFin;
         $this->gid = $gid;
+    }
+
+    /**
+     * @return double[]
+     */
+    public function getCoords(): array
+    {
+        return $this->coords;
     }
 
     /**

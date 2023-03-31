@@ -65,3 +65,12 @@ function addInputDest() {
     lineTravel.appendChild(searchButton);
 }
 
+function search(){
+    let depart = document.getElementById('nomCommuneDepart_id').textContent;
+    let arrivee = document.getElementById('nomCommuneArrivee_id').textContent;
+
+    let requete = `http://localhost/devWeb/SAE/web/getPlusCourt/${depart}/${arrivee}`;
+    fetch(requete).then(response => response.json()).then(data => addRoad(map, data.multiline));
+}
+
+document.getElementById('searchButton').addEventListener('click', search);
