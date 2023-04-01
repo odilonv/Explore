@@ -123,17 +123,6 @@ class NoeudRoutierRepository extends AbstractRepository
 
         $geomArrivee = '';
         if($coordonnees[0][2] == $gidArrivee){$geomArrivee=$coordonnees[0][3];}else{$geomArrivee=$coordonnees[1][3];}
-//        $vecteurAB = ["x" => $coordonnees[0][0]-$coordonnees[1][0],
-//                    "y" => $coordonnees[0][1]-$coordonnees[1][1]];
-//
-//        $ABRotated = ['x' => $vecteurAB['y'], 'y' => -$vecteurAB['x']];
-//
-//        $origine = ['x' => $coordonnees[1][0], 'y' => $coordonnees[1][1]];
-//        $agrandissement = ['x' => 1, 'y' => 1];
-//        $pt1 = ['x' => $origine['x'] - $ABRotated['x']/2, 'y' => $origine['y'] - $ABRotated['y']/2];
-//        $pt2 = ['x' => $pt1['x'] + $vecteurAB['x'], 'y' => $pt1['y'] + $vecteurAB['y']];
-//        $pt3 = ['x' => $pt2['x'] + $ABRotated['x'], 'y' => $pt2['y'] + $ABRotated['y']];
-//        $pt4 = ['x' => $pt3['x'] - $vecteurAB['x'], 'y' => $pt3['y'] - $vecteurAB['y']];
 
         $requeteArea = <<<SQL
         select ST_MakePolygon( ST_GeomFromText(:points, 4326));
@@ -142,11 +131,6 @@ class NoeudRoutierRepository extends AbstractRepository
 
         $points = $this->genererChaineZone(['x' =>$coordonnees[0][0], 'y' => $coordonnees[0][1]], ['x' => $coordonnees[1][0], 'y' => $coordonnees[1][1]]);
 
-//        $points = 'LINESTRING(' . $pt1['x'] . ' ' . $pt1['y'] . ',' .
-//        $pt2['x'] . ' ' . $pt2['y'] . ',' .
-//        $pt3['x'] . ' ' . $pt3['y'] . ',' .
-//        $pt4['x'] . ' ' . $pt4['y'] . ',' .
-//        $pt1['x'] . ' ' . $pt1['y'] . ')';
 
         $pdoStatement->execute(
             ['points' => $points]);
