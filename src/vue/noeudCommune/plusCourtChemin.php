@@ -28,10 +28,10 @@
 <div class="contain">
     
     <!-- regler le lien du form pour que ça prenne en parametre les inputs-->
-    <form action="./" class="insideDivide" method="post">
+    <form autocomplete="off" action="./" class="insideDivide" method="post">
         <label class="underlineTravel">
             <img src="../ressources/img/icons/circle-solid.svg" class="iconsLocationStart">
-            <input placeholder="Une ville de départ ? Ex: Montpellier" name="nomCommuneDepart" type="text"></label>
+            <div id="autocompletion"></div><input id="nomCommuneDepart_id" placeholder="Une ville de départ ? Ex: Montpellier" name="nomCommuneDepart" type="text"></label>
         <div class="circles">
             <img src="../ressources/img/icons/circle-solid.svg" class="circleTransition"><img src="../ressources/img/icons/circle-solid.svg" class="circleTransition">
             <img src="../ressources/img/icons/circle-solid.svg" class="circleTransition">
@@ -51,3 +51,4 @@
     </form>
 </div>
 <script defer type="text/javascript" src="../ressources/js/search.js"></script>
+<script defer type="text/javascript" src="../ressources/js/autocompletion.js"></script>

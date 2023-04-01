@@ -86,4 +86,12 @@ class ControleurNoeudCommune extends ControleurGenerique
 
         ControleurNoeudCommune::afficherVue('vueGenerale.php', $parametres);
     }
+
+    public static function requeteVille($ville)
+    {
+        ControleurNoeudCommune::afficherVue('noeudCommune/requeteVille.php', [
+            "ville" => $ville,
+            "pagetitle" => "requeteVille"
+        ]);
+    }
 }

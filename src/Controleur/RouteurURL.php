@@ -32,9 +32,7 @@ class RouteurURL
         // Route afficherFormulaireConnexion
         $route = new Route("/connexion", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::afficherFormulaireConnexion",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $route->setMethods(["GET"]);
         $routes->add("afficherFormulaireConnexion", $route);
@@ -43,18 +41,14 @@ class RouteurURL
 
         $route = new Route("/connexion", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::connecter",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $route->setMethods(["POST"]);
         $routes->add("connecter", $route);
 
         $route = new Route("/deconnexion", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::deconnecter",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $routes->add("deconnecter", $route);
 
@@ -64,18 +58,14 @@ class RouteurURL
 
         $route = new Route("/inscription", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::afficherFormulaireCreation",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $route->setMethods(["GET"]);
         $routes->add("afficherFormulaireCreation", $route);
 
         $route = new Route("/inscription", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::creerDepuisFormulaire",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $route->setMethods(["POST"]);
         $routes->add("creerDepuisFormulaire", $route);
@@ -84,17 +74,12 @@ class RouteurURL
 
         $route = new Route("/modification/{idUser}", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::afficherFormulaireMiseAJour",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $routes->add("afficherFormulaireMiseAJour", $route);
 
         $route = new Route("/modification/{idUser}", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::mettreAJour",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
         ]);
         $routes->add("mettreAJour ", $route);
 
@@ -102,29 +87,30 @@ class RouteurURL
 //
         $route = new Route("/utilisateurs", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::afficherListe",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
         ]);
         $routes->add("afficherListe", $route);
 
 
         $route = new Route("/utilisateur/{idUser}", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::afficherDetail",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $route->setMethods(["GET"]);
         $routes->add("afficherDetail", $route);
 
+        /*
         $route = new Route("/{depart}/{arrivee}", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurNoeudCommune::plusCourtChemin",
             
         ]);
         $routes->add("plusCourtChemin", $route);
+        */
 
-
+        $route = new Route("/requeteVille/{ville}", [
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurNoeudCommune::requeteVille",
+        ]);
+        $route->setMethods(["GET"]);
+        $routes->add("requeteVille", $route);
 
 
 

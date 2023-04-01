@@ -345,3 +345,18 @@ a{
     color: black;
 }
 
+#autocompletion{
+    position: absolute;
+    transform: translateY(60%) translateX(9%);
+    z-index: 2;
+}
+#autocompletion p{
+    background-color: whitesmoke;
+}
+
+#autocompletion p:hover, #autocompletion selected{
+    background-color: #ffae9e;
+    color:white ;
+}
+
+

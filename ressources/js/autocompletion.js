@@ -5,6 +5,7 @@ function afficheVilles(tableau) {
         let p = document.createElement("p");
         p.innerHTML =ville
         autoCompletion.appendChild(p);
+        p.addEventListener("click", ()=>(completeInput(p)))
     }
 
     if(tableau.length >0)
@@ -28,7 +29,8 @@ function requeteAJAX(stringVille,callback,startLoadingAction,endLoadingAction) {
     startLoadingAction();
 
     //changer url
-    let url = "src/vue/noeudCommune/requeteVille.php?ville=" + encodeURIComponent(stringVille);
+    let url = "http://localhost/Explore/web/requeteVille/"+encodeURIComponent(stringVille);
+    //let url = "Explore/web/requeteVille/" + encodeURIComponent(stringVille);
 
     let requete = new XMLHttpRequest();
     requete.open("GET", url, true);
@@ -51,16 +53,18 @@ function requeteAJAX(stringVille,callback,startLoadingAction,endLoadingAction) {
 function callback_4(req){
     videVille();
     let villes = [];
+    console.log(req.responseText)
     for(let ville of JSON.parse(req.responseText)){
-        villes.push(ville['name']);
+        villes.push(ville['nom_comm']);
     }
     afficheVilles(villes);
 }
 
 let barreDeRecherche= document.getElementById("nomCommuneDepart_id");
-barreDeRecherche.addEventListener("input",()=>{setTimeout(autoCompletion,2)});
-
+barreDeRecherche.addEventListener("input",()=>{autoCompletion()});
+console.log(barreDeRecherche)
 function autoCompletion(){
+
     if(barreDeRecherche.value.length >2)
     {
         maRequeteAJAX(barreDeRecherche.value);
@@ -78,6 +82,7 @@ function autoCompletion(){
 function maRequeteAJAX(ville){
     ville.toLowerCase();
     ville = ville.charAt(0).toUpperCase()+ville.slice(1);
+
 
     /* y'a pas de gif loading donc j'ai mit des fonctions vides
     requeteAJAX(ville,callback_4,
@@ -173,5 +178,11 @@ function select(){
         barreDeRecherche.value = document.getElementById("autocompletion").children[currentIndex];
     }
 }
+
+function completeInput(element)
+{
+    barreDeRecherche.value = element.innerText;
+}
+
 
 
