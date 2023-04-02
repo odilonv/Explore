@@ -1,9 +1,9 @@
 <?php
 
-namespace App\PlusCourtChemin\Controleur;
+namespace Explore\Controleur;
 
-use App\PlusCourtChemin\Lib\Conteneur;
-use App\PlusCourtChemin\Lib\MessageFlash;
+use Explore\Lib\Conteneur;
+use Explore\Lib\MessageFlash;
 
 class ControleurGenerique {
 

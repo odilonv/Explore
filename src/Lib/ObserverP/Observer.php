@@ -1,6 +1,6 @@
 <?php
 
-namespace SAE\Lib\ObserverPattern;
+namespace Explore\Lib\ObserverP;
 
 interface Observer
 {

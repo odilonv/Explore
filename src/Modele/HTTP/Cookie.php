@@ -1,6 +1,6 @@
 <?php
 
-namespace App\PlusCourtChemin\Modele\HTTP;
+namespace Explore\Modele\HTTP;
 
 class Cookie
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace TheFeed\Controleur;
+namespace Explore\Controleur;
 class RouteurQueryString
 {
     public static function traiterRequete()

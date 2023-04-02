@@ -1,8 +1,8 @@
 <?php
 
-namespace App\PlusCourtChemin\Modele\DataObject;
+namespace Explore\Modele\DataObject;
 
-use App\PlusCourtChemin\Lib\MotDePasse;
+use Explore\Lib\MotDePasse;
 
 class Utilisateur extends AbstractDataObject
 {
@@ -49,6 +49,7 @@ class Utilisateur extends AbstractDataObject
             MotDePasse::genererChaineAleatoire(),
         );
     }
+
 
     public function getLogin(): string
     {
@@ -142,4 +143,6 @@ class Utilisateur extends AbstractDataObject
             "email_a_valider_tag" => $this->emailAValider,
         );
     }
+
+
 }

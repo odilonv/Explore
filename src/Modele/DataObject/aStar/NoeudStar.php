@@ -1,8 +1,8 @@
 <?php
 
-namespace App\PlusCourtChemin\Modele\DataObject\aStar;
+namespace Explore\Lib\vieux\aStar;
 
-use App\PlusCourtChemin\Lib\Utils;
+use Explore\Lib\Utils;
 
 class NoeudStar
 {

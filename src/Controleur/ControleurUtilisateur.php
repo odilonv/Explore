@@ -1,14 +1,14 @@
 <?php
 
-namespace App\PlusCourtChemin\Controleur;
+namespace Explore\Controleur;
 
-use App\PlusCourtChemin\Configuration\Configuration;
-use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
-use App\PlusCourtChemin\Lib\MessageFlash;
-use App\PlusCourtChemin\Lib\MotDePasse;
-use App\PlusCourtChemin\Lib\VerificationEmail;
-use App\PlusCourtChemin\Modele\DataObject\Utilisateur;
-use App\PlusCourtChemin\Modele\Repository\UtilisateurRepository;
+use Explore\Configuration\Configuration;
+use Explore\Lib\ConnexionUtilisateur;
+use Explore\Lib\MessageFlash;
+use Explore\Lib\MotDePasse;
+use Explore\Lib\VerificationEmail;
+use Explore\Lib\vieux\Utilisateur;
+use Explore\Modele\Repository\UtilisateurRepository;
 
 class ControleurUtilisateur extends ControleurGenerique
 {

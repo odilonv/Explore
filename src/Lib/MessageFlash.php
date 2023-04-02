@@ -1,8 +1,8 @@
 <?php
 
-namespace App\PlusCourtChemin\Lib;
+namespace Explore\Lib;
 
-use App\PlusCourtChemin\Modele\HTTP\Session;
+use Explore\Modele\HTTP\Session;
 
 class MessageFlash
 {

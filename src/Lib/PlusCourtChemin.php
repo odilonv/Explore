@@ -1,8 +1,8 @@
 <?php
 
-namespace App\PlusCourtChemin\Lib;
+namespace Explore\Lib;
 
-use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
+use Explore\Modele\Repository\NoeudRoutierRepository;
 
 class PlusCourtChemin
 {

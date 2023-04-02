@@ -1,7 +1,10 @@
 <?php
+
+use Explore\Modele\DataObject\Utilisateur;
+
 echo "<h3>Liste des utilisateurs :</h3>\n";
 echo "<ul>\n";
-/** @var \App\PlusCourtChemin\Modele\DataObject\Utilisateur[] $utilisateurs */
+/** @var Utilisateur[] $utilisateurs */
 foreach ($utilisateurs as $utilisateur) {
     $loginHTML = htmlspecialchars($utilisateur->getLogin());
     $loginURL = rawurlencode($utilisateur->getLogin());

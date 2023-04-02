@@ -1,6 +1,6 @@
 <?php
 
-namespace App\PlusCourtChemin\Modele\DataObject;
+namespace Explore\Modele\DataObject;
 
 abstract class AbstractDataObject
 {

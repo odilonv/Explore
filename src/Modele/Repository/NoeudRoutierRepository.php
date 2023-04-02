@@ -1,12 +1,13 @@
 <?php
 
-namespace App\PlusCourtChemin\Modele\Repository;
+namespace Explore\Modele\Repository;
 
-use App\PlusCourtChemin\Modele\DataObject\AbstractDataObject;
-use App\PlusCourtChemin\Modele\DataObject\aStar\NoeudStar;
-use App\PlusCourtChemin\Modele\DataObject\aStar\QueueStar;
-use App\PlusCourtChemin\Modele\DataObject\CacheNR;
-use App\PlusCourtChemin\Modele\DataObject\NoeudRoutier;
+use Explore\Modele\DataObject\AbstractDataObject;
+use Explore\Lib\vieux\aStar\NoeudStar;
+use Explore\Lib\vieux\aStar\QueueStar;
+use Explore\Lib\vieux\CacheNR;
+
+use Explore\Modele\DataObject\NoeudRoutier;
 use PDO;
 
 class NoeudRoutierRepository extends AbstractRepository

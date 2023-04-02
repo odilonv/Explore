@@ -1,6 +1,6 @@
 <?php
 
-namespace App\PlusCourtChemin\Modele\DataObject\aStar;
+namespace Explore\Lib\vieux\aStar;
 
 class QueueStar{
     /** @var NoeudStar[] $t */

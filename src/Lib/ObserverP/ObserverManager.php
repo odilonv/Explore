@@ -1,6 +1,6 @@
 <?php
 // a delete
-namespace SAE\Lib\ObserverPattern;
+namespace Explore\Lib\ObserverP;
 
 abstract class ObserverManager{
     private array $observers = [];

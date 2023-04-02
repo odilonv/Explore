@@ -1,26 +1,21 @@
 <?php
 
-namespace App\PlusCourtChemin\Modele\Repository;
-
-use App\PlusCourtChemin\Configuration\Configuration;
-use App\PlusCourtChemin\Configuration\ConfigurationBDDPostgreSQL;
+namespace Explore\Modele\Repository;
+use Explore\Configuration\ConfigurationBDDInterface;
 use PDO;
 
-class ConnexionBaseDeDonnees
-{
-    private static ?ConnexionBaseDeDonnees $instance = null;
 
+class ConnexionBaseDeDonnees implements ConnexionBaseDeDonneesInterface
+{
     private PDO $pdo;
 
-    public static function getPdo(): PDO
+    public function getPdo(): PDO
     {
-        return ConnexionBaseDeDonnees::getInstance()->pdo;
+        return $this->pdo;
     }
 
-    private function __construct()
+    public function __construct(ConfigurationBDDInterface $configurationBDD)
     {
-        $configuration = new Configuration(new ConfigurationBDDPostgreSQL());
-        $configurationBDD = $configuration->getConfigurationBDD();
 
         // Connexion à la base de données
         $this->pdo = new PDO(
@@ -30,14 +25,8 @@ class ConnexionBaseDeDonnees
             $configurationBDD->getOptions()
         );
 
+
         // On active le mode d'affichage des erreurs, et le lancement d'exception en cas d'erreur
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    }
-
-    private static function getInstance(): ConnexionBaseDeDonnees
-    {
-        if (is_null(ConnexionBaseDeDonnees::$instance))
-            ConnexionBaseDeDonnees::$instance = new ConnexionBaseDeDonnees();
-        return ConnexionBaseDeDonnees::$instance;
     }
 }

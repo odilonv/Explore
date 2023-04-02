@@ -1,12 +1,12 @@
 <?php
 
-namespace App\PlusCourtChemin\Controleur;
+namespace Explore\Controleur;
 
-use App\PlusCourtChemin\Lib\MessageFlash;
-use App\PlusCourtChemin\Lib\PlusCourtChemin;
-use App\PlusCourtChemin\Modele\DataObject\NoeudCommune;
-use App\PlusCourtChemin\Modele\Repository\NoeudCommuneRepository;
-use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
+use Explore\Lib\MessageFlash;
+use Explore\Lib\PlusCourtChemin;
+use Explore\Lib\vieux\NoeudCommune;
+use Explore\Modele\Repository\NoeudCommuneRepository;
+use Explore\Modele\Repository\NoeudRoutierRepository;
 use http\Env\Response;
 
 class ControleurNoeudCommune extends ControleurGenerique

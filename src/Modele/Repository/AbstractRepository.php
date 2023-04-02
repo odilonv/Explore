@@ -1,12 +1,23 @@
 <?php
 
-namespace App\PlusCourtChemin\Modele\Repository;
+namespace Explore\Modele\Repository;
 
-use App\PlusCourtChemin\Modele\DataObject\AbstractDataObject;
+use Explore\Modele\DataObject\AbstractDataObject;
 use PDOException;
 
-abstract class AbstractRepository
+abstract class AbstractRepository implements AbstractRepositoryInterface
 {
+
+
+    private ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees;
+
+
+    public function __construct(ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees)
+    {
+        $this->connexionBaseDeDonnees = $connexionBaseDeDonnees;
+    }
+
+
     protected abstract function getNomTable(): string;
     protected abstract function getNomClePrimaire(): string;
     protected abstract function getNomsColonnes(): array;
@@ -23,7 +34,7 @@ abstract class AbstractRepository
         $requeteSQL = <<<SQL
         SELECT $champsSelect FROM $nomTable LIMIT $limit;
         SQL;
-        $pdoStatement = ConnexionBaseDeDonnees::getPdo()->query($requeteSQL);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->query($requeteSQL);
 
         $objets = [];
         foreach ($pdoStatement as $objetFormatTableau) {
@@ -50,7 +61,7 @@ abstract class AbstractRepository
         $requeteSQL = <<<SQL
             SELECT $champsSelect FROM $nomTable WHERE $whereClause LIMIT $limit;
         SQL;
-        $pdoStatement = ConnexionBaseDeDonnees::getPdo()->prepare($requeteSQL);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteSQL);
         $pdoStatement->execute($critereSelection);
 
         $objets = [];
@@ -67,7 +78,7 @@ abstract class AbstractRepository
         $nomClePrimaire = $this->getNomClePrimaire();
         $sql = "SELECT * from $nomTable WHERE $nomClePrimaire=:clePrimaireTag";
         // Préparation de la requête
-        $pdoStatement = ConnexionBaseDeDonnees::getPdo()->prepare($sql);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($sql);
 
         $values = array(
             "clePrimaireTag" => $valeurClePrimaire,
@@ -91,7 +102,7 @@ abstract class AbstractRepository
         $nomClePrimaire = $this->getNomClePrimaire();
         $sql = "DELETE FROM $nomTable WHERE $nomClePrimaire= :clePrimaireTag;";
         // Préparation de la requête
-        $pdoStatement = ConnexionBaseDeDonnees::getPDO()->prepare($sql);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($sql);
 
         $values = array(
             "clePrimaireTag" => $valeurClePrimaire
@@ -123,7 +134,7 @@ abstract class AbstractRepository
 
         $sql = "UPDATE $nomTable SET $setString WHERE $whereString";
         // Préparation de la requête
-        $req_prep = ConnexionBaseDeDonnees::getPDO()->prepare($sql);
+        $req_prep = $this->connexionBaseDeDonnees->getPdo()->prepare($sql);
 
         $objetFormatTableau = $object->exporterEnFormatRequetePreparee();
         $req_prep->execute($objetFormatTableau);
@@ -145,7 +156,7 @@ abstract class AbstractRepository
 
         $sql = "INSERT INTO $nomTable $insertString VALUES $valueString";
         // Préparation de la requête
-        $pdoStatement = ConnexionBaseDeDonnees::getPdo()->prepare($sql);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($sql);
 
         $objetFormatTableau = $object->exporterEnFormatRequetePreparee();
 

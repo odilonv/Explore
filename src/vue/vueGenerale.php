@@ -1,7 +1,7 @@
 <?php
 
-use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
-use App\PlusCourtChemin\Lib\Conteneur;
+use Explore\Lib\ConnexionUtilisateur;
+use Explore\Lib\Conteneur;
 use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 
