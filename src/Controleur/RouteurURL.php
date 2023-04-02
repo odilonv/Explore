@@ -148,33 +148,18 @@ class RouteurURL
         try {
             $associateurUrl = new UrlMatcher($routes, $contexteRequete);
             $donneesRoute = $associateurUrl->match($requete->getPathInfo());
-            /*
-             * @throws NoConfigurationException  If no routing configuration could be found
-             * @throws ResourceNotFoundException If the resource could not be found
-             * @throws MethodNotAllowedException If the resource was found but the request method is not allowed
-             */
-
-
-            //print_r($donneesRoute);
-
             $requete->attributes->add($donneesRoute);
 
             $resolveurDeControleur = new ControllerResolver();
             $controleur = $resolveurDeControleur->getController($requete);
-            /*
-             * @throws \LogicException If a controller was found based on the request but it is not callable
-             */
 
             $resolveurDArguments = new ArgumentResolver();
             $arguments = $resolveurDArguments->getArguments($requete, $controleur);
-            /*
-            *  @throws \RuntimeException When no value could be provided for a required argument
-            */
 
-            $response = call_user_func_array($controleur, $arguments);
+            $reponse = call_user_func_array($controleur, $arguments);
         }
         catch (ResourceNotFoundException $exception) {
-        $reponse = ControleurGenerique::afficherErreur($exception->getMessage(), 404);
+            $reponse = ControleurGenerique::afficherErreur($exception->getMessage(), 404);
         }
         catch (MethodNotAllowedException $exception) {
             // Remplacez xxx par le bon code d'erreur
@@ -184,7 +169,6 @@ class RouteurURL
             $reponse = ControleurGenerique::afficherErreur($exception->getMessage()) ;
         }
         $reponse->send();
-        $response->send();
 
     }
 
