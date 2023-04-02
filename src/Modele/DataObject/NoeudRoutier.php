@@ -12,8 +12,14 @@ class NoeudRoutier extends AbstractDataObject
     public function __construct(
         private int $gid,
         private string $id_rte500,
+        ?array $voisins
     ) {
-        $this->voisins = (new NoeudRoutierRepository())->getVoisins($this->getGid());
+        if($voisins==null){
+            $this->voisins=[];
+        }
+        else {
+            $this->voisins = $voisins;
+        }
     }
 
     public function getGid(): int
@@ -28,6 +34,9 @@ class NoeudRoutier extends AbstractDataObject
 
     public function getVoisins(): array
     {
+        if(sizeof($this->voisins) == 0){
+            $this->voisins = (new NoeudRoutierRepository())->getVoisins($this->getGid());
+        }
         return $this->voisins;
     }
 

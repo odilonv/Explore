@@ -26,9 +26,9 @@ class RouteurURL
 
         // Route feed
         $route = new Route("/", [
-            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::accueil",
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurNoeudCommune::plusCourtChemin",
         ]);
-        $routes->add("accueil", $route);
+        $routes->add("plusCourt", $route);
 
 
 
@@ -120,6 +120,17 @@ class RouteurURL
         ]);
         $route->setMethods(["GET"]);
         $routes->add("afficherDetail", $route);
+
+        $route = new Route("/{depart}/{arrivee}", [
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurNoeudCommune::plusCourtChemin",
+        ]);
+        $routes->add("plusCourtChemin", $route);
+
+
+        $route = new Route("/getPlusCourt/{depart}/{arrivee}", [
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurNoeudCommune::requetePlusCourt"
+        ]);
+        $routes->add("requetePlusCourt", $route);
 
 
 

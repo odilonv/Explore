@@ -2,7 +2,7 @@
 
 namespace App\PlusCourtChemin\Lib;
 
-use App\PlusCourtChemin\Modele\DataObject\NoeudRoutier;
+use App\PlusCourtChemin\Modele\DataObject\aStar\NoeudStar;
 use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
 
 class PlusCourtChemin
@@ -16,55 +16,20 @@ class PlusCourtChemin
     ) {
     }
 
-    public function calculer(bool $affichageDebug = false): float
-    {
-        $noeudRoutierRepository = new NoeudRoutierRepository();
+    public function calculer3():NoeudStar{
+        $prio = (new NoeudRoutierRepository())->getForStar($this->noeudRoutierDepartGid, $this->noeudRoutierArriveeGid);
 
-        // Distance en km, table indexé par NoeudRoutier::gid
-        $this->distances = [$this->noeudRoutierDepartGid => 0];
+        $dernierNoeud = null;
+        while($prio->getSize()>0 && $prio->getTop()->getGid() != $this->noeudRoutierArriveeGid){
+            $dernierNoeud = $prio->getTop();
+            $dernierNoeud->selectionner();
 
-        $this->noeudsALaFrontiere[$this->noeudRoutierDepartGid] = true;
-
-        while (count($this->noeudsALaFrontiere) !== 0) {
-            $noeudRoutierGidCourant = $this->noeudALaFrontiereDeDistanceMinimale();
-
-            // Fini
-            if ($noeudRoutierGidCourant === $this->noeudRoutierArriveeGid) {
-                return $this->distances[$noeudRoutierGidCourant];
-            }
-
-            // Enleve le noeud routier courant de la frontiere
-            unset($this->noeudsALaFrontiere[$noeudRoutierGidCourant]);
-
-            /** @var NoeudRoutier $noeudRoutierCourant */
-            $noeudRoutierCourant = $noeudRoutierRepository->recupererParClePrimaire($noeudRoutierGidCourant);
-            $voisins = $noeudRoutierCourant->getVoisins();
-
-            foreach ($voisins as $voisin) {
-                $noeudVoisinGid = $voisin["noeud_routier_gid"];
-                $distanceTroncon = $voisin["longueur"];
-                $distanceProposee = $this->distances[$noeudRoutierGidCourant] + $distanceTroncon;
-
-                if (!isset($this->distances[$noeudVoisinGid]) || $distanceProposee < $this->distances[$noeudVoisinGid]) {
-                    $this->distances[$noeudVoisinGid] = $distanceProposee;
-                    $this->noeudsALaFrontiere[$noeudVoisinGid] = true;
-                }
-            }
+            $prio->removeTop();
         }
-        return 0;
+        return $dernierNoeud;
     }
 
-
-    private function noeudALaFrontiereDeDistanceMinimale()
-    {
-        $noeudRoutierDistanceMinimaleGid = -1;
-        $distanceMinimale = PHP_INT_MAX;
-        foreach ($this->noeudsALaFrontiere as $noeudRoutierGid => $valeur) {
-            if ($this->distances[$noeudRoutierGid] < $distanceMinimale) {
-                $noeudRoutierDistanceMinimaleGid = $noeudRoutierGid;
-                $distanceMinimale = $this->distances[$noeudRoutierGid];
-            }
-        }
-        return $noeudRoutierDistanceMinimaleGid;
-    }
+    // liste qui associe pour chaque pts, la distance la plus courte qui le relie au point d'origine
+    // parcourir la liste des voisins du pt dont la distance et la plus courte et qui n'a pas encore été parcouru
+    // si la longueur de l'arete qui relie le pt au voisin + la distance du pt < distance minimal voisin -> sa distance minimale devient ce point
 }

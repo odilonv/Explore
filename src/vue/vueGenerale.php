@@ -59,9 +59,8 @@ $assistantUrl = Conteneur::recupererService("assistant");
     <footer>
         <?php
 
-
-        if (!ConnexionUtilisateur::estConnecte()) {
-            echo <<<HTML
+    if (!ConnexionUtilisateur::estConnecte()) {
+        echo <<<HTML
                     <div class="connectFooter clickable">
                     <div class="connectHeader">
                         <img src="../ressources/img/icons/user-solid.svg" class="icons">
@@ -69,33 +68,26 @@ $assistantUrl = Conteneur::recupererService("assistant");
                       </div>
                     </div>
                     HTML;
-        } else {
-            $loginHTML = htmlspecialchars(ConnexionUtilisateur::getLoginUtilisateurConnecte());
-            $loginURL = rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte());
-            echo <<<HTML
+    } else {
+        $loginHTML = htmlspecialchars(ConnexionUtilisateur::getLoginUtilisateurConnecte());
+        $loginURL = rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte());
+        echo <<<HTML
                                 <form class="connectFooter clickable">
-                                    <a href="controleurFrontal.php?action=afficherDetail&controleur=utilisateur&login=$loginURL" id="connectFooter">
+                                    <!--<a href="controleurFrontal.php?action=afficherDetail&controleur=utilisateur&login=$loginURL" id="connectFooter">¡-->
+                                    <a href="/utilisateur/{idUser}" id="connectFooter">
                                         <img src="../ressources/img/icons/user-solid.svg" class="icons">
                                         <h2>$loginHTML</h2>
                                     </a>
                                 </form>
                     HTML;
-        }
-        ?>
-        <!--<div id="echelleFooter">
-            <a href=""><img src="../ressources/img/icons/minus-solid.svg" class="icons"></a>
-            <a href=""><img src="../ressources/img/icons/plus-solid.svg" class="icons"></a>
-        </div>
-        <a id="signFooter" href="">
-            <h2>Explore</h2>
-        </a>-->
-    </footer>
-
+    }
+    ?>
 
 
 <script defer type="text/javascript" src="../ressources/js/connect.js"></script>
 <script defer type="text/javascript" src="../ressources/js/map.js"></script>
-<script defer type="text/javascript" src="../ressources/js/search.js"></script>
+
+
 
 </body>
 </html>

@@ -8,6 +8,19 @@ function moveMapToMontpellier(map){
     map.setZoom(14);
 }
 
+function addRoad(map, points){
+    let lineString = new H.geo.LineString();
+    points.forEach(point => {
+        lineString.pushPoint(point);
+    });
+
+    let polyline = new H.map.Polyline(lineString, { style: {lineWidth: 5}});
+
+    map.addObject(polyline);
+
+    map.getViewModel().setLookAtData({bounds: polyline.getBoundingBox()});
+}
+
 /**
  * Boilerplate map initialization code starts below:
  */
