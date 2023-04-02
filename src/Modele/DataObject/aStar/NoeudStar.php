@@ -131,11 +131,11 @@ class NoeudStar
 
     public function refaireChemin():array
     {
-        $chemin = [];
+        $chemin = [$this];
         $noeud = $this;
         $c = 0;
         while(isset($noeud->precedentVoisin)){
-            $chemin[] = $noeud;
+            $chemin[] = $noeud->precedentVoisin;
             $c++;
             $noeud = $noeud->precedentVoisin;
         }
