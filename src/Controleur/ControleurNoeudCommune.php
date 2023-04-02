@@ -7,6 +7,7 @@ use App\PlusCourtChemin\Lib\PlusCourtChemin;
 use App\PlusCourtChemin\Modele\DataObject\NoeudCommune;
 use App\PlusCourtChemin\Modele\Repository\NoeudCommuneRepository;
 use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
+use http\Env\Response;
 
 class ControleurNoeudCommune extends ControleurGenerique
 {
@@ -48,7 +49,7 @@ class ControleurNoeudCommune extends ControleurGenerique
         ]);
     }
 
-    public static function plusCourtChemin(): void
+    public static function plusCourtChemin($depart = null, $arrivee = null): void
     {
         $parametres = [
             "pagetitle" => "Explore",
@@ -56,7 +57,7 @@ class ControleurNoeudCommune extends ControleurGenerique
         ];
 
 
-        if (!empty($_POST)) {
+        if ($depart != null && $arrivee != null) {
             $nomCommuneDepart = $_POST["nomCommuneDepart"];
             $nomCommuneArrivee = $_POST["nomCommuneArrivee"];
 
@@ -75,11 +76,12 @@ class ControleurNoeudCommune extends ControleurGenerique
             ])[0]->getGid();
 
             $pcc = new PlusCourtChemin($noeudRoutierDepartGid, $noeudRoutierArriveeGid);
-            $distance = $pcc->calculer();
+            $distance = $pcc->calculer3();
 
             $parametres["nomCommuneDepart"] = $nomCommuneDepart;
             $parametres["nomCommuneArrivee"] = $nomCommuneArrivee;
             $parametres["distance"] = $distance;
+
         }
 
         ControleurNoeudCommune::afficherVue('vueGenerale.php', $parametres);
