@@ -20,12 +20,13 @@ class PlusCourtChemin
         $prio = (new NoeudRoutierRepository())->getForStar($this->noeudRoutierDepartGid, $this->noeudRoutierArriveeGid);
 
         $dernierNoeud = null;
-        while($prio->getSize()>0 && $prio->getTop()->getGid() != $this->noeudRoutierArriveeGid){
+        do{
             $dernierNoeud = $prio->getTop();
             $dernierNoeud->selectionner();
 
             $prio->removeTop();
         }
+        while($prio->getSize()>0 && $dernierNoeud->getGid() != $this->noeudRoutierArriveeGid);
         return $dernierNoeud;
     }
 
