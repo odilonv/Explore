@@ -3,6 +3,7 @@
 namespace App\PlusCourtChemin\Lib;
 
 use App\PlusCourtChemin\Modele\DataObject\aStar\NoeudStar;
+use App\PlusCourtChemin\Modele\DataObject\aStar\QueueStar;
 use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
 
 class PlusCourtChemin
@@ -17,16 +18,23 @@ class PlusCourtChemin
     }
 
     public function calculer3():NoeudStar{
-        $prio = (new NoeudRoutierRepository())->getForStar($this->noeudRoutierDepartGid, $this->noeudRoutierArriveeGid);
+        Utils::startTimer();
+        $queuStar = new QueueStar();
+        (new NoeudRoutierRepository())->getForStar($this->noeudRoutierDepartGid, $this->noeudRoutierArriveeGid, $queuStar);
+
+        Utils::log("total getForStar() : " . Utils::getDuree());
+        $temp = Utils::getDuree();
 
         $dernierNoeud = null;
         do{
-            $dernierNoeud = $prio->getTop();
+            $dernierNoeud = $queuStar->getTop();
             $dernierNoeud->selectionner();
 
-            $prio->removeTop();
+            $queuStar->removeTop();
         }
-        while($prio->getSize()>0 && $dernierNoeud->getGid() != $this->noeudRoutierArriveeGid);
+        while($queuStar->getSize()>0 && $dernierNoeud->getGid() != $this->noeudRoutierArriveeGid);
+        Utils::log("temps parcours queue: " . Utils::getDuree()-$temp);
+        Utils::log("temps d'utilisation de calculer(): " . Utils::getDuree());
         return $dernierNoeud;
     }
 

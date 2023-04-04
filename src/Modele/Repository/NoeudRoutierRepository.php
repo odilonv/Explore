@@ -2,6 +2,7 @@
 
 namespace App\PlusCourtChemin\Modele\Repository;
 
+use App\PlusCourtChemin\Lib\Utils;
 use App\PlusCourtChemin\Modele\DataObject\AbstractDataObject;
 use App\PlusCourtChemin\Modele\DataObject\aStar\NoeudStar;
 use App\PlusCourtChemin\Modele\DataObject\aStar\QueueStar;
@@ -108,7 +109,8 @@ class NoeudRoutierRepository extends AbstractRepository
     }
 
     // retourne ce qu'il faut pour pouvoir utiliser a star
-    public function getForStar(string $gidDep, string $gidArrivee){
+    public function getForStar(string $gidDep, string $gidArrivee, QueueStar $starQueue){
+        $temp0 = Utils::getDuree();
         $pdo = ConnexionBaseDeDonnees::getPdo();
 
         $requeteXY = <<<SQL
@@ -121,19 +123,10 @@ class NoeudRoutierRepository extends AbstractRepository
         $pdoStatement->execute(['gidDepart' => $gidDep, 'gidArrivee' => $gidArrivee]);
         $coordonnees = $pdoStatement->fetchAll();
 
-        $geomArrivee = '';
         if($coordonnees[0][2] == $gidArrivee){$geomArrivee=$coordonnees[0][3];}else{$geomArrivee=$coordonnees[1][3];}
-//        $vecteurAB = ["x" => $coordonnees[0][0]-$coordonnees[1][0],
-//                    "y" => $coordonnees[0][1]-$coordonnees[1][1]];
-//
-//        $ABRotated = ['x' => $vecteurAB['y'], 'y' => -$vecteurAB['x']];
-//
-//        $origine = ['x' => $coordonnees[1][0], 'y' => $coordonnees[1][1]];
-//        $agrandissement = ['x' => 1, 'y' => 1];
-//        $pt1 = ['x' => $origine['x'] - $ABRotated['x']/2, 'y' => $origine['y'] - $ABRotated['y']/2];
-//        $pt2 = ['x' => $pt1['x'] + $vecteurAB['x'], 'y' => $pt1['y'] + $vecteurAB['y']];
-//        $pt3 = ['x' => $pt2['x'] + $ABRotated['x'], 'y' => $pt2['y'] + $ABRotated['y']];
-//        $pt4 = ['x' => $pt3['x'] - $vecteurAB['x'], 'y' => $pt3['y'] - $vecteurAB['y']];
+
+        Utils::log("(getForStar) premier traitement: " . Utils::getDuree()-$temp0);
+        $temp = Utils::getDuree();
 
         $requeteArea = <<<SQL
         select ST_MakePolygon( ST_GeomFromText(:points, 4326));
@@ -142,19 +135,15 @@ class NoeudRoutierRepository extends AbstractRepository
 
         $points = $this->genererChaineZone(['x' =>$coordonnees[0][0], 'y' => $coordonnees[0][1]], ['x' => $coordonnees[1][0], 'y' => $coordonnees[1][1]]);
 
-//        $points = 'LINESTRING(' . $pt1['x'] . ' ' . $pt1['y'] . ',' .
-//        $pt2['x'] . ' ' . $pt2['y'] . ',' .
-//        $pt3['x'] . ' ' . $pt3['y'] . ',' .
-//        $pt4['x'] . ' ' . $pt4['y'] . ',' .
-//        $pt1['x'] . ' ' . $pt1['y'] . ')';
 
         $pdoStatement->execute(
             ['points' => $points]);
 
         $area = $pdoStatement->fetch()[0];
 
+        Utils::log("(getForStar) deuxième traitement: " . Utils::getDuree()-$temp);
+        $temp = Utils::getDuree();
 
-        $starQueue = new QueueStar();
         $requeteDist = <<<SQL
             select gid, latitude, longitude, st_distancesphere(geom, :geomGoal) / 1000 as distanceFromGoal
             from noeud_routier nr
@@ -175,6 +164,9 @@ class NoeudRoutierRepository extends AbstractRepository
             $noeudsDist[$gid] = $noeud;
             $noeud->setPrioQ($starQueue);
         }
+
+        Utils::log("(getForStar) troisième traitement: " . Utils::getDuree()-$temp);
+        $temp = Utils::getDuree();
 
         // regarder si st_x est exécuté pour chaque ligne dans la requete (l'optimiseur doit s'en  occuper jpense)
         $requeteSQL = <<<SQL
@@ -199,24 +191,61 @@ class NoeudRoutierRepository extends AbstractRepository
                 $starQueue->insert($noeudsDist[$key]);
             }
         }
-        return $starQueue;
+        Utils::log("(getForStar) quatrième traitement: " . Utils::getDuree()-$temp);
+        Utils::log("(getForStar) temps total: " . Utils::getDuree()-$temp0);
     }
 
     public function genererChaineZone(array $startPoint, array $endPoint){
+        $direction = new Vector($endPoint['x']-$startPoint['x'], $endPoint['y']-$startPoint['y']);
+        $directionNorm = $direction->normalized();
+        $directionNorm->x /= 4;
+        $directionNorm->y /= 4;
+        $perpendiculaire = new Vector($direction->y, -$direction->x, true);
+        $perpendiculaire->x /= 2;
+        $perpendiculaire->y /= 2;
 
-        $direction = ['x' => $endPoint['x']-$startPoint['x'], 'y' => $endPoint['y']-$startPoint['y']];
-        $perpendiculaire = ['x' => $direction['y'] / 2, 'y' => -$direction['x'] / 2];
+        $pt1 = new Vector($startPoint['x'] - $directionNorm->x - $perpendiculaire->x, $startPoint['y'] - $directionNorm->y - $perpendiculaire->y);
+        $pt2 = new Vector($pt1->x + $direction->x + $directionNorm->x * 2, $pt1->y + $direction->y + $directionNorm->y * 2);
+        $pt3 = new Vector($pt2->x + $perpendiculaire->x * 3, $pt2->y + $perpendiculaire->y * 3);
+        $pt4 = new Vector($pt3->x - $direction->x - $directionNorm->x * 2, $pt3->y - $direction->y - $directionNorm->y * 2);
 
-        $pt1 = ['x' => $startPoint['x'] - $direction['x'] - $perpendiculaire['x'], 'y' => $startPoint['y'] - $direction['y'] - $perpendiculaire['y']];
-        $pt2 = ['x' => $pt1['x'] + $direction['x'] * 3, 'y' => $pt1['y'] + $direction['y'] * 3];
-        $pt3 = ['x' => $pt2['x'] + $perpendiculaire['x'] * 3, 'y' => $pt2['y'] + $perpendiculaire['y'] * 3];
-        $pt4 = ['x' => $pt3['x'] - $direction['x'] * 3, 'y' => $pt3['y'] - $direction['y'] * 3];
 
-        return 'LINESTRING(' . $pt1['x'] . ' ' . $pt1['y'] . ',' .
-            $pt2['x'] . ' ' . $pt2['y'] . ',' .
-            $pt3['x'] . ' ' . $pt3['y'] . ',' .
-            $pt4['x'] . ' ' . $pt4['y'] . ',' .
-            $pt1['x'] . ' ' . $pt1['y'] . ')';
+        $vecString = 'LINESTRING(' . $pt1->x . ' ' . $pt1->y . ',' .
+            $pt2->x . ' ' . $pt2->y . ',' .
+            $pt3->x . ' ' . $pt3->y . ',' .
+            $pt4->x . ' ' . $pt4->y . ',' .
+            $pt1->x . ' ' . $pt1->y . ')';
+
+        return $vecString;
+    }
+}
+class Vector{
+    public float $x;
+    public float $y;
+
+    public function __construct(float $x=0, float $y=0, bool $normalized = false)
+    {
+        if(!$normalized) {
+            $this->x = $x;
+            $this->y = $y;
+        }
+        else{
+            $longueur = sqrt($x*$x + $y*$y);
+            $this->x = $x/$longueur;
+            $this->y = $y/$longueur;
+        }
+    }
+
+    public function normalized(){
+        $longueur = sqrt($this->x*$this->x + $this->y*$this->y);
+        return new Vector($this->x/$longueur, $this->y/$longueur);
+    }
+
+    public function normalize(){
+        $longueur = sqrt($this->x*$this->x + $this->y*$this->y);
+
+        $this->x = $this->x/$longueur;
+        $this->y = $this->y/$longueur;
     }
 }
 
