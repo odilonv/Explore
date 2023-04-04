@@ -2,6 +2,8 @@
 namespace App\PlusCourtChemin\Controleur;
 
 require '../vendor/autoload.php';
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
@@ -20,6 +22,7 @@ use App\PlusCourtChemin\Controleur\ControleurUtilisateur;
 
 class RouteurURL
 {
+    
     public static function traiterRequete() {
         $requete = Request::createFromGlobals();
         $routes = new RouteCollection();
@@ -134,7 +137,15 @@ class RouteurURL
 
 
 
-
+        // $twigLoader = new FilesystemLoader(__DIR__ . '/../vue/');
+        // $twig = new Environment(
+        //     $twigLoader,
+        //     [
+        //         'autoescape' => 'html',
+        //         'strict_variables' => true
+        //     ]
+        // );
+        // Conteneur::ajouterService("twig", $twig);
 
 
         $contexteRequete = (new RequestContext())->fromRequest($requete);
