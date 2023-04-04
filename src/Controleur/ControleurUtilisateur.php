@@ -15,9 +15,9 @@ use Symfony\Component\HttpFoundation\Response;
 class ControleurUtilisateur extends ControleurGenerique
 {
 
-    public static function afficherErreur($errorMessage = "", $controleur = ""): void
+    public static function afficherErreur($errorMessage = "", $controleur = ""): Response
     {
-        parent::afficherErreur($errorMessage, "utilisateur");
+        return parent::afficherErreur($errorMessage, "utilisateur");
     }
 
 
