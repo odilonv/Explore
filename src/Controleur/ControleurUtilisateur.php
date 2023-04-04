@@ -9,6 +9,7 @@ use App\PlusCourtChemin\Lib\MotDePasse;
 use App\PlusCourtChemin\Lib\VerificationEmail;
 use App\PlusCourtChemin\Modele\DataObject\Utilisateur;
 use App\PlusCourtChemin\Modele\Repository\UtilisateurRepository;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class ControleurUtilisateur extends ControleurGenerique
@@ -37,7 +38,7 @@ class ControleurUtilisateur extends ControleurGenerique
         ]);
     }
 
-    public static function afficherDetail($login = null): Response
+    public static function afficherDetail($login = null): RedirectResponse
     {
         if ($login != null) {
             $login = $_REQUEST['login'];
@@ -58,7 +59,7 @@ class ControleurUtilisateur extends ControleurGenerique
         }
     }
 
-    public static function supprimer():Response
+    public static function supprimer(): RedirectResponse
     {
         if (isset($_REQUEST['login'])) {
             $login = $_REQUEST['login'];
@@ -87,7 +88,7 @@ class ControleurUtilisateur extends ControleurGenerique
         ]);
     }
 
-    public static function creerDepuisFormulaire(): Response
+    public static function creerDepuisFormulaire(): RedirectResponse
     {
         if (
             isset($_REQUEST['login']) && isset($_REQUEST['prenom']) && isset($_REQUEST['nom'])
@@ -126,7 +127,7 @@ class ControleurUtilisateur extends ControleurGenerique
         }
     }
 
-    public static function afficherFormulaireMiseAJour($login = null): Response
+    public static function afficherFormulaireMiseAJour($login = null): RedirectResponse
     {
         if ($login != null) {
             $login = $_REQUEST['login'];
@@ -163,7 +164,7 @@ class ControleurUtilisateur extends ControleurGenerique
 
 
     // Ajouter tous les parametres dans la définition
-    public static function mettreAJour(): Response
+    public static function mettreAJour(): RedirectResponse
     {
         if (!(isset($_REQUEST['login']) && isset($_REQUEST['prenom']) && isset($_REQUEST['nom'])
             && isset($_REQUEST['mdp']) && isset($_REQUEST['mdp2']) && isset($_REQUEST['mdpAncien'])
@@ -232,7 +233,7 @@ class ControleurUtilisateur extends ControleurGenerique
         ]);
     }
 
-    public static function connecter(): Response
+    public static function connecter(): RedirectResponse
     {
         if (!(isset($_REQUEST['login']) && isset($_REQUEST['mdp']))) {
             MessageFlash::ajouter("danger", "Login ou mot de passe manquant.");
@@ -262,7 +263,7 @@ class ControleurUtilisateur extends ControleurGenerique
         return ControleurUtilisateur::rediriger( "afficherDetail", ["login" => $_REQUEST["login"]]);
     }
 
-    public static function deconnecter(): Response
+    public static function deconnecter(): RedirectResponse
     {
         if (!ConnexionUtilisateur::estConnecte()) {
             MessageFlash::ajouter("danger", "Utilisateur non connecté.");
@@ -273,7 +274,7 @@ class ControleurUtilisateur extends ControleurGenerique
         return ControleurUtilisateur::rediriger( "afficherListe");
     }
 
-    public static function validerEmail(): Response
+    public static function validerEmail(): RedirectResponse
     {
         if (isset($_REQUEST['login']) && isset($_REQUEST['nonce'])) {
             $succesValidation = VerificationEmail::traiterEmailValidation($_REQUEST["login"], $_REQUEST["nonce"]);
