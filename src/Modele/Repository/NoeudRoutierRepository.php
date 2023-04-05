@@ -145,8 +145,9 @@ class NoeudRoutierRepository extends AbstractRepository
         $temp = Utils::getDuree();
 
         $requeteDist = <<<SQL
-            select gid, latitude, longitude, st_distancesphere(geom, :geomGoal) / 1000 as distanceFromGoal
+            select gid, latitude, longitude, st_distancesphere(geom, :geomGoal) / 1000 as distanceFromGoal, gidvoisin, gidtr as troncon, longueur
             from noeud_routier nr
+            join voisins v on v.gidDepart=gid
             where st_intersects(:areaGeom, geom);
         SQL;
 
@@ -156,10 +157,11 @@ class NoeudRoutierRepository extends AbstractRepository
                                 'areaGeom' => $area]);
 
         $noeudsDist = [];
-        $result = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
-        foreach($result as $infos){
+        $result = $pdoStatement->fetchAll(PDO::FETCH_ASSOC | PDO::FETCH_GROUP);
+        foreach($result as $key=>$lstNoeuds){
+            $infos = $lstNoeuds[0];
             $dist = $infos['distancefromgoal'];
-            $gid = $infos['gid'];
+            $gid = $key;
             $noeud = new NoeudStar($gid, ['latitude' => $infos['latitude'], 'longitude' => $infos['longitude']], $dist);
             $noeudsDist[$gid] = $noeud;
             $noeud->setPrioQ($starQueue);
@@ -168,21 +170,9 @@ class NoeudRoutierRepository extends AbstractRepository
         Utils::log("(getForStar) troisième traitement: " . Utils::getDuree()-$temp);
         $temp = Utils::getDuree();
 
-        // regarder si st_x est exécuté pour chaque ligne dans la requete (l'optimiseur doit s'en  occuper jpense)
-        $requeteSQL = <<<SQL
-        select gidDepart, gidvoisin as gidvoisin, gidtr as troncon, longueur
-        from voisins v 
-        join noeud_routier nrA on nrA.gid=v.giddepart
-        where st_intersects(:areaGeom, geom);
-        SQL;
-
-        $pdoStatement = $pdo->prepare($requeteSQL);
-        $pdoStatement->execute(['areaGeom' => $area]);
-
-        $result = $pdoStatement->fetchAll(PDO::FETCH_ASSOC | PDO::FETCH_GROUP);
-        foreach ($result as $key => $infos) {
-            foreach ($infos as $voisin) {
-                if (isset($noeudsDist[$key]) && isset($noeudsDist[$voisin['gidvoisin']])) {
+        foreach ($result as $key=>$lstNoeuds){
+            foreach ($lstNoeuds as $voisin){
+                if(isset($noeudsDist[$voisin['gidvoisin']])) {
                     $noeudsDist[$key]->addVoisin($noeudsDist[$voisin['gidvoisin']], $voisin['longueur'], $voisin['troncon']);
                 }
             }

@@ -20,6 +20,17 @@ class NoeudStar
     private float $distanceFin;
     private float $valeurFinal = PHP_FLOAT_MAX;
 
+    private EtatNoeud $state = EtatNoeud::PAUSE;
+
+    /**
+     * @return EtatNoeud
+     */
+    public function getState(): EtatNoeud
+    {
+        return $this->state;
+    }
+
+
     /* @var double[] $coords*/
     public function __construct(string $gid, array $coords, float $distanceFin)
     {
@@ -93,6 +104,7 @@ class NoeudStar
     // methode appellé depuis les autres noeuds
     public function recalculer(float $nouvelleValeurDepuisVoisin, NoeudStar $voisin){
         if($this->distanceDebut == PHP_FLOAT_MAX){
+            $this->state = EtatNoeud::POSSIBLE;
             $this->prioQ->insert($this);
             $this->distanceDebut = $nouvelleValeurDepuisVoisin;
             $this->precedentVoisin = $voisin;
@@ -102,7 +114,7 @@ class NoeudStar
             $this->distanceDebut = $nouvelleValeurDepuisVoisin;
             $this->precedentVoisin = $voisin;
             foreach ($this->noeudsVoisins as $infos) {
-                if($this->noeudVoisinsAvisiter[$voisin->gid])
+                if($this->noeudVoisinsAvisiter[$voisin->gid] && $infos['voisin']->getState==EtatNoeud::POSSIBLE)
                 $infos['voisin']->recalculer($this->distanceDebut + $infos['distance'], $this);
             }
         }
@@ -114,6 +126,7 @@ class NoeudStar
     }
 
     public function selectionner(){
+        $this->state = EtatNoeud::VERIFIE;
         $this->valeurFinal = $this->distanceDebut + $this->distanceFin;
         foreach ($this->noeudsVoisins as $infos) {
             $infos['voisin']->verouiller($this->gid);
