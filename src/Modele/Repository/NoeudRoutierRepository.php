@@ -145,7 +145,7 @@ class NoeudRoutierRepository extends AbstractRepository
         $temp = Utils::getDuree();
 
         $requeteDist = <<<SQL
-            select gid, latitude, longitude, st_distancesphere(geom, :geomGoal) / 1000 as distanceFromGoal, gidvoisin, gidtr as troncon, longueur
+            select gid, latitude, longitude, st_distance(geom, :geomGoal) / 1000 as distanceFromGoal, gidvoisin, gidtr as troncon, longueur
             from noeud_routier nr
             join voisins v on v.gidDepart=gid
             where st_intersects(:areaGeom, geom);
