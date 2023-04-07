@@ -1,5 +1,5 @@
 <?php
-namespace App\PlusCourtChemin\Controleur;
+namespace Explore\Controleur;
 
 
 use Explore\Configuration\ConfigurationBDDPostgreSQL;
@@ -8,7 +8,7 @@ use Explore\Modele\Repository\UtilisateurRepository;
 use Explore\Service\UtilisateurService;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
-require '../vendor/autoload.php';
+use Symfony\Component\HttpKernel\Controller\ContainerControllerResolver;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,8 +25,6 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\Generator\UrlGenerator;
 use Explore\Lib\Conteneur;
 use Explore\Controleur\ControleurUtilisateur;
 
@@ -176,7 +174,6 @@ class RouteurURL
 
         $utilisateurRepositoryService = $conteneur->register('utilisateur_repository',UtilisateurRepository::class);
         $utilisateurRepositoryService->setArguments([new Reference('connexion_base')]);
-
 
         $utilisateurService = $conteneur->register('utilisateur_service', UtilisateurService::class);
         $utilisateurService->setArguments([new Reference('utilisateur_repository')]);

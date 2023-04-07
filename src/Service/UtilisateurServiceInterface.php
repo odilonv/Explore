@@ -14,6 +14,11 @@ interface UtilisateurServiceInterface
     /**
      * @throws ServiceException
      */
+    public function recupererListeUtilisateur($autoriserNull = true);
+
+    /**
+     * @throws ServiceException
+     */
     public function recupererUtilisateur($idUtilisateur, $autoriserNull = true);
 
     /**

@@ -3,12 +3,10 @@
 namespace Explore\Controleur;
 
 
-use http\Env\Response;
 use Explore\Lib\MessageFlash;
 use Explore\Lib\PlusCourtChemin;
 use Explore\Modele\DataObject\NoeudCommune;
 use Explore\Modele\Repository\NoeudCommuneRepository;
-use Explore\Repository\NoeudRoutierRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 

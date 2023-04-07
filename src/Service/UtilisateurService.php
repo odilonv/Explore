@@ -4,7 +4,7 @@ namespace Explore\Service;
 
 use Explore\Lib\ConnexionUtilisateur;
 use Explore\Lib\MotDePasse;
-use Explore\Lib\vieux\Utilisateur;
+use Explore\Modele\DataObject\Utilisateur;
 use Explore\Modele\Repository\UtilisateurRepository;
 use Explore\Service\Exception\ServiceException;
 
@@ -20,7 +20,8 @@ class UtilisateurService implements UtilisateurServiceInterface
     /**
      * @throws ServiceException
      */
-    public function creerUtilisateur($login, $password, $adresseMail, $profilePictureData) {
+    public function creerUtilisateur($login, $password, $adresseMail, $profilePictureData): void
+    {
         if (strlen($login) < 4 || strlen($login) > 20) {
             throw new ServiceException("Le login doit être compris entre 4 et 20 caractères!");
         }
@@ -68,7 +69,7 @@ class UtilisateurService implements UtilisateurServiceInterface
      * @throws ServiceException
      */
     public function recupererUtilisateur($idUtilisateur, $autoriserNull = true) {
-        $utilisateur = $this->utilisateurRepository->get($idUtilisateur);
+        $utilisateur = $this->utilisateurRepository->recupererParClePrimaire($idUtilisateur);
         if(!$autoriserNull && $utilisateur!=null) {
             throw new ServiceException('L\'utilisateur n\'existe pas !');
         }
@@ -78,7 +79,23 @@ class UtilisateurService implements UtilisateurServiceInterface
     /**
      * @throws ServiceException
      */
-    public function connecterUtilisateur($login, $password){
+    public function recupererListeUtilisateur($autoriserNull = true)
+    {
+        $utilisateurs = $this->utilisateurRepository->recuperer();
+        if(!$autoriserNull && $utilisateurs!=null) {
+            throw new ServiceException('L\'utilisateur n\'existe pas !');
+        }
+        else{
+            return $utilisateurs;
+        }
+
+    }
+
+    /**
+     * @throws ServiceException
+     */
+    public function connecterUtilisateur($login, $password): void
+    {
         if ($login==null ||  $password==null) {
             throw new ServiceException("Login ou mot de passe manquant.");
         }
@@ -99,7 +116,8 @@ class UtilisateurService implements UtilisateurServiceInterface
     /**
      * @throws ServiceException
      */
-    public function deconnecterUtilisateur(){
+    public function deconnecterUtilisateur(): void
+    {
         if (!ConnexionUtilisateur::estConnecte()) {
             throw new ServiceException("Utilisateur non connecté.");
         }

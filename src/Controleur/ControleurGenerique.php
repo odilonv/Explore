@@ -4,8 +4,11 @@ namespace Explore\Controleur;
 
 use Explore\Lib\Conteneur;
 use Explore\Lib\MessageFlash;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class ControleurGenerique {
 
@@ -19,40 +22,32 @@ class ControleurGenerique {
         return new Response($corpsReponse);
     }
 
-    // https://stackoverflow.com/questions/768431/how-do-i-make-a-redirect-in-php
     public static function rediriger($route, $parametres=[]) : RedirectResponse
     {
-
-        /*$queryString = [];
-        if ($action != "") {
-            $queryString[] = "action=" . rawurlencode($action);
-        }
-        if ($controleur != "") {
-            $queryString[] = "controleur=" . rawurlencode($controleur);
-        }
-        foreach ($query as $name => $value) {
-            $name = rawurldecode($name);
-            $value = rawurldecode($value);
-            $queryString[] = "$name=$value";
-        }
-        $url = "Location: ./controleurFrontal.php?" . join("&", $queryString);
-        */
-
-        $generateur = Conteneur::recupererService("generateur");
-        $url = "Location: ".$generateur->generate($route,$parametres);
-        header($url);
+        $gen = Conteneur::recupererService("generateur");
+        $url = $gen->generate($route, $parametres);
         return new RedirectResponse($url);
-        //exit();
 
     }
 
     public static function afficherErreur($errorMessage = "", $statusCode = 400): Response
     {
-        $reponse = ControleurGenerique::afficherVue('vueGenerale.php', [
-            "pagetitle" => "Problème",
-            "cheminVueBody" => "erreur.php",
-            "errorMessage" => $errorMessage
-        ]);
+        try {
+            $reponse = ControleurGenerique::afficherVue('vueGenerale.php', [
+                "pagetitle" => "Problème",
+                "cheminVueBody" => "erreur.php",
+                "errorMessage" => $errorMessage
+            ]);
+            // 3 méthodes qui lèvent des exceptions
+        } catch (MethodNotAllowedException $exception) {
+            // Remplacez xxx par le bon code d'erreur
+            $reponse = ControleurGenerique::afficherErreur($exception->getMessage(), 405);
+        } catch (LogicException $exception) {
+            // Remplacez xxx par le bon code d'erreur
+            $reponse = ControleurGenerique::afficherErreur($exception->getMessage(), 400);
+        } catch (ResourceNotFoundException $exception) {
+            $reponse = ControleurGenerique::afficherErreur($exception->getMessage(),404) ;
+        }
 
         $reponse->setStatusCode($statusCode);
         return $reponse;
