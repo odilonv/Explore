@@ -2,8 +2,13 @@
 namespace App\PlusCourtChemin\Controleur;
 
 require '../vendor/autoload.php';
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\UrlHelper;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\Routing\Exception\NoConfigurationException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
@@ -113,6 +118,22 @@ class RouteurURL
         $routes->add("requeteVille", $route);
 
 
+        $route = new Route("/getPlusCourt/{depart}/{arrivee}", [
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurNoeudCommune::requetePlusCourt"
+        ]);
+        $routes->add("requetePlusCourt", $route);
+
+
+
+        // $twigLoader = new FilesystemLoader(__DIR__ . '/../vue/');
+        // $twig = new Environment(
+        //     $twigLoader,
+        //     [
+        //         'autoescape' => 'html',
+        //         'strict_variables' => true
+        //     ]
+        // );
+        // Conteneur::ajouterService("twig", $twig);
 
 
         $contexteRequete = (new RequestContext())->fromRequest($requete);
@@ -123,33 +144,30 @@ class RouteurURL
         Conteneur::ajouterService("assistant",$assistantUrl);
         Conteneur::ajouterService("generateur",$generateurUrl);
 
+        try {
+            $associateurUrl = new UrlMatcher($routes, $contexteRequete);
+            $donneesRoute = $associateurUrl->match($requete->getPathInfo());
+            $requete->attributes->add($donneesRoute);
 
-        $associateurUrl = new UrlMatcher($routes, $contexteRequete);
-        $donneesRoute = $associateurUrl->match($requete->getPathInfo());
-        /*
-         * @throws NoConfigurationException  If no routing configuration could be found
-         * @throws ResourceNotFoundException If the resource could not be found
-         * @throws MethodNotAllowedException If the resource was found but the request method is not allowed
-         */
+            $resolveurDeControleur = new ControllerResolver();
+            $controleur = $resolveurDeControleur->getController($requete);
 
+            $resolveurDArguments = new ArgumentResolver();
+            $arguments = $resolveurDArguments->getArguments($requete, $controleur);
 
-        //print_r($donneesRoute);
-
-        $requete->attributes->add($donneesRoute);
-
-        $resolveurDeControleur = new ControllerResolver();
-        $controleur = $resolveurDeControleur->getController($requete);
-        /*
-         * @throws \LogicException If a controller was found based on the request but it is not callable
-         */
-
-        $resolveurDArguments = new ArgumentResolver();
-        $arguments = $resolveurDArguments->getArguments($requete, $controleur);
-        /*
-        *  @throws \RuntimeException When no value could be provided for a required argument
-        */
-
-        $rep = call_user_func_array($controleur, $arguments);
+            $reponse = call_user_func_array($controleur, $arguments);
+        }
+        catch (ResourceNotFoundException $exception) {
+            $reponse = ControleurGenerique::afficherErreur($exception->getMessage(), 404);
+        }
+        catch (MethodNotAllowedException $exception) {
+            // Remplacez xxx par le bon code d'erreur
+            $reponse = ControleurGenerique::afficherErreur($exception->getMessage(), 405);
+        }
+        catch (\Exception $exception) {
+            $reponse = ControleurGenerique::afficherErreur($exception->getMessage()) ;
+        }
+        $reponse->send();
 
     }
 

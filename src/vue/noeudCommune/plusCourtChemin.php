@@ -43,7 +43,7 @@
         </label>
 
 
-        <?php if (!empty($_POST)) { ?>
+        <?php if (!empty($nomCommuneDepart) && !empty($nomCommuneArrivee)) { ?>
             <p>
                 Le plus court chemin entre <?= $nomCommuneDepart ?> et <?= $nomCommuneArrivee ?> mesure <?= $distance ?>km.
             </p>
@@ -51,4 +51,3 @@
     </form>
 </div>
 <script defer type="text/javascript" src="../ressources/js/search.js"></script>
-

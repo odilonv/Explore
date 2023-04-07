@@ -30,7 +30,6 @@ $assistantUrl = Conteneur::recupererService("assistant");
 </head>
 <body>
 
-
 <div id="mapContainer"></div>
 <div id="logo">
     <h1>Explore</h1>
