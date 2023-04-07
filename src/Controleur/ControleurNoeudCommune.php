@@ -79,12 +79,12 @@ class ControleurNoeudCommune extends ControleurGenerique
             // $distance = $pcc->calculer();
 
             $dernierNoeud = $pcc->calculer3();
-            $multiline = [];
-            foreach ($dernierNoeud->refaireChemin() as $noeud){
-                $coords = $noeud->getCoords();
-                $multiline[] = ['lat'=>$coords['latitude'], 'lng'=>$coords['longitude']];
+            if($dernierNoeud == null){
+                $distance = -1;
             }
-            $distance = $dernierNoeud->getDistanceDebut();
+            else{
+                $distance = $dernierNoeud->getDistanceDebut();
+            }
 
             $parametres["nomCommuneDepart"] = $nomCommuneDepart;
             $parametres["nomCommuneArrivee"] = $nomCommuneArrivee;

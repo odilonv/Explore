@@ -43,11 +43,16 @@
         </label>
 
 
-        <?php if (!empty($nomCommuneDepart) && !empty($nomCommuneArrivee)) { ?>
-            <p>
-                Le plus court chemin entre <?= $nomCommuneDepart ?> et <?= $nomCommuneArrivee ?> mesure <?= $distance ?>km.
-            </p>
-        <?php } ?>
+        <?php
+        if (!empty($nomCommuneDepart) && !empty($nomCommuneArrivee)) {
+            if($distance<0){
+                echo "<p> Il n'existe pas de trajet entre $nomCommuneDepart et $nomCommuneArrivee </p>";
+            }
+            else{
+                echo "<p>Le plus court chemin entre $nomCommuneDepart et $nomCommuneArrivee mesure $distance km.</p>";
+            }
+        }
+        ?>
     </form>
 </div>
 <script defer type="text/javascript" src="../ressources/js/search.js"></script>
