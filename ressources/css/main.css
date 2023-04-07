@@ -353,23 +353,32 @@ a{
 }
 
 .autocompletion{
+    left: 25px;
     position: absolute;
     transform: translateY(0px) translateX(9%);
     z-index: 2;
     display: flex;
     flex-direction: column;
+    border-radius: 30px;
 
 }
 
 .autocompletion p {
     margin: 0 0 0 0;
     padding: 0 5px 0 5px;
-    background-color: whitesmoke;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    max-width: 180px;
+    width: 170px;
     max-height: 30px;
+}
+
+.autocompletion p.even {
+    background-color: white;
+}
+
+.autocompletion p.odd {
+    background-color: #f7f7f7;
 }
 
 

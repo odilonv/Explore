@@ -29,10 +29,13 @@ addDest.textContent = 'Ajouter une destination';
 
 contain.style.height = '29%';
 
+/*
 nomCommuneArrivee.addEventListener('click', addSearchInput);
 
 function addSearchInput() {
     nomCommuneArrivee.removeEventListener('click', addSearchInput);
+
+ */
 
     insideDivide.appendChild(circles);
     lineTravel.appendChild(circleAdd);
@@ -41,45 +44,97 @@ function addSearchInput() {
 
     addDest.addEventListener('click', addInputDest);
 
-}
 
+let oldLine = lineTravel;
+let oldInput = nomCommuneArrivee;
+let oldIconLocation = iconLocation;
+let oldCircle = circleAdd;
 let indexInput = 3
 function addInputDest() {
-    nomCommuneArrivee.placeholder = 'Un point d\'arrêt ?';
-    nomCommuneArrivee.classList.remove('nomCommuneArrivee');
 
-    iconLocation.src = '../ressources/img/icons/circle-solid.svg';
-    iconLocation.classList.add('iconsLocationStart');
-    iconLocation.classList.remove('iconsLocation');
+    if(indexInput <= 10)
+    {
+        oldInput.placeholder = 'Un point d\'arrêt ?';
+        oldInput.classList.remove('nomCommuneArrivee');
 
-    circleAdd.classList.remove('iconsLocationStart');
-    circleAdd.classList.add('iconsLocation');
-    circleAdd.src = '../ressources/img/icons/location-dot-solid.svg';
+        oldIconLocation.src = '../ressources/img/icons/circle-solid.svg';
+        oldIconLocation.classList.add('iconsLocationStart');
+        oldIconLocation.classList.remove('iconsLocation');
 
-    const input = document.createElement('input');
-    input.classList.add('nomCommuneArrivee');
-    input.placeholder = 'Où allons-nous ?';
+        oldCircle.classList.remove('iconsLocationStart');
+        oldCircle.classList.add('iconsLocation');
+        oldCircle.src = '../ressources/img/icons/location-dot-solid.svg';
 
-
-
-    const autocompletion = document.createElement('div');
-    autocompletion.classList.add("autocompletion");
-    autocompletion.id = "autocompletion"+indexInput;
-    //indexInput = index de la barre de recherche
-    input.id = "ville"+indexInput;
+        const input = document.createElement('input');
+        input.classList.add('nomCommuneArrivee');
+        input.placeholder = 'Où allons-nous ?';
 
 
-    document.querySelector('.addDest').remove();
-    searchButton.remove();
 
-    lineTravel.appendChild(autocompletion);
-    lineTravel.appendChild(input);
-    lineTravel.appendChild(searchButton);
+        const autocompletion = document.createElement('div');
+        autocompletion.classList.add("autocompletion");
+        autocompletion.id = "autocompletion"+indexInput;
+        //indexInput = index de la barre de recherche
+        input.id = "ville"+indexInput;
 
 
-    let i = indexInput;
-    input.addEventListener("input",()=>{autoCompletion(input,i)});
-    indexInput++;
+        document.querySelector('.addDest').remove();
+
+        const newButton = document.createElement('button');
+        newButton.classList.add('addDest');
+        newButton.textContent = 'Ajouter une destination';
+        newButton.addEventListener('click', addInputDest);
+
+        searchButton.remove();
+
+        oldLine.appendChild(autocompletion);
+        oldLine.appendChild(input);
+        oldLine.appendChild(searchButton);
+
+        const newCircles = document.createElement('div');
+        newCircles.classList.add('circles');
+
+        for (let i = 0; i < 3; i++) {
+            const newCircle = circleTemplate.cloneNode(true);
+            newCircles.appendChild(newCircle);
+        }
+
+        const newCircleAdd = document.createElement('img');
+        newCircleAdd.src = '../ressources/img/icons/circle-regular.svg';
+        newCircleAdd.classList.add('iconsLocationStart');
+
+
+        insideDivide.appendChild(newCircles);
+
+        const newLineTravel = document.createElement('div');
+        newLineTravel.classList.add('underlineTravel');
+
+        newLineTravel.appendChild(newCircleAdd);
+
+        newLineTravel.appendChild(newButton);
+        insideDivide.appendChild(newLineTravel);
+
+        oldLine = newLineTravel;
+        oldInput = input;
+        oldIconLocation = oldCircle;
+        oldCircle = newCircleAdd;
+
+
+
+
+        let i = indexInput;
+        input.addEventListener("input",()=>{autoCompletion(input,i)});
+        indexInput++;
+        if(indexInput > 10)
+        {
+
+            newCircleAdd.remove()
+            newButton.remove()
+            newCircles.remove()
+            newLineTravel.remove()
+        }
+    }
+
 
 }
 
@@ -93,21 +148,29 @@ function afficheVilles(tableau, i) {
 
 
     let autoCompletion = document.getElementById("autocompletion"+i)
+
+    let z = 1;
     for(let ville of tableau)
     {
         let p = document.createElement("p");
         p.innerHTML =ville
+        p.classList.add(z%2 === 1 ? "odd" : "even");
         autoCompletion.appendChild(p);
         p.addEventListener("click", ()=>(completeInput(p,document.getElementById("ville"+i),i)))
+
+
+        z++;
     }
 
+    /*
     if(tableau.length >0)
     {
         autoCompletion.style.border="1px solid grey";
     }
+    */
 
     let tabLen = tableau.length
-    autoCompletion.style.transform = "translateY("+((27*tabLen)/2+(15))+"px) translateX(9%)";
+    autoCompletion.style.transform = "translateY("+((25*tabLen)/2+(15))+"px) translateX(5%)";
 
 
 }
