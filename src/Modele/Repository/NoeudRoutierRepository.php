@@ -110,7 +110,6 @@ class NoeudRoutierRepository extends AbstractRepository
 
     // retourne ce qu'il faut pour pouvoir utiliser a star
     public function getForStar(string $gidDep, string $gidArrivee, QueueStar $starQueue){
-        $temp0 = Utils::getDuree();
         $pdo = ConnexionBaseDeDonnees::getPdo();
 
         $requeteXY = <<<SQL
@@ -172,7 +171,6 @@ class NoeudRoutierRepository extends AbstractRepository
                 $starQueue->insert($noeudsDist[$key]);
             }
         }
-        Utils::log("(getForStar) temps total: " . Utils::getDuree()-$temp0);
     }
 
     public function genererChaineZone(array $startPoint, array $endPoint){

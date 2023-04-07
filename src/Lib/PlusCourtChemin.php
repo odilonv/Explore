@@ -18,43 +18,19 @@ class PlusCourtChemin
     }
 
     public function calculer3():?NoeudStar{
-        Utils::startTimer();
         $queuStar = new QueueStar();
         (new NoeudRoutierRepository())->getForStar($this->noeudRoutierDepartGid, $this->noeudRoutierArriveeGid, $queuStar);
 
-        Utils::log("total getForStar() : " . Utils::getDuree());
-        $temp = Utils::getDuree();
-
-
-        $avg1 = 0;
-        $avg2 = 0;
-        $avg3 = 0;
-
         $dernierNoeud = null;
         do{
-            $t = Utils::getDuree();
-
             $dernierNoeud = $queuStar->getTop();
-            $t2 = Utils::getDuree();
-            $avg1 += $t2-$t;
 
             $dernierNoeud->selectionner();
 
-            $t = Utils::getDuree();
-            $avg2 += $t-$t2;
-
             $queuStar->removeTop();
-            $avg3 += Utils::getDuree()-$t;
         }
         while($queuStar->getSize()>0 && $dernierNoeud->getGid() != $this->noeudRoutierArriveeGid);
 
-        Utils::log(
-            "total étape 1: " . ($avg1) . "<br>" .
-            "total étape 2: " . ($avg2) . "<br>" .
-            "total étape 3: " . ($avg3));
-
-        Utils::log("temps parcours queue: " . Utils::getDuree()-$temp);
-        Utils::log("temps d'utilisation de calculer(): " . Utils::getDuree());
         return $dernierNoeud->getGid()==$this->noeudRoutierArriveeGid?$dernierNoeud:null;
     }
 
