@@ -7,6 +7,7 @@ use App\PlusCourtChemin\Lib\PlusCourtChemin;
 use App\PlusCourtChemin\Modele\DataObject\NoeudCommune;
 use App\PlusCourtChemin\Modele\Repository\NoeudCommuneRepository;
 use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
+use http\Env\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -139,9 +140,9 @@ class ControleurNoeudCommune extends ControleurGenerique
         echo json_encode($parametres);
     }
 
-    public static function requeteVille($ville)
+    public static function requeteVille($ville):Response
     {
-        ControleurNoeudCommune::afficherVue('noeudCommune/requeteVille.php', [
+        return ControleurNoeudCommune::afficherVue('noeudCommune/requeteVille.php', [
             "ville" => $ville,
             "pagetitle" => "requeteVille"
         ]);

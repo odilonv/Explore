@@ -281,6 +281,12 @@ document.getElementById("mapContainer").addEventListener("click",()=>{for(let i=
     videVille(i)
 }})
 
+/*
+document.body.addEventListener("click",()=>{for(let i=1;i<=document.getElementsByClassName("autocompletion").length;i++){
+    videVille(i)
+}})
+
+ */
 
 
 

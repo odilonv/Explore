@@ -125,6 +125,10 @@ class RouteurURL
 
 
 
+
+
+
+
         // $twigLoader = new FilesystemLoader(__DIR__ . '/../vue/');
         // $twig = new Environment(
         //     $twigLoader,
@@ -136,6 +140,7 @@ class RouteurURL
         // Conteneur::ajouterService("twig", $twig);
 
 
+
         $contexteRequete = (new RequestContext())->fromRequest($requete);
         //print_r($contexteRequete);
 
@@ -143,6 +148,10 @@ class RouteurURL
         $generateurUrl = new UrlGenerator($routes, $contexteRequete);
         Conteneur::ajouterService("assistant",$assistantUrl);
         Conteneur::ajouterService("generateur",$generateurUrl);
+
+        $associateurUrl = new UrlMatcher($routes, $contexteRequete);
+        $donneesRoute = $associateurUrl->match($requete->getPathInfo());
+        $requete->attributes->add($donneesRoute);
 
         try {
             $associateurUrl = new UrlMatcher($routes, $contexteRequete);
@@ -154,6 +163,7 @@ class RouteurURL
 
             $resolveurDArguments = new ArgumentResolver();
             $arguments = $resolveurDArguments->getArguments($requete, $controleur);
+
 
             $reponse = call_user_func_array($controleur, $arguments);
         }
@@ -168,6 +178,7 @@ class RouteurURL
             $reponse = ControleurGenerique::afficherErreur($exception->getMessage()) ;
         }
         $reponse->send();
+
 
     }
 
