@@ -3,6 +3,7 @@
 namespace Explore\Lib;
 
 use Explore\Modele\Repository\NoeudRoutierRepository;
+use Explore\Modele\DataObject\aStar\NoeudStar;
 
 class PlusCourtChemin
 {
@@ -15,17 +16,18 @@ class PlusCourtChemin
     ) {
     }
 
-    public function calculer3(){
+    public function calculer3():NoeudStar{
         $prio = (new NoeudRoutierRepository())->getForStar($this->noeudRoutierDepartGid, $this->noeudRoutierArriveeGid);
 
         $dernierNoeud = null;
-        while($prio->getSize()>0 && $prio->getTop()->getGid() != $this->noeudRoutierArriveeGid){
+        do{
             $dernierNoeud = $prio->getTop();
             $dernierNoeud->selectionner();
 
             $prio->removeTop();
         }
-        return $dernierNoeud->getDistanceDebut();
+        while($prio->getSize()>0 && $dernierNoeud->getGid() != $this->noeudRoutierArriveeGid);
+        return $dernierNoeud;
     }
 
     // liste qui associe pour chaque pts, la distance la plus courte qui le relie au point d'origine

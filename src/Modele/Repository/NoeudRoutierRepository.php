@@ -157,7 +157,7 @@ class NoeudRoutierRepository extends AbstractRepository
 
         $starQueue = new QueueStar();
         $requeteDist = <<<SQL
-            select gid, st_distancesphere(geom, :geomGoal) / 1000 as distanceFromGoal
+            select gid, latitude, longitude, st_distancesphere(geom, :geomGoal) / 1000 as distanceFromGoal
             from noeud_routier nr
             where st_intersects(:areaGeom, geom);
         SQL;
@@ -172,7 +172,7 @@ class NoeudRoutierRepository extends AbstractRepository
         foreach($result as $infos){
             $dist = $infos['distancefromgoal'];
             $gid = $infos['gid'];
-            $noeud = new NoeudStar($gid, $dist);
+            $noeud = new NoeudStar($gid, ['latitude' => $infos['latitude'], 'longitude' => $infos['longitude']], $dist);
             $noeudsDist[$gid] = $noeud;
             $noeud->setPrioQ($starQueue);
         }

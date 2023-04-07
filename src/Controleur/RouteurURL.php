@@ -1,5 +1,5 @@
 <?php
-namespace Explore\Controleur;
+namespace App\PlusCourtChemin\Controleur;
 
 
 use Explore\Configuration\ConfigurationBDDPostgreSQL;
@@ -8,14 +8,21 @@ use Explore\Modele\Repository\UtilisateurRepository;
 use Explore\Service\UtilisateurService;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+require '../vendor/autoload.php';
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\UrlHelper;
-use Symfony\Component\HttpKernel\Controller\ContainerControllerResolver;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\Routing\Exception\NoConfigurationException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -133,8 +140,22 @@ class RouteurURL
         $routes->add("plusCourtChemin", $route);
 
 
+        $route = new Route("/getPlusCourt/{depart}/{arrivee}", [
+            "_controller" => "\Explore\Controleur\ControleurNoeudCommune::requetePlusCourt"
+        ]);
+        $routes->add("requetePlusCourt", $route);
 
 
+
+        // $twigLoader = new FilesystemLoader(__DIR__ . '/../vue/');
+        // $twig = new Environment(
+        //     $twigLoader,
+        //     [
+        //         'autoescape' => 'html',
+        //         'strict_variables' => true
+        //     ]
+        // );
+        // Conteneur::ajouterService("twig", $twig);
 
 
         $contexteRequete = (new RequestContext())->fromRequest($request);
