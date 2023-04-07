@@ -125,9 +125,6 @@ class NoeudRoutierRepository extends AbstractRepository
 
         if($coordonnees[0][2] == $gidArrivee){$geomArrivee=$coordonnees[0][3];}else{$geomArrivee=$coordonnees[1][3];}
 
-        Utils::log("(getForStar) premier traitement: " . Utils::getDuree()-$temp0);
-        $temp = Utils::getDuree();
-
         $requeteArea = <<<SQL
         select ST_MakePolygon( ST_GeomFromText(:points, 4326));
         SQL;
@@ -140,9 +137,6 @@ class NoeudRoutierRepository extends AbstractRepository
             ['points' => $points]);
 
         $area = $pdoStatement->fetch()[0];
-
-        Utils::log("(getForStar) deuxième traitement: " . Utils::getDuree()-$temp);
-        $temp = Utils::getDuree();
 
         $requeteDist = <<<SQL
             select gid, latitude, longitude, st_distance(geom, :geomGoal) / 1000 as distanceFromGoal, gidvoisin, gidtr as troncon, longueur
@@ -167,9 +161,6 @@ class NoeudRoutierRepository extends AbstractRepository
             $noeud->setPrioQ($starQueue);
         }
 
-        Utils::log("(getForStar) troisième traitement: " . Utils::getDuree()-$temp);
-        $temp = Utils::getDuree();
-
         foreach ($result as $key=>$lstNoeuds){
             foreach ($lstNoeuds as $voisin){
                 if(isset($noeudsDist[$voisin['gidvoisin']])) {
@@ -181,7 +172,6 @@ class NoeudRoutierRepository extends AbstractRepository
                 $starQueue->insert($noeudsDist[$key]);
             }
         }
-        Utils::log("(getForStar) quatrième traitement: " . Utils::getDuree()-$temp);
         Utils::log("(getForStar) temps total: " . Utils::getDuree()-$temp0);
     }
 
