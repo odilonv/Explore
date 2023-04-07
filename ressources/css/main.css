@@ -345,16 +345,29 @@ a{
     color: black;
 }
 
-#autocompletion{
+.autocompletion{
     position: absolute;
-    transform: translateY(60%) translateX(9%);
+    transform: translateY(0px) translateX(9%);
     z-index: 2;
-}
-#autocompletion p{
-    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+
 }
 
-#autocompletion p:hover, #autocompletion selected{
+.autocompletion p {
+    margin: 0 0 0 0;
+    padding: 0 5px 0 5px;
+    background-color: whitesmoke;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 180px;
+    max-height: 30px;
+}
+
+
+
+.autocompletion p:hover, .autocompletion selected{
     background-color: #ffae9e;
     color:white ;
 }

@@ -25,20 +25,20 @@
 
 
 
-<div class="contain">
+<div class="contain" id="recherche">
     
     <!-- regler le lien du form pour que ça prenne en parametre les inputs-->
     <form autocomplete="off" action="./" class="insideDivide" method="post">
         <label class="underlineTravel">
             <img src="../ressources/img/icons/circle-solid.svg" class="iconsLocationStart">
-            <div id="autocompletion"></div><input id="nomCommuneDepart_id" placeholder="Une ville de départ ? Ex: Montpellier" name="nomCommuneDepart" type="text"></label>
+            <div class="autocompletion" id="autocompletion1"></div><input id="ville1" placeholder="Une ville de départ ? Ex: Montpellier" name="nomCommuneDepart" type="text"></label>
         <div class="circles">
             <img src="../ressources/img/icons/circle-solid.svg" class="circleTransition"><img src="../ressources/img/icons/circle-solid.svg" class="circleTransition">
             <img src="../ressources/img/icons/circle-solid.svg" class="circleTransition">
         </div>
         <label class="underlineTravel">
             <img src="../ressources/img/icons/location-dot-solid.svg" class="iconsLocation">
-            <input placeholder="Où allons-nous ?" type="text" name="nomCommuneArrivee" class="nomCommuneArrivee">
+            <div class="autocompletion" id="autocompletion2"></div><input id="ville2" placeholder="Où allons-nous ?" type="text" name="nomCommuneArrivee" class="nomCommuneArrivee">
             <button type="submit" id='searchButton'value="Calculer"><img src="../ressources/img/icons/location-arrow-solid.svg"></button>
         </label>
 
@@ -51,4 +51,4 @@
     </form>
 </div>
 <script defer type="text/javascript" src="../ressources/js/search.js"></script>
-<script defer type="text/javascript" src="../ressources/js/autocompletion.js"></script>
+
