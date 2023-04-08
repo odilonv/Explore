@@ -101,10 +101,14 @@ class ControleurNoeudCommune extends ControleurGenerique
         }
     }
 
-    public static function requeteVille($ville):Response
+    /**
+     * @throws ServiceException
+     */
+    public function requeteVille($ville) : Response
     {
+        $tab = $this->noeudCommuneService->afficherAutocompletion($ville);
         return ControleurNoeudCommune::afficherVue('noeudCommune/requeteVille.php', [
-            "ville" => $ville,
+            "tab" => $tab,
             "pagetitle" => "requeteVille"
         ]);
     }

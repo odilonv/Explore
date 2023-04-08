@@ -66,11 +66,11 @@ class NoeudCommuneRepository extends AbstractRepository implements NoeudCommuneR
         from noeud_commune
         where nom_comm LIKE :ville_tag LIMIT 5);
         SQL;
-        $pdoStatement = ConnexionBaseDeDonnees::getPdo()->prepare($requeteSQL);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteSQL);
         $pdoStatement->execute(array(
             "ville_tag" => $ville."%"
         ));
-        return $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+        return $pdoStatement->fetchAll($this->connexionBaseDeDonnees->getPdo()::FETCH_ASSOC);
 
     }
 

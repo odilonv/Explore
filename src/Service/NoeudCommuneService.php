@@ -69,12 +69,12 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
             // $distance = $pcc->calculer();
 
             $dernierNoeud = $pcc->calculer3();
-            $multiline = [];
-            foreach ($dernierNoeud->refaireChemin() as $noeud){
-                $coords = $noeud->getCoords();
-                $multiline[] = ['lat'=>$coords['latitude'], 'lng'=>$coords['longitude']];
+            if($dernierNoeud == null){
+                $distance = -1;
             }
-            $distance = $dernierNoeud->getDistanceDebut();
+            else{
+                $distance = $dernierNoeud->getDistanceDebut();
+            }
 
             $parametres["nomCommuneDepart"] = $nomCommuneDepart;
             $parametres["nomCommuneArrivee"] = $nomCommuneArrivee;
@@ -86,6 +86,8 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
         else{
             throw new ServiceException('Veuillez renseigner un point de départ et un point d\'arrivée');
         }
+
+
     }
 
     /**
@@ -104,6 +106,19 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
                 return $noeudCommune;
             }
         }
+    }
+
+    /**
+     * @throws ServiceException
+     */
+    public function afficherAutocompletion($ville){
+        if($ville!=null){
+            return $this->noeudCommuneRepository->getCommune($ville);
+        }
+        else{
+            throw new ServiceException('ville inconnue');
+        }
+
     }
 
     /**

@@ -13,9 +13,8 @@
 
 body {
     height: 100%;
-    width: 50%;
+    width: 100%;
     z-index: -2;
-    max-width: 300px;
 
 
 }
@@ -43,9 +42,7 @@ body {
 
 .contain{
     background: #efeeee;
-    width: 100%;
-    max-width: 300px;
-    min-width: 200px;
+    width: 330px;
     height: 100%;
     position: relative;
     top: 25px;
@@ -312,7 +309,7 @@ footer{
     flex-direction: row;
     color: rgba(15, 22, 33, 0.6);
     bottom: 25px;
-    width: 200px;
+    width: 150px;
 }
 
 @keyframes warning {

@@ -25,4 +25,12 @@ interface NoeudCommuneServiceInterface
      * @throws ServiceException
      */
     public function requetePlusCourt($depart, $arrivee);
+
+    /**
+     * @throws ServiceException
+     */
+    public function afficherAutocompletion($ville);
+
+
+
 }

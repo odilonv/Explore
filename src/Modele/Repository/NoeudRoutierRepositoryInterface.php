@@ -4,6 +4,7 @@ namespace Explore\Modele\Repository;
 
 use Explore\Lib\vieux\CacheNR;
 use Explore\Modele\DataObject\AbstractDataObject;
+use Explore\Modele\DataObject\aStar\QueueStar;
 use Explore\Modele\DataObject\NoeudRoutier;
 
 interface NoeudRoutierRepositoryInterface
@@ -37,7 +38,6 @@ interface NoeudRoutierRepositoryInterface
      */
     public function getInRange(string $geomCentre, float $range): CacheNR;
 
-    public function getForStar(string $gidDep, string $gidArrivee);
 
     public function genererChaineZone(array $startPoint, array $endPoint);
 
@@ -54,5 +54,7 @@ interface NoeudRoutierRepositoryInterface
     public function recupererPar(array $critereSelection, $limit = 200): array;
 
     public function recupererParClePrimaire(string $valeurClePrimaire): ?AbstractDataObject;
+
+    public function getForStar(string $gidDep, string $gidArrivee, QueueStar $starQueue);
 
 }

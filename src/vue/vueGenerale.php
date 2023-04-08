@@ -2,6 +2,7 @@
 
 use Explore\Lib\ConnexionUtilisateur;
 use Explore\Lib\Conteneur;
+use Explore\Lib\Utils;
 use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 
@@ -37,8 +38,8 @@ $assistantUrl = Conteneur::recupererService("assistant");
 
 
     <?php
-            if(\App\PlusCourtChemin\Lib\Utils::$debug){
-                foreach (\App\PlusCourtChemin\Lib\Utils::getLogs() as $log){
+            if(Utils::$debug){
+                foreach (Utils::getLogs() as $log){
                     echo $log . ' <br>';
                 }
             }

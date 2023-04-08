@@ -189,7 +189,7 @@ function requeteAJAX(stringVille,callback,startLoadingAction,endLoadingAction,i)
     startLoadingAction();
 
     //changer url
-    let url = "http://localhost/Explore/web/requeteVille/"+encodeURIComponent(stringVille);
+    let url = "../web/requeteVille/"+encodeURIComponent(stringVille);
     //let url = "Explore/web/requeteVille/" + encodeURIComponent(stringVille);
 
     let requete = new XMLHttpRequest();
