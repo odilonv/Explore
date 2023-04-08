@@ -1,12 +1,16 @@
 <?php
 
-namespace App\PlusCourtChemin\Modele\Repository;
+namespace Explore\Modele\Repository;
 
-use App\PlusCourtChemin\Modele\DataObject\AbstractDataObject;
-use App\PlusCourtChemin\Modele\DataObject\TronconRoute;
+use Explore\Modele\DataObject\AbstractDataObject;
+use Explore\Modele\DataObject\TronconRoute;
 
-class TronconRouteRepository extends AbstractRepository
+class TronconRouteRepository extends AbstractRepository implements TronconRouteRepositoryInterface
 {
+    public function __construct(ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees)
+    {
+        parent::__construct($connexionBaseDeDonnees);
+    }
 
     public function construireDepuisTableau(array $noeudRoutierTableau): TronconRoute
     {

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\PlusCourtChemin\Modele\HTTP;
+namespace Explore\Modele\HTTP;
 
-use App\PlusCourtChemin\Configuration\Configuration;
+use Explore\Configuration\Configuration;
 use Exception;
 
 class Session

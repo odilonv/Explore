@@ -1,13 +1,20 @@
 <?php
 
-namespace App\PlusCourtChemin\Modele\Repository;
+namespace Explore\Modele\Repository;
 
-use App\PlusCourtChemin\Modele\DataObject\AbstractDataObject;
-use App\PlusCourtChemin\Modele\DataObject\NoeudCommune;
-use PDO;
+use Explore\Modele\DataObject\AbstractDataObject;
+use Explore\Modele\DataObject\NoeudCommune;
+use Explore\Modele\Repository\AbstractRepository;
+use Explore\Modele\Repository\ConnexionBaseDeDonneesInterface;
 
-class NoeudCommuneRepository extends AbstractRepository
+class NoeudCommuneRepository extends AbstractRepository implements NoeudCommuneRepositoryInterface
 {
+
+
+    public function __construct(ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees)
+    {
+        parent::__construct($connexionBaseDeDonnees);
+    }
 
     public function construireDepuisTableau(array $noeudRoutierTableau): NoeudCommune
     {

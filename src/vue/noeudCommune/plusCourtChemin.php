@@ -28,7 +28,7 @@
 <div class="contain" id="recherche">
     
     <!-- regler le lien du form pour que ça prenne en parametre les inputs-->
-    <form autocomplete="off" action="./" class="insideDivide" method="post">
+    <form autocomplete="off" id="form" action="./" class="insideDivide" method="post">
         <label class="underlineTravel">
             <img src="../ressources/img/icons/circle-solid.svg" class="iconsLocationStart">
             <div class="autocompletion" id="autocompletion1"></div><input id="ville1" placeholder="Une ville de départ ? Ex: Montpellier" name="nomCommuneDepart" type="text"></label>
@@ -41,13 +41,6 @@
             <div class="autocompletion" id="autocompletion2"></div><input id="ville2" placeholder="Où allons-nous ?" type="text" name="nomCommuneArrivee" class="nomCommuneArrivee">
             <button type="submit" id='searchButton'value="Calculer"><img src="../ressources/img/icons/location-arrow-solid.svg"></button>
         </label>
-
-
-        <?php if (!empty($nomCommuneDepart) && !empty($nomCommuneArrivee)) { ?>
-            <p>
-                Le plus court chemin entre <?= $nomCommuneDepart ?> et <?= $nomCommuneArrivee ?> mesure <?= $distance ?>km.
-            </p>
-        <?php } ?>
     </form>
 </div>
 <script defer type="text/javascript" src="../ressources/js/search.js"></script>

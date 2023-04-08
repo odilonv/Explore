@@ -1,8 +1,8 @@
 <?php
 
-use App\PlusCourtChemin\Modele\DataObject\CacheNR;
-use App\PlusCourtChemin\Modele\DataObject\NoeudRoutier;
-use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
+use Explore\Lib\vieux\CacheNR;
+use Explore\Lib\vieux\NoeudRoutier;
+use Explore\Modele\Repository\NoeudRoutierRepository;
 
 class PlusCourtChemin
 {

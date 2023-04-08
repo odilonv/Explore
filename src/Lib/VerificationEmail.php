@@ -1,10 +1,10 @@
 <?php
 
-namespace App\PlusCourtChemin\Lib;
+namespace Explore\Lib;
 
-use App\PlusCourtChemin\Configuration\Configuration;
-use App\PlusCourtChemin\Modele\DataObject\Utilisateur;
-use App\PlusCourtChemin\Modele\Repository\UtilisateurRepository;
+use Explore\Configuration\Configuration;
+use Explore\Lib\vieux\Utilisateur;
+use Explore\Modele\Repository\UtilisateurRepository;
 
 class VerificationEmail
 {

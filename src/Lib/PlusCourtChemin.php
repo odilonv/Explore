@@ -1,23 +1,29 @@
 <?php
 
-namespace App\PlusCourtChemin\Lib;
+namespace Explore\Lib;
 
-use App\PlusCourtChemin\Modele\DataObject\aStar\NoeudStar;
-use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
+use Explore\Configuration\ConfigurationBDDPostgreSQL;
+use Explore\Modele\Repository\ConnexionBaseDeDonnees;
+use Explore\Modele\Repository\NoeudRoutierRepository;
+use Explore\Modele\DataObject\aStar\NoeudStar;
+use Explore\Modele\Repository\NoeudRoutierRepositoryInterface;
 
 class PlusCourtChemin
 {
     private array $distances;
     private array $noeudsALaFrontiere;
+    private NoeudRoutierRepositoryInterface $noeudRoutierRepository;
 
     public function __construct(
         private int $noeudRoutierDepartGid,
-        private int $noeudRoutierArriveeGid
+        private int $noeudRoutierArriveeGid,
+        NoeudRoutierRepositoryInterface $noeudRoutierRepository
     ) {
+        $this->noeudRoutierRepository=$noeudRoutierRepository;
     }
 
     public function calculer3():NoeudStar{
-        $prio = (new NoeudRoutierRepository())->getForStar($this->noeudRoutierDepartGid, $this->noeudRoutierArriveeGid);
+        $prio = $this->noeudRoutierRepository->getForStar($this->noeudRoutierDepartGid, $this->noeudRoutierArriveeGid);
 
         $dernierNoeud = null;
         do{

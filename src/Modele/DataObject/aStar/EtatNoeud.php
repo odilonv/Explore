@@ -1,6 +1,6 @@
 <?php
 
-namespace App\PlusCourtChemin\Modele\DataObject\aStar;
+namespace Explore\Modele\DataObject\aStar;
 
 enum EtatNoeud : string{
     case VERIFIE = 'verifie';

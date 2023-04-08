@@ -32,7 +32,7 @@
             </p>
             <?php
 
-            use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
+            use Explore\Lib\ConnexionUtilisateur;
 
             if (ConnexionUtilisateur::estAdministrateur()) {
             ?>

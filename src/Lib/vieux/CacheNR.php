@@ -1,8 +1,8 @@
 <?php
 
-namespace App\PlusCourtChemin\Modele\DataObject;
+namespace Explore\Lib\vieux;
 
-use App\PlusCourtChemin\Lib\Utils;
+use Explore\Lib\Utils;
 
 class CacheNR
 {

@@ -1,8 +1,10 @@
 <?php
 
-namespace App\PlusCourtChemin\Modele\DataObject;
+namespace Explore\Modele\DataObject;
 
-use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
+use Explore\Configuration\ConfigurationBDDPostgreSQL;
+use Explore\Modele\Repository\ConnexionBaseDeDonnees;
+use Explore\Modele\Repository\NoeudRoutierRepository;
 use Exception;
 
 class NoeudRoutier extends AbstractDataObject
@@ -35,7 +37,7 @@ class NoeudRoutier extends AbstractDataObject
     public function getVoisins(): array
     {
         if(sizeof($this->voisins) == 0){
-            $this->voisins = (new NoeudRoutierRepository())->getVoisins($this->getGid());
+            $this->voisins = (new NoeudRoutierRepository(new ConnexionBaseDeDonnees(new ConfigurationBDDPostgreSQL())))->getVoisins($this->getGid());
         }
         return $this->voisins;
     }

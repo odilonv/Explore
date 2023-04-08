@@ -1,16 +1,22 @@
 <?php
 
-namespace App\PlusCourtChemin\Modele\Repository;
+namespace Explore\Modele\Repository;
 
-use App\PlusCourtChemin\Modele\DataObject\AbstractDataObject;
-use App\PlusCourtChemin\Modele\DataObject\aStar\NoeudStar;
-use App\PlusCourtChemin\Modele\DataObject\aStar\QueueStar;
-use App\PlusCourtChemin\Modele\DataObject\CacheNR;
-use App\PlusCourtChemin\Modele\DataObject\NoeudRoutier;
+use Explore\Modele\DataObject\AbstractDataObject;
+use Explore\Lib\vieux\CacheNR;
+
+use Explore\Modele\DataObject\aStar\NoeudStar;
+use Explore\Modele\DataObject\aStar\QueueStar;
+use Explore\Modele\DataObject\NoeudRoutier;
 use PDO;
 
-class NoeudRoutierRepository extends AbstractRepository
+class NoeudRoutierRepository extends AbstractRepository implements NoeudRoutierRepositoryInterface
 {
+    public function __construct(ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees)
+    {
+        parent::__construct($connexionBaseDeDonnees);
+    }
+
 
     public function construireDepuisTableau(array $noeudRoutierTableau): NoeudRoutier
     {
@@ -73,7 +79,7 @@ class NoeudRoutierRepository extends AbstractRepository
         from areteGID
         where gidA=:gidTag);
         SQL;
-        $pdoStatement = ConnexionBaseDeDonnees::getPdo()->prepare($requeteSQL);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteSQL);
         $pdoStatement->execute(array(
             "gidTag" => $noeudRoutierGid
         ));
@@ -95,7 +101,7 @@ class NoeudRoutierRepository extends AbstractRepository
         from voisins
         where sqrt(pow(st_x(:geomCentre)-x, 2) + pow(st_y(:geomCentre)-y, 2))<:range * 100000
         SQL;
-        $pdoStatement = ConnexionBaseDeDonnees::getPdo()->prepare($requeteSQL);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteSQL);
 
         $pdoStatement->execute(
             ['geomCentre'=>$geomCentre,
@@ -109,7 +115,6 @@ class NoeudRoutierRepository extends AbstractRepository
 
     // retourne ce qu'il faut pour pouvoir utiliser a star
     public function getForStar(string $gidDep, string $gidArrivee){
-        $pdo = ConnexionBaseDeDonnees::getPdo();
 
         $requeteXY = <<<SQL
         select st_x(geom) as x, st_y(geom) as y, gid, geom
@@ -117,7 +122,7 @@ class NoeudRoutierRepository extends AbstractRepository
         where gid = :gidDepart OR gid = :gidArrivee;
         SQL;
 
-        $pdoStatement = $pdo->prepare($requeteXY);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteXY);
         $pdoStatement->execute(['gidDepart' => $gidDep, 'gidArrivee' => $gidArrivee]);
         $coordonnees = $pdoStatement->fetchAll();
 
@@ -138,7 +143,7 @@ class NoeudRoutierRepository extends AbstractRepository
         $requeteArea = <<<SQL
         select ST_MakePolygon( ST_GeomFromText(:points, 4326));
         SQL;
-        $pdoStatement = $pdo->prepare($requeteArea);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteArea);
 
         $points = $this->genererChaineZone(['x' =>$coordonnees[0][0], 'y' => $coordonnees[0][1]], ['x' => $coordonnees[1][0], 'y' => $coordonnees[1][1]]);
 
@@ -162,7 +167,7 @@ class NoeudRoutierRepository extends AbstractRepository
         SQL;
 
 
-        $pdoStatement = $pdo->prepare($requeteDist);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteDist);
         $pdoStatement->execute(['geomGoal' => $geomArrivee,
                                 'areaGeom' => $area]);
 
@@ -184,7 +189,7 @@ class NoeudRoutierRepository extends AbstractRepository
         where st_intersects(:areaGeom, geom);
         SQL;
 
-        $pdoStatement = $pdo->prepare($requeteSQL);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteSQL);
         $pdoStatement->execute(['areaGeom' => $area]);
 
         $result = $pdoStatement->fetchAll(PDO::FETCH_ASSOC | PDO::FETCH_GROUP);

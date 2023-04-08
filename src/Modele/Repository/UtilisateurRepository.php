@@ -1,12 +1,19 @@
 <?php
 
-namespace App\PlusCourtChemin\Modele\Repository;
+namespace Explore\Modele\Repository;
 
-use App\PlusCourtChemin\Modele\DataObject\Utilisateur;
+
 use Exception;
+use Explore\Modele\DataObject\Utilisateur;
 
-class UtilisateurRepository extends AbstractRepository
+class UtilisateurRepository extends AbstractRepository implements UtilisateurRepositoryInterface
 {
+
+    public function __construct(ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees)
+    {
+        parent::__construct($connexionBaseDeDonnees);
+    }
+
 //    /**
 //     * @return Utilisateur[]
 //     */
@@ -37,8 +44,7 @@ class UtilisateurRepository extends AbstractRepository
 
     public function getNomTable(): string
     {
-        throw new Exception("À vous de créer votre table utilisateur !");
-        return 'utilisateur';
+        return 'utilisateurs';
     }
 
     protected function getNomClePrimaire(): string
