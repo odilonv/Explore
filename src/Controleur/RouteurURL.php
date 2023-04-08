@@ -2,8 +2,13 @@
 namespace App\PlusCourtChemin\Controleur;
 
 require '../vendor/autoload.php';
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\UrlHelper;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\Routing\Exception\NoConfigurationException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
@@ -32,9 +37,7 @@ class RouteurURL
         // Route afficherFormulaireConnexion
         $route = new Route("/connexion", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::afficherFormulaireConnexion",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $route->setMethods(["GET"]);
         $routes->add("afficherFormulaireConnexion", $route);
@@ -43,18 +46,14 @@ class RouteurURL
 
         $route = new Route("/connexion", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::connecter",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $route->setMethods(["POST"]);
         $routes->add("connecter", $route);
 
         $route = new Route("/deconnexion", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::deconnecter",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $routes->add("deconnecter", $route);
 
@@ -64,18 +63,14 @@ class RouteurURL
 
         $route = new Route("/inscription", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::afficherFormulaireCreation",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $route->setMethods(["GET"]);
         $routes->add("afficherFormulaireCreation", $route);
 
         $route = new Route("/inscription", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::creerDepuisFormulaire",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $route->setMethods(["POST"]);
         $routes->add("creerDepuisFormulaire", $route);
@@ -84,17 +79,12 @@ class RouteurURL
 
         $route = new Route("/modification/{idUser}", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::afficherFormulaireMiseAJour",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $routes->add("afficherFormulaireMiseAJour", $route);
 
         $route = new Route("/modification/{idUser}", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::mettreAJour",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
         ]);
         $routes->add("mettreAJour ", $route);
 
@@ -102,26 +92,30 @@ class RouteurURL
 //
         $route = new Route("/utilisateurs", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::afficherListe",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
         ]);
         $routes->add("afficherListe", $route);
 
 
         $route = new Route("/utilisateur/{idUser}", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::afficherDetail",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $route->setMethods(["GET"]);
         $routes->add("afficherDetail", $route);
 
+        /*
         $route = new Route("/{depart}/{arrivee}", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurNoeudCommune::plusCourtChemin",
+            
         ]);
         $routes->add("plusCourtChemin", $route);
+        */
+
+        $route = new Route("/requeteVille/{ville}", [
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurNoeudCommune::requeteVille",
+        ]);
+        $route->setMethods(["GET"]);
+        $routes->add("requeteVille", $route);
 
 
         $route = new Route("/getPlusCourt/{depart}/{arrivee}", [
@@ -134,6 +128,19 @@ class RouteurURL
 
 
 
+
+        // $twigLoader = new FilesystemLoader(__DIR__ . '/../vue/');
+        // $twig = new Environment(
+        //     $twigLoader,
+        //     [
+        //         'autoescape' => 'html',
+        //         'strict_variables' => true
+        //     ]
+        // );
+        // Conteneur::ajouterService("twig", $twig);
+
+
+
         $contexteRequete = (new RequestContext())->fromRequest($requete);
         //print_r($contexteRequete);
 
@@ -142,33 +149,36 @@ class RouteurURL
         Conteneur::ajouterService("assistant",$assistantUrl);
         Conteneur::ajouterService("generateur",$generateurUrl);
 
-
         $associateurUrl = new UrlMatcher($routes, $contexteRequete);
         $donneesRoute = $associateurUrl->match($requete->getPathInfo());
-        /*
-         * @throws NoConfigurationException  If no routing configuration could be found
-         * @throws ResourceNotFoundException If the resource could not be found
-         * @throws MethodNotAllowedException If the resource was found but the request method is not allowed
-         */
-
-
-        //print_r($donneesRoute);
-
         $requete->attributes->add($donneesRoute);
 
-        $resolveurDeControleur = new ControllerResolver();
-        $controleur = $resolveurDeControleur->getController($requete);
-        /*
-         * @throws \LogicException If a controller was found based on the request but it is not callable
-         */
+        try {
+            $associateurUrl = new UrlMatcher($routes, $contexteRequete);
+            $donneesRoute = $associateurUrl->match($requete->getPathInfo());
+            $requete->attributes->add($donneesRoute);
 
-        $resolveurDArguments = new ArgumentResolver();
-        $arguments = $resolveurDArguments->getArguments($requete, $controleur);
-        /*
-        *  @throws \RuntimeException When no value could be provided for a required argument
-        */
+            $resolveurDeControleur = new ControllerResolver();
+            $controleur = $resolveurDeControleur->getController($requete);
 
-        $rep = call_user_func_array($controleur, $arguments);
+            $resolveurDArguments = new ArgumentResolver();
+            $arguments = $resolveurDArguments->getArguments($requete, $controleur);
+
+
+            $reponse = call_user_func_array($controleur, $arguments);
+        }
+        catch (ResourceNotFoundException $exception) {
+            $reponse = ControleurGenerique::afficherErreur($exception->getMessage(), 404);
+        }
+        catch (MethodNotAllowedException $exception) {
+            // Remplacez xxx par le bon code d'erreur
+            $reponse = ControleurGenerique::afficherErreur($exception->getMessage(), 405);
+        }
+        catch (\Exception $exception) {
+            $reponse = ControleurGenerique::afficherErreur($exception->getMessage()) ;
+        }
+        $reponse->send();
+
 
     }
 
