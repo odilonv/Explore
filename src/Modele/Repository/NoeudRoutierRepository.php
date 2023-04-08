@@ -115,7 +115,6 @@ class NoeudRoutierRepository extends AbstractRepository implements NoeudRoutierR
 
     // retourne ce qu'il faut pour pouvoir utiliser a star
     public function getForStar(string $gidDep, string $gidArrivee){
-        $pdo = $this->connexionBaseDeDonnees->getPdo();
 
         $requeteXY = <<<SQL
         select st_x(geom) as x, st_y(geom) as y, gid, geom
@@ -123,7 +122,7 @@ class NoeudRoutierRepository extends AbstractRepository implements NoeudRoutierR
         where gid = :gidDepart OR gid = :gidArrivee;
         SQL;
 
-        $pdoStatement = $pdo->prepare($requeteXY);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteXY);
         $pdoStatement->execute(['gidDepart' => $gidDep, 'gidArrivee' => $gidArrivee]);
         $coordonnees = $pdoStatement->fetchAll();
 
@@ -144,7 +143,7 @@ class NoeudRoutierRepository extends AbstractRepository implements NoeudRoutierR
         $requeteArea = <<<SQL
         select ST_MakePolygon( ST_GeomFromText(:points, 4326));
         SQL;
-        $pdoStatement = $pdo->prepare($requeteArea);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteArea);
 
         $points = $this->genererChaineZone(['x' =>$coordonnees[0][0], 'y' => $coordonnees[0][1]], ['x' => $coordonnees[1][0], 'y' => $coordonnees[1][1]]);
 
@@ -168,7 +167,10 @@ class NoeudRoutierRepository extends AbstractRepository implements NoeudRoutierR
         SQL;
 
 
-        $pdoStatement = $pdo->prepare($requeteDist);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteDist);
+        var_dump($pdoStatement);
+        var_dump($area);
+        var_dump($geomArrivee);
         $pdoStatement->execute(['geomGoal' => $geomArrivee,
                                 'areaGeom' => $area]);
 
@@ -190,7 +192,7 @@ class NoeudRoutierRepository extends AbstractRepository implements NoeudRoutierR
         where st_intersects(:areaGeom, geom);
         SQL;
 
-        $pdoStatement = $pdo->prepare($requeteSQL);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteSQL);
         $pdoStatement->execute(['areaGeom' => $area]);
 
         $result = $pdoStatement->fetchAll(PDO::FETCH_ASSOC | PDO::FETCH_GROUP);

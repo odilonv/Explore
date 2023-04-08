@@ -50,23 +50,18 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
             $noeudCommuneDepart = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart])[0];
             $noeudCommuneArrivee = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee])[0];
 
-            echo 'lalalalala' . $noeudCommuneArrivee->getId_nd_rte();
 
             $noeudRoutierDepartGid = $this->noeudRoutierRepository->recupererPar([
                 "id_rte500" => $noeudCommuneDepart->getId_nd_rte()
             ])[0]->getGid();
 
-            echo 'test' . $noeudRoutierDepartGid . 'bouuuuuuuuuuuuuuuuuuuuu';
 
             $noeudRoutierArriveeGid = $this->noeudRoutierRepository->recupererPar([
                 "id_rte500" => $noeudCommuneArrivee->getId_nd_rte()
             ])[0]->getGid();
 
-            echo $noeudRoutierArriveeGid;
-            echo $noeudRoutierDepartGid;
 
-
-            $pcc = new PlusCourtChemin($noeudRoutierDepartGid, $noeudRoutierArriveeGid);
+            $pcc = new PlusCourtChemin($noeudRoutierDepartGid, $noeudRoutierArriveeGid, $this->noeudRoutierRepository);
 
             // $distance = $pcc->calculer();
 
@@ -130,7 +125,7 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
                 "id_rte500" => $noeudCommuneArrivee->getId_nd_rte()
             ])[0]->getGid();
 
-            $pcc = new PlusCourtChemin($noeudRoutierDepartGid, $noeudRoutierArriveeGid);
+            $pcc = new PlusCourtChemin($noeudRoutierDepartGid, $noeudRoutierArriveeGid, $this->noeudRoutierRepository);
 
             // $distance = $pcc->calculer();
 

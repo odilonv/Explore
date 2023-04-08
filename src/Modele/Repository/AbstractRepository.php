@@ -52,7 +52,7 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
      */
     public function recupererPar(array $critereSelection, $limit = 200): array
     {
-        var_dump($critereSelection);
+
         $nomTable = $this->getNomTable();
         $champsSelect = implode(", ", $this->getNomsColonnes());
 
@@ -73,7 +73,6 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
             $objets[] = $this->construireDepuisTableau($objetFormatTableau);
         }
 
-        var_dump($objets);
 
         return $objets;
     }
