@@ -64,7 +64,7 @@ function addExitButton() {
     const exitButton = document.createElement('a');
     const cross = document.createElement('img');
 
-    cross.src = '../ressources/img/icons/xmark-solid.svg';
+    cross.src = '../web/ressources/img/icons/xmark-solid.svg';
     cross.classList.add('icons');
 
     exitButton.classList.add('exitButton');
