@@ -1,6 +1,6 @@
 <?php
 
-namespace Explore\Lib\vieux\aStar;
+namespace Explore\Modele\DataObject\aStar;
 
 use Explore\Lib\Utils;
 

@@ -3,10 +3,10 @@
 namespace Explore\Modele\Repository;
 
 use Explore\Modele\DataObject\AbstractDataObject;
-use Explore\Lib\vieux\aStar\NoeudStar;
-use Explore\Lib\vieux\aStar\QueueStar;
 use Explore\Lib\vieux\CacheNR;
 
+use Explore\Modele\DataObject\aStar\NoeudStar;
+use Explore\Modele\DataObject\aStar\QueueStar;
 use Explore\Modele\DataObject\NoeudRoutier;
 use PDO;
 
