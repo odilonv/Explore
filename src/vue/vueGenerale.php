@@ -34,19 +34,8 @@ $assistantUrl = Conteneur::recupererService("assistant");
 <div id="logo">
     <h1>Explore</h1>
 </div>
-    <div>
-        <?php
-                    foreach (["success", "info", "warning", "danger"] as $type) {
-                        foreach ($messagesFlash[$type] as $messageFlash) {
-                            echo <<<HTML
-                            <div class="alert alert-$type">
-                                $messageFlash
-                            </div>
-                            HTML;
-                        }
-                    }
-                    ?>
-    </div>
+
+
     <?php
             /**
              * @var string $cheminVueBody
@@ -56,6 +45,20 @@ $assistantUrl = Conteneur::recupererService("assistant");
 
 
     <footer>
+        <?php
+        foreach (["success", "info", "warning", "danger"] as $type) {
+            foreach ($messagesFlash[$type] as $messageFlash) {
+                echo <<<HTML
+                            <div class="messageFlash notification-hidden alert-$type">
+                                <h3>Message d'Explorateur</h3>
+                                <div class="ligne"></div>
+                                <p>$messageFlash</p> 
+                            </div>
+                            HTML;
+            }
+        }
+        ?>
+
         <?php
 
     if (!ConnexionUtilisateur::estConnecte()) {
@@ -85,6 +88,7 @@ $assistantUrl = Conteneur::recupererService("assistant");
 
 <script defer type="text/javascript" src="../ressources/js/connect.js"></script>
 <script defer type="text/javascript" src="../ressources/js/map.js"></script>
+<script defer type="text/javascript" src="../ressources/js/notifications.js"></script>
 
 
 

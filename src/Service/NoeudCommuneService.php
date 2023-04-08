@@ -47,8 +47,11 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
     public function plusCourtCheminNC($nomCommuneDepart, $nomCommuneArrivee){
         if ($nomCommuneDepart!=null && $nomCommuneArrivee!=null) {
 
-            $noeudCommuneDepart = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart])[0];
-            $noeudCommuneArrivee = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee])[0];
+            $noeudCommuneDepart = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart])[0] ?? null;
+            $noeudCommuneArrivee = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee])[0] ?? null;
+            if($noeudCommuneDepart==null || $noeudCommuneArrivee==null){
+                throw new ServiceException('Veuillez renseigner un point de départ et un point d\'arrivée valide');
+            }
 
 
             $noeudRoutierDepartGid = $this->noeudRoutierRepository->recupererPar([

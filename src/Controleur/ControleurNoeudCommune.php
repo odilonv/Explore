@@ -35,7 +35,7 @@ class ControleurNoeudCommune extends ControleurGenerique
         try {
             $noeudsCommunes = $this->noeudCommuneService->recupererListeNoeudsCommunes();
         } catch (ServiceException $e) {
-            MessageFlash::ajouter('error', $e->getMessage());
+            MessageFlash::ajouter('danger', $e->getMessage());
             return ControleurNoeudCommune::rediriger("plusCourt");
         }
         return ControleurNoeudCommune::afficherVue('vueGenerale.php', [
@@ -54,7 +54,7 @@ class ControleurNoeudCommune extends ControleurGenerique
 
         }
         catch (ServiceException $e){
-            MessageFlash::ajouter('error', $e->getMessage());
+            MessageFlash::ajouter('danger', $e->getMessage());
             return ControleurNoeudCommune::rediriger("afficherListe");
         }
 
@@ -78,11 +78,14 @@ class ControleurNoeudCommune extends ControleurGenerique
 
         try{
             $parametres += $this->noeudCommuneService->plusCourtCheminNC($nomCommuneDepart, $nomCommuneArrivee);
+            MessageFlash::ajouter('success', "
+            Le plus court chemin entre $nomCommuneDepart et  $nomCommuneArrivee mesure " .  $parametres["distance"] . " km.
+            ");
 
             return ControleurNoeudCommune::afficherVue('vueGenerale.php', $parametres);
         }
         catch(ServiceException $e) {
-            MessageFlash::ajouter('error', $e->getMessage());
+            MessageFlash::ajouter('danger', $e->getMessage());
             return ControleurNoeudCommune::afficherVue('vueGenerale.php', $parametres);
         }
     }
@@ -93,7 +96,7 @@ class ControleurNoeudCommune extends ControleurGenerique
             echo json_encode($parametres);
         }
         catch (ServiceException $e){
-            MessageFlash::ajouter('error', $e->getMessage());
+            MessageFlash::ajouter('danger', $e->getMessage());
             return ControleurUtilisateur::rediriger("plusCourt");
         }
     }

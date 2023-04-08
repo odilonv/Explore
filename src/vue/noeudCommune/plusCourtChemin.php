@@ -26,9 +26,8 @@
 
 
 <div class="contain">
-    
     <!-- regler le lien du form pour que ça prenne en parametre les inputs-->
-    <form action="./" class="insideDivide" method="post">
+    <form action="./" class="insideDivide" id="form" method="post">
         <label class="underlineTravel">
             <img src="../ressources/img/icons/circle-solid.svg" class="iconsLocationStart">
             <input placeholder="Une ville de départ ? Ex: Montpellier" name="nomCommuneDepart" type="text" id="nomCommuneDepart_id"></label>
@@ -39,15 +38,8 @@
         <label class="underlineTravel">
             <img src="../ressources/img/icons/location-dot-solid.svg" class="iconsLocation">
             <input placeholder="Où allons-nous ?" type="text" name="nomCommuneArrivee" class="nomCommuneArrivee" id="nomCommuneArrivee_id">
-            <button id='searchButton'value="Calculer"><img src="../ressources/img/icons/location-arrow-solid.svg"></button>
+            <button id='searchButton' value="Calculer"><img src="../ressources/img/icons/location-arrow-solid.svg"></button>
         </label>
-
-
-        <?php if (!empty($nomCommuneDepart) && !empty($nomCommuneArrivee)) { ?>
-            <p>
-                Le plus court chemin entre <?= $nomCommuneDepart ?> et <?= $nomCommuneArrivee ?> mesure <?= $distance ?>km.
-            </p>
-        <?php } ?>
     </form>
 </div>
 <script defer type="text/javascript" src="../ressources/js/search.js"></script>
