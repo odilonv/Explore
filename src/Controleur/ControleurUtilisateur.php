@@ -24,36 +24,86 @@ class ControleurUtilisateur extends ControleurGenerique
         $this->utilisateurService = $utilisateurService;
     }
 
-//    public static function accueil(): Response
-//    {
-//        return ControleurUtilisateur::afficherVue('vueGenerale.php', [
-//            "pagetitle" => "Explore",
-//            "cheminVueBody" => "utilisateur/accueil.php"
-//        ]);
-//    }
-
     public static function afficherErreur($errorMessage = "", $controleur = ""): Response
     {
         return parent::afficherErreur($errorMessage, "utilisateur");
     }
 
 
+
+    public static function afficherFormulaireCreation(): Response
+    {
+        return ControleurUtilisateur::afficherVue('vueGenerale.php', [
+            "pagetitle" => "Création d'un utilisateur",
+            "cheminVueBody" => "utilisateur/formulaireCreation.php",
+            "method" => Configuration::getDebug() ? "get" : "post",
+        ]);
+    }
+
+
+
     public function creerDepuisFormulaire(): Response {
         try {
             //Enregistrer l'utilisateur via le service
             $login = $_POST['login'] ?? null;
+            $login = $_POST['nom'] ?? null;
+            $login = $_POST['prenom'] ?? null;
             $password = $_POST['password'] ?? null;
+            $estAdmin = $_POST['estAdmin'] ?? null;
             $adresseMail = $_POST['adresseMail'] ?? null;
             $profilePicture = $_FILES['profilePicture'] ?? null;
-            $this->utilisateurService->creerUtilisateur($login,$password,$adresseMail,$profilePicture);
+
+            $this->utilisateurService->creerUtilisateur($login,$password,$adresseMail,$profilePicture,$estAdmin);
+
             MessageFlash::ajouter("success", "L'utilisateur a bien été créé !");
-            return ControleurUtilisateur::rediriger("plusCourt");
+            return ControleurNoeudCommune::rediriger("plusCourt");
         }
         catch(ServiceException $e) {
             MessageFlash::ajouter('error', $e->getMessage());
             return ControleurUtilisateur::rediriger("afficherFormulaireCreation");
         }
     }
+
+    // FUSIONNER USER POUR RENDRE PROPRE
+
+//    public static function creerDepuisFormulaire(): RedirectResponse
+//    {
+//        if (
+//            isset($_REQUEST['login']) && isset($_REQUEST['prenom']) && isset($_REQUEST['nom'])
+//            && isset($_REQUEST['mdp']) && isset($_REQUEST['mdp2'])
+//        ) {
+//            if ($_REQUEST["mdp"] !== $_REQUEST["mdp2"]) {
+//                MessageFlash::ajouter("warning", "Mots de passe distincts.");
+//                return ControleurUtilisateur::rediriger( "afficherFormulaireCreation");
+//            }
+//
+//            /*if (!ConnexionUtilisateur::estAdministrateur()) {
+//                unset($_REQUEST["estAdmin"]);
+//            }*/
+//
+//            if (!filter_var($_REQUEST["email"], FILTER_VALIDATE_EMAIL)) {
+//                MessageFlash::ajouter("warning", "Email non valide");
+//                return ControleurUtilisateur::rediriger("afficherFormulaireCreation");
+//            }
+//
+//            $utilisateur = Utilisateur::construireDepuisFormulaire($_REQUEST);
+//
+//            VerificationEmail::envoiEmailValidation($utilisateur);
+//
+//            $utilisateurRepository = new UtilisateurRepository();
+//            $succesSauvegarde = $utilisateurRepository->ajouter($utilisateur);
+//            if ($succesSauvegarde) {
+//                MessageFlash::ajouter("success", "L'utilisateur a bien été créé !");
+//                return ControleurUtilisateur::rediriger( "afficherListe");
+//            } else {
+//                MessageFlash::ajouter("warning", "Login existant.");
+//                return ControleurUtilisateur::rediriger( "afficherFormulaireCreation");
+//            }
+//        } else {
+//            MessageFlash::ajouter("danger", "Login, nom, prenom ou mot de passe manquant.");
+//            return ControleurUtilisateur::rediriger( "afficherFormulaireCreation");
+//        }
+//    }
 
     public static function afficherFormulaireConnexion(): Response
     {
@@ -85,21 +135,21 @@ class ControleurUtilisateur extends ControleurGenerique
         try {
             $this->utilisateurService->deconnecterUtilisateur();
             MessageFlash::ajouter("success", "L'utilisateur a bien été déconnecté.");
-            return ControleurUtilisateur::rediriger("plusCourt");
+            return ControleurNoeudCommune::rediriger("plusCourt");
         }
         catch(ServiceException $e) {
             MessageFlash::ajouter('error', $e->getMessage());
-            return ControleurUtilisateur::rediriger("plusCourt");
+            return ControleurNoeudCommune::rediriger("plusCourt");
         }
     }
 
     public function afficherListe() :  Response
     {
         try {
-            $utilisateurs = $this->utilisateurService->recupererListeUtilisateur() ?? null;
+            $utilisateurs = $this->utilisateurService->recupererListeUtilisateur();
         } catch (ServiceException $e) {
             MessageFlash::ajouter('error', $e->getMessage());
-            return ControleurUtilisateur::rediriger("plusCourt");
+            return ControleurNoeudCommune::rediriger("plusCourt");
         }
         return ControleurUtilisateur::afficherVue('vueGenerale.php', [
             "utilisateurs" => $utilisateurs,
@@ -156,15 +206,7 @@ class ControleurUtilisateur extends ControleurGenerique
 //        }
 //    }
 //
-//    public static function afficherFormulaireCreation(): Response
-//    {
-//        return ControleurUtilisateur::afficherVue('vueGenerale.php', [
-//            "pagetitle" => "Création d'un utilisateur",
-//            "cheminVueBody" => "utilisateur/formulaireCreation.php",
-//            "method" => Configuration::getDebug() ? "get" : "post",
-//        ]);
-//    }
-//
+
 //    public static function creerDepuisFormulaire(): RedirectResponse
 //    {
 //        if (

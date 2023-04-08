@@ -6,8 +6,14 @@ namespace Explore\Modele\Repository;
 use Exception;
 use Explore\Modele\DataObject\Utilisateur;
 
-class UtilisateurRepository extends AbstractRepository
+class UtilisateurRepository extends AbstractRepository implements UtilisateurRepositoryInterface
 {
+
+    public function __construct(ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees)
+    {
+        parent::__construct($connexionBaseDeDonnees);
+    }
+
 //    /**
 //     * @return Utilisateur[]
 //     */

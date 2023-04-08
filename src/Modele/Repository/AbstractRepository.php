@@ -9,13 +9,15 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
 {
 
 
-    private ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees;
+    protected ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees;
 
 
     public function __construct(ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees)
     {
         $this->connexionBaseDeDonnees = $connexionBaseDeDonnees;
     }
+
+
 
 
     protected abstract function getNomTable(): string;
@@ -50,6 +52,7 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
      */
     public function recupererPar(array $critereSelection, $limit = 200): array
     {
+        var_dump($critereSelection);
         $nomTable = $this->getNomTable();
         $champsSelect = implode(", ", $this->getNomsColonnes());
 
@@ -61,6 +64,7 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
         $requeteSQL = <<<SQL
             SELECT $champsSelect FROM $nomTable WHERE $whereClause LIMIT $limit;
         SQL;
+
         $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteSQL);
         $pdoStatement->execute($critereSelection);
 
@@ -68,6 +72,8 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
         foreach ($pdoStatement as $objetFormatTableau) {
             $objets[] = $this->construireDepuisTableau($objetFormatTableau);
         }
+
+        var_dump($objets);
 
         return $objets;
     }

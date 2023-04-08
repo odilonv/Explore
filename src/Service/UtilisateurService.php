@@ -6,14 +6,15 @@ use Explore\Lib\ConnexionUtilisateur;
 use Explore\Lib\MotDePasse;
 use Explore\Modele\DataObject\Utilisateur;
 use Explore\Modele\Repository\UtilisateurRepository;
+use Explore\Modele\Repository\UtilisateurRepositoryInterface;
 use Explore\Service\Exception\ServiceException;
 
 class UtilisateurService implements UtilisateurServiceInterface
 {
-    private  UtilisateurRepository $utilisateurRepository;
+    private UtilisateurRepositoryInterface $utilisateurRepository;
 
 
-    public function __construct(UtilisateurRepository $utilisateurRepository)
+    public function __construct(UtilisateurRepositoryInterface $utilisateurRepository)
     {
         $this->utilisateurRepository = $utilisateurRepository;
     }

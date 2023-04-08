@@ -3,8 +3,12 @@ namespace Explore\Controleur;
 
 
 use Explore\Configuration\ConfigurationBDDPostgreSQL;
+use Explore\Modele\Repository\AbstractRepository;
 use Explore\Modele\Repository\ConnexionBaseDeDonnees;
+use Explore\Modele\Repository\NoeudCommuneRepository;
+use Explore\Modele\Repository\NoeudRoutierRepository;
 use Explore\Modele\Repository\UtilisateurRepository;
+use Explore\Service\NoeudCommuneService;
 use Explore\Service\UtilisateurService;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -34,17 +38,15 @@ class RouteurURL
 
         $routes = new RouteCollection();
 
-        // Route feed
         $route = new Route("/", [
-            "_controller" => "\Explore\Controleur\ControleurNoeudCommune::plusCourtChemin",
+            "_controller" => "noeudcommune_controleur::plusCourtChemin",
         ]);
         $routes->add("plusCourt", $route);
 
 
-
         // Route afficherFormulaireConnexion
         $route = new Route("/connexion", [
-            "_controller" => "\Explore\Controleur\ControleurUtilisateur::afficherFormulaireConnexion",
+            "_controller" => "utilisateur_controleur::afficherFormulaireConnexion",
             // Syntaxes équivalentes
             // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
             // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
@@ -55,7 +57,7 @@ class RouteurURL
 
 
         $route = new Route("/connexion", [
-            "_controller" => "\Explore\Controleur\ControleurUtilisateur::connecter",
+            "_controller" => "utilisateur_controleur::connecter",
             // Syntaxes équivalentes
             // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
             // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
@@ -64,7 +66,7 @@ class RouteurURL
         $routes->add("connecter", $route);
 
         $route = new Route("/deconnexion", [
-            "_controller" => "\Explore\Controleur\ControleurUtilisateur::deconnecter",
+            "_controller" => "utilisateur_controleur::deconnecter",
             // Syntaxes équivalentes
             // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
             // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
@@ -76,7 +78,7 @@ class RouteurURL
 
 
         $route = new Route("/inscription", [
-            "_controller" => "\Explore\Controleur\ControleurUtilisateur::afficherFormulaireCreation",
+            "_controller" => "utilisateur_controleur::afficherFormulaireCreation",
             // Syntaxes équivalentes
             // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
             // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
@@ -85,7 +87,7 @@ class RouteurURL
         $routes->add("afficherFormulaireCreation", $route);
 
         $route = new Route("/inscription", [
-            "_controller" => "\Explore\Controleur\ControleurUtilisateur::creerDepuisFormulaire",
+            "_controller" => "utilisateur_controleur::creerDepuisFormulaire",
             // Syntaxes équivalentes
             // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
             // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
@@ -96,7 +98,7 @@ class RouteurURL
 
 
         $route = new Route("/modification/{idUser}", [
-            "_controller" => "\Explore\Controleur\ControleurUtilisateur::afficherFormulaireMiseAJour",
+            "_controller" => "utilisateur_controleur::afficherFormulaireMiseAJour",
             // Syntaxes équivalentes
             // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
             // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
@@ -104,7 +106,7 @@ class RouteurURL
         $routes->add("afficherFormulaireMiseAJour", $route);
 
         $route = new Route("/modification/{idUser}", [
-            "_controller" => "\Explore\Controleur\ControleurUtilisateur::mettreAJour",
+            "_controller" => "utilisateur_controleur::mettreAJour",
             // Syntaxes équivalentes
             // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
             // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
@@ -114,7 +116,7 @@ class RouteurURL
 
 //
         $route = new Route("/utilisateurs", [
-            "_controller" => "\Explore\Controleur\ControleurUtilisateur::afficherListe",
+            "_controller" => "utilisateur_controleur::afficherListe",
             // Syntaxes équivalentes
             // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
             // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
@@ -123,7 +125,7 @@ class RouteurURL
 
 
         $route = new Route("/utilisateur/{idUser}", [
-            "_controller" => "\Explore\Controleur\ControleurUtilisateur::afficherDetail",
+            "_controller" => "utilisateur_controleur::afficherDetail",
             // Syntaxes équivalentes
             // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
             // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
@@ -131,15 +133,21 @@ class RouteurURL
         $route->setMethods(["GET"]);
         $routes->add("afficherDetail", $route);
 
+        $route = new Route("/noeudscommune", [
+            "_controller" => "noeudcommune_controleur::afficherListe",
+
+        ]);
+        $routes->add("noeudscommune", $route);
+
         $route = new Route("/{depart}/{arrivee}", [
-            "_controller" => "\Explore\Controleur\ControleurNoeudCommune::plusCourtChemin",
+            "_controller" => "noeudcommune_controleur::plusCourtChemin",
             
         ]);
         $routes->add("plusCourtChemin", $route);
 
 
         $route = new Route("/getPlusCourt/{depart}/{arrivee}", [
-            "_controller" => "\Explore\Controleur\ControleurNoeudCommune::requetePlusCourt"
+            "_controller" => "noeudcommune_controleur::requetePlusCourt"
         ]);
         $routes->add("requetePlusCourt", $route);
 
@@ -180,6 +188,20 @@ class RouteurURL
 
         $utilisateurControleurService = $conteneur->register('utilisateur_controleur',ControleurUtilisateur::class);
         $utilisateurControleurService->setArguments([new Reference('utilisateur_service')]);
+
+
+        $noeudRoutierRepositoryService = $conteneur->register('noeudroutier_repository',NoeudRoutierRepository::class);
+        $noeudRoutierRepositoryService->setArguments([new Reference('connexion_base')]);
+
+
+        $noeudCommuneRepositoryService = $conteneur->register('noeudcommune_repository',NoeudCommuneRepository::class);
+        $noeudCommuneRepositoryService->setArguments([new Reference('connexion_base')]);
+
+        $noeudCommuneService = $conteneur->register('noeudcommune_service', NoeudCommuneService::class);
+        $noeudCommuneService->setArguments([new Reference('noeudcommune_repository'), new Reference('noeudroutier_repository')]);
+
+        $noeudCommuneControleurService = $conteneur->register('noeudcommune_controleur',ControleurNoeudCommune::class);
+        $noeudCommuneControleurService->setArguments([new Reference('noeudcommune_service')]);
 
 
         $associateurUrl = new UrlMatcher($routes, $contexteRequete);

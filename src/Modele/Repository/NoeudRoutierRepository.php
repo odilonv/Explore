@@ -10,8 +10,13 @@ use Explore\Lib\vieux\CacheNR;
 use Explore\Modele\DataObject\NoeudRoutier;
 use PDO;
 
-class NoeudRoutierRepository extends AbstractRepository
+class NoeudRoutierRepository extends AbstractRepository implements NoeudRoutierRepositoryInterface
 {
+    public function __construct(ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees)
+    {
+        parent::__construct($connexionBaseDeDonnees);
+    }
+
 
     public function construireDepuisTableau(array $noeudRoutierTableau): NoeudRoutier
     {
@@ -74,7 +79,7 @@ class NoeudRoutierRepository extends AbstractRepository
         from areteGID
         where gidA=:gidTag);
         SQL;
-        $pdoStatement = ConnexionBaseDeDonnees::getPdo()->prepare($requeteSQL);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteSQL);
         $pdoStatement->execute(array(
             "gidTag" => $noeudRoutierGid
         ));
@@ -96,7 +101,7 @@ class NoeudRoutierRepository extends AbstractRepository
         from voisins
         where sqrt(pow(st_x(:geomCentre)-x, 2) + pow(st_y(:geomCentre)-y, 2))<:range * 100000
         SQL;
-        $pdoStatement = ConnexionBaseDeDonnees::getPdo()->prepare($requeteSQL);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteSQL);
 
         $pdoStatement->execute(
             ['geomCentre'=>$geomCentre,
@@ -110,7 +115,7 @@ class NoeudRoutierRepository extends AbstractRepository
 
     // retourne ce qu'il faut pour pouvoir utiliser a star
     public function getForStar(string $gidDep, string $gidArrivee){
-        $pdo = ConnexionBaseDeDonnees::getPdo();
+        $pdo = $this->connexionBaseDeDonnees->getPdo();
 
         $requeteXY = <<<SQL
         select st_x(geom) as x, st_y(geom) as y, gid, geom
