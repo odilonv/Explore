@@ -2,6 +2,8 @@
 
 namespace Explore\Lib;
 
+use Explore\Configuration\ConfigurationBDDPostgreSQL;
+use Explore\Modele\Repository\ConnexionBaseDeDonnees;
 use Explore\Modele\Repository\NoeudRoutierRepository;
 use Explore\Modele\DataObject\aStar\NoeudStar;
 
@@ -17,7 +19,7 @@ class PlusCourtChemin
     }
 
     public function calculer3():NoeudStar{
-        $prio = (new NoeudRoutierRepository())->getForStar($this->noeudRoutierDepartGid, $this->noeudRoutierArriveeGid);
+        $prio = (new NoeudRoutierRepository(new ConnexionBaseDeDonnees(new ConfigurationBDDPostgreSQL())))->getForStar($this->noeudRoutierDepartGid, $this->noeudRoutierArriveeGid);
 
         $dernierNoeud = null;
         do{
