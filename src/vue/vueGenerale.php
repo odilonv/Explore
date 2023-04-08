@@ -37,6 +37,11 @@ $assistantUrl = Conteneur::recupererService("assistant");
 
 
     <?php
+            if(\App\PlusCourtChemin\Lib\Utils::$debug){
+                foreach (\App\PlusCourtChemin\Lib\Utils::getLogs() as $log){
+                    echo $log . ' <br>';
+                }
+            }
             /**
              * @var string $cheminVueBody
              */

@@ -22,18 +22,21 @@ class PlusCourtChemin
         $this->noeudRoutierRepository=$noeudRoutierRepository;
     }
 
-    public function calculer3():NoeudStar{
-        $prio = $this->noeudRoutierRepository->getForStar($this->noeudRoutierDepartGid, $this->noeudRoutierArriveeGid);
+    public function calculer3():?NoeudStar{
+        $queuStar = new QueueStar();
+        $this->noeudRoutierRepository->getForStar($this->noeudRoutierDepartGid, $this->noeudRoutierArriveeGid, $queuStar);
 
         $dernierNoeud = null;
         do{
-            $dernierNoeud = $prio->getTop();
+            $dernierNoeud = $queuStar->getTop();
+
             $dernierNoeud->selectionner();
 
-            $prio->removeTop();
+            $queuStar->removeTop();
         }
-        while($prio->getSize()>0 && $dernierNoeud->getGid() != $this->noeudRoutierArriveeGid);
-        return $dernierNoeud;
+        while($queuStar->getSize()>0 && $dernierNoeud->getGid() != $this->noeudRoutierArriveeGid);
+
+        return $dernierNoeud->getGid()==$this->noeudRoutierArriveeGid?$dernierNoeud:null;
     }
 
     // liste qui associe pour chaque pts, la distance la plus courte qui le relie au point d'origine

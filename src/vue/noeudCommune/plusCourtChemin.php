@@ -41,6 +41,18 @@
             <div class="autocompletion" id="autocompletion2"></div><input id="ville2" placeholder="Où allons-nous ?" type="text" name="nomCommuneArrivee" class="nomCommuneArrivee">
             <button type="submit" id='searchButton'value="Calculer"><img src="../ressources/img/icons/location-arrow-solid.svg"></button>
         </label>
+
+
+        <?php
+        if (!empty($nomCommuneDepart) && !empty($nomCommuneArrivee)) {
+            if($distance<0){
+                echo "<p> Il n'existe pas de trajet entre $nomCommuneDepart et $nomCommuneArrivee </p>";
+            }
+            else{
+                echo "<p>Le plus court chemin entre $nomCommuneDepart et $nomCommuneArrivee mesure $distance km.</p>";
+            }
+        }
+        ?>
     </form>
 </div>
 <script defer type="text/javascript" src="../ressources/js/search.js"></script>
