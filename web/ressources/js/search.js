@@ -8,14 +8,14 @@ const lineTravel = document.createElement('div');
 lineTravel.classList.add('underlineTravel');
 
 const circleAdd = document.createElement('img');
-circleAdd.src = '../ressources/img/icons/circle-regular.svg';
+circleAdd.src = '../web/ressources/img/icons/circle-regular.svg';
 circleAdd.classList.add('iconsLocationStart');
 
 const circles = document.createElement('div');
 circles.classList.add('circles');
 
 const circleTemplate = document.createElement('img');
-circleTemplate.src = '../ressources/img/icons/circle-solid.svg';
+circleTemplate.src = '../web/ressources/img/icons/circle-solid.svg';
 circleTemplate.classList.add('circleTransition');
 
 for (let i = 0; i < 3; i++) {
@@ -57,13 +57,13 @@ function addInputDest() {
         oldInput.placeholder = 'Un point d\'arrêt ?';
         oldInput.classList.remove('nomCommuneArrivee');
 
-        oldIconLocation.src = '../ressources/img/icons/circle-solid.svg';
+        oldIconLocation.src = '../web/ressources/img/icons/circle-solid.svg';
         oldIconLocation.classList.add('iconsLocationStart');
         oldIconLocation.classList.remove('iconsLocation');
 
         oldCircle.classList.remove('iconsLocationStart');
         oldCircle.classList.add('iconsLocation');
-        oldCircle.src = '../ressources/img/icons/location-dot-solid.svg';
+        oldCircle.src = '../web/ressources/img/icons/location-dot-solid.svg';
 
         const input = document.createElement('input');
         input.classList.add('nomCommuneArrivee');
@@ -100,7 +100,7 @@ function addInputDest() {
         }
 
         const newCircleAdd = document.createElement('img');
-        newCircleAdd.src = '../ressources/img/icons/circle-regular.svg';
+        newCircleAdd.src = '../web/ressources/img/icons/circle-regular.svg';
         newCircleAdd.classList.add('iconsLocationStart');
 
 

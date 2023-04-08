@@ -1,15 +1,15 @@
 <?php
-
 use Explore\Lib\ConnexionUtilisateur;
 use Explore\Lib\Conteneur;
 use Explore\Lib\Utils;
 use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\Routing\Generator\UrlGenerator;
-
-/** @var UrlGenerator $generateurUrl */
-$generateurUrl = Conteneur::recupererService("generateur");
-/** @var UrlHelper $assistantUrl */
-$assistantUrl = Conteneur::recupererService("assistant");
+/** @var UrlGenerator $generateur */
+$generateur = Conteneur::recupererService("generateur");
+/** @var UrlHelper $assistant */
+$assistant = Conteneur::recupererService("assistant");
+/** @var $pagetitle string */
+/** @var $messagesFlash */
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +18,7 @@ $assistantUrl = Conteneur::recupererService("assistant");
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     <title><?= $pagetitle ?></title>
-    <link rel="shortcut icon" type="image/png" href="../ressources/img/3d-illustration-travel-location.png"/>
+    <link rel="shortcut icon" type="image/png" href="<?=$assistant->getAbsoluteUrl("ressources/img/3d-illustration-travel-location.png")?>"/>
 
     <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
@@ -27,7 +27,7 @@ $assistantUrl = Conteneur::recupererService("assistant");
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
 
 
-    <link rel="stylesheet" href="../ressources/css/main.css">
+    <link rel="stylesheet" href="<?=$assistant->getAbsoluteUrl("ressources/css/main.css")?>">
 </head>
 <body>
 
@@ -68,33 +68,33 @@ $assistantUrl = Conteneur::recupererService("assistant");
         <?php
 
     if (!ConnexionUtilisateur::estConnecte()) {
-        echo <<<HTML
+        echo '
                     <div class="connectFooter clickable">
                     <div class="connectHeader">
-                        <img src="../ressources/img/icons/user-solid.svg" class="icons">
+                        <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/user-solid.svg") . '" class="icons">
                         <h2 id="h2Connexion">Se connecter</h2>
                       </div>
                     </div>
-                    HTML;
+                    ';
     } else {
         $loginHTML = htmlspecialchars(ConnexionUtilisateur::getLoginUtilisateurConnecte());
         $loginURL = rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte());
-        echo <<<HTML
+        echo '
                                 <form class="connectFooter clickable">
                                     <!--<a href="controleurFrontal.php?action=afficherDetail&controleur=utilisateur&login=$loginURL" id="connectFooter">¡-->
                                     <a href="/utilisateur/{idUser}" id="connectFooter">
-                                        <img src="../ressources/img/icons/user-solid.svg" class="icons">
-                                        <h2>$loginHTML</h2>
+                                        <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/user-solid.svg") . '" class="icons">
+                                        <h2>' .$loginHTML .'</h2>
                                     </a>
                                 </form>
-                    HTML;
+                    ';
     }
     ?>
 
 
-<script defer type="text/javascript" src="../ressources/js/connect.js"></script>
-<script defer type="text/javascript" src="../ressources/js/map.js"></script>
-<script defer type="text/javascript" src="../ressources/js/notifications.js"></script>
+<script defer type="text/javascript" src="<?=$assistant->getAbsoluteUrl("ressources/js/connect.js")?>"></script>
+<script defer type="text/javascript" src="<?=$assistant->getAbsoluteUrl("ressources/js/map.js")?>"></script>
+<script defer type="text/javascript" src="<?=$assistant->getAbsoluteUrl("ressources/js/notifications.js")?>"></script>
 
 
 

@@ -1,5 +1,5 @@
 <?php
-/** @var \Explore\Lib\vieux\Utilisateur $utilisateur */
+/** @var $utilisateur */
 
 use Explore\Lib\ConnexionUtilisateur;
 
