@@ -6,16 +6,20 @@ use Explore\Configuration\ConfigurationBDDPostgreSQL;
 use Explore\Modele\Repository\ConnexionBaseDeDonnees;
 use Explore\Modele\Repository\NoeudRoutierRepository;
 use Exception;
+use Explore\Modele\Repository\NoeudRoutierRepositoryInterface;
 
 class NoeudRoutier extends AbstractDataObject
 {
     private array $voisins;
+    private NoeudRoutierRepositoryInterface $noeudRoutierRepository;
 
     public function __construct(
         private int $gid,
         private string $id_rte500,
-        ?array $voisins
+        ?array $voisins,
+        NoeudRoutierRepositoryInterface $noeudRoutierRepository
     ) {
+        $this->noeudRoutierRepository=$noeudRoutierRepository;
         if($voisins==null){
             $this->voisins=[];
         }
@@ -37,11 +41,14 @@ class NoeudRoutier extends AbstractDataObject
     public function getVoisins(): array
     {
         if(sizeof($this->voisins) == 0){
-            $this->voisins = (new NoeudRoutierRepository(new ConnexionBaseDeDonnees(new ConfigurationBDDPostgreSQL())))->getVoisins($this->getGid());
+            $this->voisins = $this->noeudRoutierRepository->getVoisins($this->getGid());
         }
         return $this->voisins;
     }
 
+    /**
+     * @throws Exception
+     */
     public function exporterEnFormatRequetePreparee(): array
     {
         // Inutile car pas d'ajout ni de màj

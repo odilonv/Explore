@@ -24,7 +24,8 @@ class NoeudRoutierRepository extends AbstractRepository implements NoeudRoutierR
         return new NoeudRoutier(
             $noeudRoutierTableau["gid"],
             $noeudRoutierTableau["id_rte500"],
-            null
+            null,
+            $this
         );
     }
 
