@@ -32,19 +32,15 @@ class UtilisateurRepository extends AbstractRepository implements UtilisateurRep
     {
         return new Utilisateur(
             $utilisateurTableau["login"],
-            $utilisateurTableau["nom"],
-            $utilisateurTableau["prenom"],
             $utilisateurTableau["mdp_hache"],
-            $utilisateurTableau["est_admin"],
             $utilisateurTableau["email"],
-            $utilisateurTableau["email_a_valider"],
-            $utilisateurTableau["nonce"],
+            $utilisateurTableau["profilePictureName"]
         );
     }
 
     public function getNomTable(): string
     {
-        return 'utilisateurs';
+        return 'usersExplore';
     }
 
     protected function getNomClePrimaire(): string
@@ -54,6 +50,6 @@ class UtilisateurRepository extends AbstractRepository implements UtilisateurRep
 
     protected function getNomsColonnes(): array
     {
-        return ["login", "nom", "prenom", "mdp_hache", "est_admin", "email", "email_a_valider", "nonce"];
+        return ["login", "mdp_hache",  "email", "profilePictureName"];
     }
 }

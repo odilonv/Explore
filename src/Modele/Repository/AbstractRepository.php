@@ -95,6 +95,8 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
         // Note: fetch() renvoie false si pas de voiture correspondante
         $objetFormatTableau = $pdoStatement->fetch();
 
+
+
         if ($objetFormatTableau !== false) {
             return $this->construireDepuisTableau($objetFormatTableau);
         }
@@ -165,6 +167,10 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
 
         $objetFormatTableau = $object->exporterEnFormatRequetePreparee();
 
+        echo $sql;
+        $pdoStatement->execute($objetFormatTableau);
+        return true;
+        /*
         try {
             $pdoStatement->execute($objetFormatTableau);
             return true;
@@ -177,5 +183,6 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
                 throw $exception;
             }
         }
+        */
     }
 }

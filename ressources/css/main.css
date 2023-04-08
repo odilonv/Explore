@@ -76,7 +76,7 @@ body {
 .box-inscription{
     display: flex;
     width: 30%;
-    height: 85%;
+    height: 50%;
     padding: 20px 30px;
     z-index: 1;
     position: relative;

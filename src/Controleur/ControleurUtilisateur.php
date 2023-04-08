@@ -11,8 +11,10 @@ use Explore\Modele\DataObject\Utilisateur;
 use Explore\Modele\Repository\UtilisateurRepository;
 use Explore\Service\Exception\ServiceException;
 use Explore\Service\UtilisateurServiceInterface;
+use mysql_xdevapi\Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use function PHPUnit\Framework\throwException;
 
 class ControleurUtilisateur extends ControleurGenerique
 {
@@ -43,17 +45,17 @@ class ControleurUtilisateur extends ControleurGenerique
 
 
     public function creerDepuisFormulaire(): Response {
+
         try {
             //Enregistrer l'utilisateur via le service
             $login = $_POST['login'] ?? null;
-            $login = $_POST['nom'] ?? null;
-            $login = $_POST['prenom'] ?? null;
-            $password = $_POST['password'] ?? null;
-            $estAdmin = $_POST['estAdmin'] ?? null;
-            $adresseMail = $_POST['adresseMail'] ?? null;
+            $password = $_POST['mdp'] ?? null;
+            $adresseMail = $_POST['email'] ?? null;
             $profilePicture = $_FILES['profilePicture'] ?? null;
 
-            $this->utilisateurService->creerUtilisateur($login,$password,$adresseMail,$profilePicture,$estAdmin);
+
+
+            $this->utilisateurService->creerUtilisateur($login,$password,$adresseMail,$profilePicture);
 
             MessageFlash::ajouter("success", "L'utilisateur a bien été créé !");
             return ControleurNoeudCommune::rediriger("plusCourt");
@@ -62,6 +64,7 @@ class ControleurUtilisateur extends ControleurGenerique
             MessageFlash::ajouter('error', $e->getMessage());
             return ControleurUtilisateur::rediriger("afficherFormulaireCreation");
         }
+
     }
 
     // FUSIONNER USER POUR RENDRE PROPRE

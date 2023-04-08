@@ -33,12 +33,13 @@ class UtilisateurService implements UtilisateurServiceInterface
             throw new ServiceException("L'adresse mail est incorrecte!");
         }
         $utilisateurRepository = $this->utilisateurRepository;
-        $utilisateur = $utilisateurRepository->getByLogin($login);
+
+        $utilisateur = $utilisateurRepository->recupererParClePrimaire($login);
         if ($utilisateur != null) {
             throw new ServiceException("Ce login est déjà pris!");
         }
 
-        $utilisateur = $utilisateurRepository->getByAdresseMail($adresseMail);
+        $utilisateur = $utilisateurRepository->recupererPar(["email"=>$adresseMail]);
         if ($utilisateur != null) {
             throw new ServiceException("Un compte est déjà enregistré avec cette adresse mail!");
         }
@@ -49,19 +50,30 @@ class UtilisateurService implements UtilisateurServiceInterface
         // Plus d'informations :
         // http://romainlebreton.github.io/R3.01-DeveloppementWeb/assets/tut4-complement.html
 
-        // On récupère l'extension du fichier
-        $explosion = explode('.', $profilePictureData['name']);
-        $fileExtension = end($explosion);
-        if (!in_array($fileExtension, ['png', 'jpg', 'jpeg'])) {
-            throw new ServiceException("La photo de profil n'est pas au bon format!");
+        if($profilePictureData == null)
+        {
+            $profilePictureData = 'unknown.jpg';
         }
-        // La photo de profil sera enregistrée avec un nom de fichier aléatoire
-        $pictureName = uniqid() . '.' . $fileExtension;
-        $from = $profilePictureData['tmp_name'];
-        $to = __DIR__ . "/../../web/assets/img/utilisateurs/$pictureName";
-        move_uploaded_file($from, $to);
+        else
+        {
+            // On récupère l'extension du fichier
+            $explosion = explode('.', $profilePictureData['name']);
+            $fileExtension = end($explosion);
+            if (!in_array($fileExtension, ['png', 'jpg', 'jpeg'])) {
+                throw new ServiceException("La photo de profil n'est pas au bon format!");
+            }
+            // La photo de profil sera enregistrée avec un nom de fichier aléatoire
+            $pictureName = uniqid() . '.' . $fileExtension;
+            $from = $profilePictureData['tmp_name'];
+            $to = __DIR__ . "/../../web/assets/img/utilisateurs/$pictureName";
+            move_uploaded_file($from, $to);
+        }
 
-        $utilisateur = Utilisateur::construireDepuisFormulaire($login, $passwordChiffre, $adresseMail, $pictureName);
+
+        $utilisateur = Utilisateur::construireDepuisFormulaire(array("login" => $login,
+            "mdp" => $passwordChiffre,
+            "email" => $adresseMail,
+            "profilePictureName" => $profilePictureData));
         $utilisateurRepository->ajouter($utilisateur);
 
     }
