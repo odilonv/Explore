@@ -137,10 +137,11 @@ class RouteurURL
         $routes->add("requeteVille", $route);
 
 
-        $route = new Route("/getPlusCourt/{depart}/{arrivee}", [
-            "_controller" => "noeudcommune_controleur::requetePlusCourt"
+        $route = new Route("api/getPlusCourt/{nomCommuneDepart}/{nomCommuneArrivee}", [
+            "_controller" => "noeudcommune_controleur_api::getPlusCourt"
         ]);
-        $routes->add("requetePlusCourt", $route);
+        $route->setMethods(["GET"]);
+        $routes->add("getPlusCourt", $route);
 
 
 
@@ -196,6 +197,9 @@ class RouteurURL
         $noeudCommuneService->setArguments([new Reference('noeudcommune_repository'), new Reference('noeudroutier_repository')]);
 
         $noeudCommuneControleurService = $conteneur->register('noeudcommune_controleur',ControleurNoeudCommune::class);
+        $noeudCommuneControleurService->setArguments([new Reference('noeudcommune_service')]);
+
+        $noeudCommuneControleurService = $conteneur->register('noeudcommune_controleur_api',ControleurNoeudCommuneAPI::class);
         $noeudCommuneControleurService->setArguments([new Reference('noeudcommune_service')]);
 
 

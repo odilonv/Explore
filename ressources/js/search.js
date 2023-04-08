@@ -355,11 +355,9 @@ document.body.addEventListener("click",()=>{for(let i=1;i<=document.getElementsB
 
 
 function search(){
-    let depart = document.getElementById('nomCommuneDepart_id').value;
-    let arrivee = document.getElementById('nomCommuneArrivee_id').value;
+    let depart = document.getElementById('ville1').value;
+    let arrivee = document.getElementById('ville2').value;
 
-    let requete = `http://localhost/devWeb/SAE/web/getPlusCourt/${depart}/${arrivee}`;
-    fetch(requete).then(response => response.json()).then(data => addRoad(map, data.multiline));
+    let requete = new URL(`api/getPlusCourt/${depart}/${arrivee}`, document.baseURI);
+    fetch(requete.href).then(response => response.json()).then(data => addRoad(map, data.multiline));
 }
-
-document.getElementById('searchButton').addEventListener('click', search);

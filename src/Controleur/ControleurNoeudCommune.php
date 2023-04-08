@@ -90,17 +90,6 @@ class ControleurNoeudCommune extends ControleurGenerique
         }
     }
 
-    public function requetePlusCourt($depart, $arrivee){
-        try {
-            $parametres= $this->noeudCommuneService->requetePlusCourt($depart, $arrivee);
-            echo json_encode($parametres);
-        }
-        catch (ServiceException $e){
-            MessageFlash::ajouter('danger', $e->getMessage());
-            return ControleurUtilisateur::rediriger("plusCourt");
-        }
-    }
-
     /**
      * @throws ServiceException
      */

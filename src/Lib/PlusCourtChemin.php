@@ -3,9 +3,6 @@
 namespace Explore\Lib;
 
 use Explore\Configuration\ConfigurationBDDPostgreSQL;
-use Explore\Modele\DataObject\aStar\QueueStar;
-use Explore\Modele\Repository\ConnexionBaseDeDonnees;
-use Explore\Modele\Repository\NoeudRoutierRepository;
 use Explore\Modele\DataObject\aStar\NoeudStar;
 use Explore\Modele\Repository\NoeudRoutierRepositoryInterface;
 
