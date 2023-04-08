@@ -116,7 +116,8 @@ class NoeudRoutierRepository extends AbstractRepository implements NoeudRoutierR
     }
 
     // retourne ce qu'il faut pour pouvoir utiliser a star
-    public function getForStar(string $gidDep, string $gidArrivee, QueueStar $starQueue){
+    public function getForStar(string $gidDep, string $gidArrivee):QueueStar{
+        $starQueue = new QueueStar();
 
 
         $requeteXY = <<<SQL
@@ -180,6 +181,7 @@ class NoeudRoutierRepository extends AbstractRepository implements NoeudRoutierR
                 $starQueue->insert($noeudsDist[$key]);
             }
         }
+        return $starQueue;
     }
 
     public function genererChaineZone(array $startPoint, array $endPoint){

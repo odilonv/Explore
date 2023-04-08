@@ -24,8 +24,7 @@ class PlusCourtChemin
     }
 
     public function calculer3():?NoeudStar{
-        $queuStar = new QueueStar();
-        $this->noeudRoutierRepository->getForStar($this->noeudRoutierDepartGid, $this->noeudRoutierArriveeGid, $queuStar);
+        $queuStar = $this->noeudRoutierRepository->getForStar($this->noeudRoutierDepartGid, $this->noeudRoutierArriveeGid);
 
         $dernierNoeud = null;
         do{
