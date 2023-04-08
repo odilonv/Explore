@@ -168,9 +168,6 @@ class NoeudRoutierRepository extends AbstractRepository implements NoeudRoutierR
 
 
         $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteDist);
-        var_dump($pdoStatement);
-        var_dump($area);
-        var_dump($geomArrivee);
         $pdoStatement->execute(['geomGoal' => $geomArrivee,
                                 'areaGeom' => $area]);
 

@@ -1,6 +1,5 @@
 <?php
 
-use Explore\Controleur\RouteurQueryString;
 use Explore\Lib\Psr4AutoloaderClass;
 use Symfony\Component\HttpFoundation\Request;
 require '../vendor/autoload.php';

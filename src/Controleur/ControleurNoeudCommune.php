@@ -77,7 +77,7 @@ class ControleurNoeudCommune extends ControleurGenerique
         ];
 
         try{
-            $parametres = $this->noeudCommuneService->plusCourtCheminNC($nomCommuneDepart, $nomCommuneArrivee);
+            $parametres += $this->noeudCommuneService->plusCourtCheminNC($nomCommuneDepart, $nomCommuneArrivee);
 
             return ControleurNoeudCommune::afficherVue('vueGenerale.php', $parametres);
         }
