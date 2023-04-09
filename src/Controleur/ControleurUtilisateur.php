@@ -113,14 +113,14 @@ class ControleurUtilisateur extends ControleurGenerique
 //        }
 //    }
 
-    public static function afficherFormulaireConnexion(): Response
-    {
-        return ControleurUtilisateur::afficherVue('vueGenerale.php', [
-            "pagetitle" => "Formulaire de connexion",
-            "cheminVueBody" => "utilisateur/formulaireConnexion.php",
-            "method" => Configuration::getDebug() ? "get" : "post",
-        ]);
-    }
+    // public static function afficherFormulaireConnexion(): Response
+    // {
+    //     return ControleurUtilisateur::afficherVue('vueGenerale.php', [
+    //         "pagetitle" => "Formulaire de connexion",
+    //         "cheminVueBody" => "utilisateur/formulaireConnexion.php",
+    //         "method" => Configuration::getDebug() ? "get" : "post",
+    //     ]);
+    // }
 
     public function connecter(): RedirectResponse
     {
