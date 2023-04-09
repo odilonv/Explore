@@ -16,11 +16,12 @@ class ControleurNoeudCommuneAPI
         $this->noeudCommuneService = $noeudCommuneService;
     }
 
-    public function getPlusCourt(string $nomCommuneDepart, string $nomCommuneArrivee){
-        try{
+    public function getPlusCourt(string $nomCommuneDepart, string $nomCommuneArrivee)
+    {
+        try {
             $reponseJSON = $this->noeudCommuneService->requetePlusCourt($nomCommuneDepart, $nomCommuneArrivee);
             return new JsonResponse($reponseJSON);
-        }catch (ServiceException $se){
+        } catch (ServiceException $se) {
             return new JsonResponse(["error" => $se->getMessage()], $se->getCode());
         }
     }

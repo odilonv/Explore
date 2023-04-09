@@ -17,23 +17,23 @@ class PlusCourtChemin
         private int $noeudRoutierArriveeGid,
         NoeudRoutierRepositoryInterface $noeudRoutierRepository
     ) {
-        $this->noeudRoutierRepository=$noeudRoutierRepository;
+        $this->noeudRoutierRepository = $noeudRoutierRepository;
     }
 
-    public function calculer3():?NoeudStar{
+    public function calculer3(): ?NoeudStar
+    {
         $queuStar = $this->noeudRoutierRepository->getForStar($this->noeudRoutierDepartGid, $this->noeudRoutierArriveeGid);
 
         $dernierNoeud = null;
-        do{
+        do {
             $dernierNoeud = $queuStar->getTop();
 
             $dernierNoeud->selectionner();
 
             $queuStar->removeTop();
-        }
-        while($queuStar->getSize()>0 && $dernierNoeud->getGid() != $this->noeudRoutierArriveeGid);
+        } while ($queuStar->getSize() > 0 && $dernierNoeud->getGid() != $this->noeudRoutierArriveeGid);
 
-        return $dernierNoeud->getGid()==$this->noeudRoutierArriveeGid?$dernierNoeud:null;
+        return $dernierNoeud->getGid() == $this->noeudRoutierArriveeGid ? $dernierNoeud : null;
     }
 
     // liste qui associe pour chaque pts, la distance la plus courte qui le relie au point d'origine

@@ -46,13 +46,12 @@ class MessageFlash
         return $messages;
     }
 
-    public static function lireTousMessages() : array
+    public static function lireTousMessages(): array
     {
         $tousMessages = [];
-        foreach(["success", "info", "warning", "danger"] as $type) {
+        foreach (["success", "info", "warning", "danger"] as $type) {
             $tousMessages[$type] = MessageFlash::lireMessages($type);
         }
         return $tousMessages;
     }
-
 }
