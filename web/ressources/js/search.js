@@ -58,8 +58,6 @@ let oldCircle = circleAdd;
 
 let indexInput = 3
 function addInputDest() {
-
-
     if(indexInput <= 10)
     {
         let oldIconTemp = oldCircle;
@@ -90,6 +88,7 @@ function addInputDest() {
         autocompletion.id = "autocompletion"+indexInput;
         //indexInput = index de la barre de recherche
         input.id = "ville"+indexInput;
+        input.classList.add('inputVille');
 
 
         document.querySelector('.addDest').remove();
@@ -152,15 +151,13 @@ function addInputDest() {
             newLineTravel.remove()
         }
     }
-
-
 }
 
 let oldIconSrc;
 function overCircle(element){
 
     oldIconSrc = element.src;
-    element.src = '../ressources/img/icons/xmark-solid.svg';
+    element.src = '/web/ressources/img/icons/xmark-solid.svg';
     element.classList.add("crossIcon");
 }
 
