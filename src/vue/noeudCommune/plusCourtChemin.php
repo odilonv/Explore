@@ -27,17 +27,6 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
                 <button id='searchButton'>
                     <img src="<?= $assistant->getAbsoluteUrl("ressources/img/icons/location-arrow-solid.svg") ?>"></button>
             </label>
-
-
-            <?php
-            if (!empty($nomCommuneDepart) && !empty($nomCommuneArrivee)) {
-                if ($distance < 0) {
-                    echo "<p> Il n'existe pas de trajet entre $nomCommuneDepart et $nomCommuneArrivee </p>";
-                } else {
-                    echo "<p>Le plus court chemin entre $nomCommuneDepart et $nomCommuneArrivee mesure $distance km.</p>";
-                }
-            }
-            ?>
         </div>
 </div>
 <script defer type="text/javascript" src="<?= $assistant->getAbsoluteUrl("ressources/js/search.js") ?>"></script>

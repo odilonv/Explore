@@ -71,10 +71,17 @@
         {% for type in ['success', 'info', 'warning', 'danger'] %}
             {% for messageFlash in messagesFlash[type] %}
                 <div class="notification-hidden" id="notif">
-                    <div class="messageFlash alert-{{ type }}">
-                        <h3>Message d'Explorateur</h3>
+                    <div class="messageFlash">
+                        <div class="separate">
+                            <h3>Message d'Explorateur</h3>
+                            <img id="icon-exit-notif" src="{{ asset("ressources/img/icons/xmark-solid-white.svg") }}">
+                        </div>
                         <div class="ligne"></div>
-                        <p>{{ messageFlash }}</p>
+                        <div class="separate">
+                            <img id="imgnotif" class="icons" src="{{ asset("ressources/img/icons/"{{ type }}"-solid.svg") }}">
+                            <p>{{ messageFlash }}</p>
+                        </div>
+
                     </div>
                 </div>
             {% endfor %}

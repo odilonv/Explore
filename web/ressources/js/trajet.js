@@ -19,10 +19,11 @@ function search() {
             .then(response => response.json())
             .then(data => {
                 addRoad(map, data.multiline);
+                notif('success',data.message);
                 loader.style.display = 'none'; // Masquer le loader une fois que addRoad est terminée
             })
             .catch(error => {
-                console.error(error);
+                notif('danger',"Veuillez renseigner les champs avec des données valides.");
                 loader.style.display = 'none'; // Masquer le loader en cas d'erreur
             });
     }
