@@ -161,15 +161,14 @@ body {
 }
 
 .box-liste > h1{
-
     font-size: 2em;
     margin-top: 10px;
     margin-bottom: 30px;
-    color: #ffae9e;
+    color: rgba(15, 22, 33, 0.6);
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0.5em;
+    border-radius: 0.2em;
     background: white;
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
