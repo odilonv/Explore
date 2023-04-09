@@ -35,27 +35,47 @@ $assistant = Conteneur::recupererService("assistant");
 
 <body>
 
-    <div id="mapContainer"></div>
-    <div id="logo">
-        <h1>Explore</h1>
-        <img id="iconmenu" src="<?= $assistant->getAbsoluteUrl("ressources/img/icons/caret-down-solid.svg") ?>">
-    </div>
-    <?php
-    if (!ConnexionUtilisateur::estConnecte()) {
-        echo '
-                    
+<div id="mapContainer"></div>
+<div id="logo">
+    <h1>Explore</h1>
+    <img id="iconmenu" src="<?=$assistant->getAbsoluteUrl("ressources/img/icons/caret-down-solid.svg")?>">
+</div>
+
+<?php
+if (!ConnexionUtilisateur::estConnecte()) {
+    echo '
                     <ul id="sousmenu" class="sousmenu-hidden">
-                        <li><img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/clock-solid.svg") . '" class="icons">
-                        <h3>Historique</h3> </li>
+                    <li>
+                        <p>Connecte-toi pour accéder à plus d\'informations.</p> 
+                        </li>
                     </ul>
                     
                     ';
-    } else if (ConnexionUtilisateur::estConnecte()) {
-        echo '
-                    
+} else if(ConnexionUtilisateur::estConnecte() /*&& $admin*/){
+    echo '    
                     <ul id="sousmenu" class="sousmenu-hidden">
-                        <li><img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/clock-solid.svg") . '" class="icons">
-                        <h3>Historique</h3> </li>
+                        <li><a href="">
+                            <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/clock-solid.svg") . '" class="icons">
+                            <h3>Historique</h3> 
+                        </a></li>
+                        <li><a href="">
+                            <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/compass-solid.svg") . '" class="icons">
+                            <h3>Communes</h3> 
+                        </a></li>
+                        <li><a href="">
+                            <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/user-solid.svg") . '" class="icons">
+                            <h3>Utilisateurs</h3> 
+                        </a></li>
+                        
+                    </ul>
+                    ';
+}else if(ConnexionUtilisateur::estConnecte()){
+    echo '
+                    <ul id="sousmenu" class="sousmenu-hidden">
+                        <li><a href="">
+                        <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/clock-solid.svg") . '" class="icons">
+                        <h3>Historique</h3> 
+                        </a></li>
                     </ul>
                     
                     ';
