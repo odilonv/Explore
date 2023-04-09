@@ -379,6 +379,7 @@ footer{
     width: 10%;
     background-color: #ffae9e;
     border-radius: 0.5em;
+    cursor: pointer;
 }
 #logo > h1{
     font-size: 1em;
