@@ -6,7 +6,7 @@ function notif(message){
     notification.classList.remove("notification-hidden");
     document.querySelector('.messageFlash > p').textContent=message;
     notification.classList.add("notification-show");
-    // On l'efface 10 secondes plus tard
+    // On l'efface 5 secondes plus tard
     setTimeout(() => {
         notification.classList.add('notification-hidden');
         notification.classList.remove('notification-show');

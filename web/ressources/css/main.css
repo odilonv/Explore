@@ -14,7 +14,7 @@
 body {
     height: 100%;
     width: 100%;
-    z-index: -2;
+    z-index: -5;
 
 
 }
@@ -31,7 +31,51 @@ body {
 }
 
 
+#iconmenu{
+    width: 15px;
+    height: 15px;
+}
 
+.sousmenu-hidden{
+    opacity: 0;
+    border-radius: 0.5em;
+
+
+}
+.sousmenu-show{
+    opacity: 1;
+    border-radius: 0 0 0.5em 0.5em ;
+}
+
+#sousmenu{
+    position: fixed;
+    display: flex;
+    z-index: 1;
+    right: 20px;
+    top: 65px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 10%;
+    height: 5%;
+    background-color: #fff;
+    color: #ffae9e;
+}
+
+#sousmenu h3{
+    font-size: 1em;
+
+}
+
+#sousmenu li{
+    display: flex;
+    width: 100%;
+    height: 25%;
+    align-items: center;
+    justify-content: space-evenly;
+
+
+}
 
 .icons{
     width: 15px;
@@ -110,6 +154,7 @@ body {
     justify-content: center;
     display: flex;
     flex-direction: column;
+    z-index: 1;
 }
 .iconsLocation{
     height: 20px;
@@ -264,8 +309,10 @@ footer{
     right: 20px;
     height: 40px;
     top: 25px;
+    z-index: 2;
     width: 10%;
     background-color: #ffae9e;
+    border-radius: 0.5em;
 }
 #logo > h1{
     font-size: 1em;
@@ -273,18 +320,18 @@ footer{
 }
 
 .connectFooter, #logo{
-    z-index: -1;
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     position: absolute;
-    border-radius: 0.5em;
-
     box-shadow: 0em 0 0.4em 0 rgba(15, 22, 33, 0.6);
 }
 .connectFooter{
     height: 40px;
     background-color: #fff;
+    border-radius: 0.5em;
+
 }
 .connectFooter > div{
     display: flex;
@@ -295,6 +342,7 @@ footer{
 }
 .connectHeader{
     padding: 0 10%;
+    z-index: 1;
 }
 
 .clickable{
@@ -336,8 +384,45 @@ footer{
     display: none;
 }
 
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: none;
+}
+
+#loader:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    margin: -30px 0 0 -30px;
+    border-radius: 50%;
+    border: 5px solid #ffae9e;
+    border-color: #ffae9e transparent #ffae9e transparent;
+    animation: loader 1.2s linear infinite;
+}
+
+@keyframes loader {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
 
 .messageFlash{
+
     display: flex;
     position: absolute;
     bottom: 25px;

@@ -34,7 +34,29 @@ $assistant = Conteneur::recupererService("assistant");
 <div id="mapContainer"></div>
 <div id="logo">
     <h1>Explore</h1>
+    <img id="iconmenu" src="<?=$assistant->getAbsoluteUrl("ressources/img/icons/caret-down-solid.svg")?>">
 </div>
+<?php
+if (!ConnexionUtilisateur::estConnecte()) {
+    echo '
+                    
+                    <ul id="sousmenu" class="sousmenu-hidden">
+                        <li><img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/clock-solid.svg") . '" class="icons">
+                        <h3>Historique</h3> </li>
+                    </ul>
+                    
+                    ';
+} else if(ConnexionUtilisateur::estConnecte()){
+    echo '
+                    
+                    <ul id="sousmenu" class="sousmenu-hidden">
+                        <li><img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/clock-solid.svg") . '" class="icons">
+                        <h3>Historique</h3> </li>
+                    </ul>
+                    
+                    ';
+}
+?>
 
 
     <?php
@@ -50,6 +72,8 @@ $assistant = Conteneur::recupererService("assistant");
     ?>
 
 
+
+<div id="loader"></div>
     <footer>
         <?php
 
@@ -96,6 +120,7 @@ $assistant = Conteneur::recupererService("assistant");
 
 
 <script defer type="text/javascript" src="<?=$assistant->getAbsoluteUrl("ressources/js/connect.js")?>"></script>
+<script defer type="text/javascript" src="<?=$assistant->getAbsoluteUrl("ressources/js/menu.js")?>"></script>
 <script defer type="text/javascript" src="<?=$assistant->getAbsoluteUrl("ressources/js/map.js")?>"></script>
 <script defer type="text/javascript" src="<?=$assistant->getAbsoluteUrl("ressources/js/notifications.js")?>"></script>
 
