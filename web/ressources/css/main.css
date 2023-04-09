@@ -312,7 +312,7 @@ footer{
     width: 150px;
 }
 
-@keyframes warning {
+@keyframes show {
     0% {
         opacity: 0;
         bottom: 0;
@@ -326,15 +326,19 @@ footer{
     }
 }
 
+
 .notification-show{
-    animation: warning 400ms ease-in-out;
+    animation: show 400ms ease-in-out;
     display: flex;
 }
+
 .notification-hidden{
     display: none;
 }
 
+
 .messageFlash{
+    display: flex;
     position: absolute;
     bottom: 25px;
     height: 20%;

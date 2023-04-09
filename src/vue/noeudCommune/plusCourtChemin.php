@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 <div class="contain" id="recherche">
     
     <!-- regler le lien du form pour que ça prenne en parametre les inputs-->
-    <form autocomplete="off" id="form" action="./" class="insideDivide" method="post">
+    <div id="form"  class="insideDivide">
         <label class="underlineTravel">
             <img src="<?=$assistant->getAbsoluteUrl("ressources/img/icons/circle-solid.svg")?>" class="iconsLocationStart">
             <div class="autocompletion" id="autocompletion1"></div>
@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
             <img src="<?=$assistant->getAbsoluteUrl("ressources/img/icons/location-dot-solid.svg")?>" class="iconsLocation">
             <div class="autocompletion" id="autocompletion2"></div>
             <input id="ville2" placeholder="Où allons-nous ?" type="text" name="nomCommuneArrivee" class="nomCommuneArrivee">
-            <button type="submit" id='searchButton' value="Calculer">
+            <button id='searchButton'>
             <img src="<?=$assistant->getAbsoluteUrl("ressources/img/icons/location-arrow-solid.svg")?>"></button>
         </label>
 
@@ -37,6 +37,9 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
             }
         }
         ?>
-    </form>
+    </div>
 </div>
 <script defer type="text/javascript" src="<?=$assistant->getAbsoluteUrl("ressources/js/search.js")?>"></script>
+<script defer type="text/javascript" src="<?=$assistant->getAbsoluteUrl("ressources/js/trajet.js")?>"></script>
+<script defer type="text/javascript" src="<?=$assistant->getAbsoluteUrl("ressources/js/autocompletion.js")?>"></script>
+

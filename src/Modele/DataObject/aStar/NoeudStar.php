@@ -21,7 +21,6 @@ class NoeudStar
     private EtatNoeud $state = EtatNoeud::PAUSE;
 
 
-    /* @var double[] $coords*/
     public function __construct(string $gid, array $coords, float $distanceFin)
     {
         $this->coords = $coords;

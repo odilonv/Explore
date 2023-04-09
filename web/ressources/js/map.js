@@ -1,24 +1,10 @@
 /**
- * Moves the map to display over Berlin
  *
  * @param  {H.Map} map      A HERE Map instance within the application
  */
-function moveMapToMontpellier(map){
-    map.setCenter({lat:43.610769, lng:3.876716});
-    map.setZoom(14);
-}
-
-function addRoad(map, points){
-    let lineString = new H.geo.LineString();
-    points.forEach(point => {
-        lineString.pushPoint(point);
-    });
-
-    let polyline = new H.map.Polyline(lineString, { style: {lineWidth: 5}});
-
-    map.addObject(polyline);
-
-    map.getViewModel().setLookAtData({bounds: polyline.getBoundingBox()});
+function moveMapToFrance(map){
+    map.setCenter({lat: 46.71109, lng: 1.7191036});
+    map.setZoom(6.5);
 }
 
 /**
@@ -26,13 +12,13 @@ function addRoad(map, points){
  */
 
 //Step 1: initialize communication with the platform
-var platform = new H.service.Platform({
+const platform = new H.service.Platform({
     'apikey': 'xT0meObIDwRziElCoHGOgcuY1RT0AVfJQGG-HF8ZtDk'
 });
-var defaultLayers = platform.createDefaultLayers();
+let defaultLayers = platform.createDefaultLayers();
 
 //Step 2: initialize a map - this map is centered over Europe
-var map = new H.Map(document.getElementById('mapContainer'),
+let map = new H.Map(document.getElementById('mapContainer'),
     defaultLayers.vector.normal.map,{
         center: {lat:50, lng:5},
         zoom: 4,
@@ -50,12 +36,12 @@ map.addEventListener('rightclick', function (evt) {
 //Step 3: make the map interactive
 // MapEvents enables the event system
 // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
-var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+let behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
 
 // Create the default UI components
-var ui = H.ui.UI.createDefault(map, defaultLayers);
+let ui = H.ui.UI.createDefault(map, defaultLayers);
 
 // Now use the map as required...
 window.onload = function () {
-    moveMapToMontpellier(map);
+    moveMapToFrance(map);
 }

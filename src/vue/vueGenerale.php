@@ -52,13 +52,16 @@ $assistant = Conteneur::recupererService("assistant");
 
     <footer>
         <?php
+
         foreach (["success", "info", "warning", "danger"] as $type) {
             foreach ($messagesFlash[$type] as $messageFlash) {
                 echo <<<HTML
-                            <div class="messageFlash notification-hidden alert-$type">
+                            <div class="notification-hidden" id="notif">
+                            <div class="messageFlash alert-$type">
                                 <h3>Message d'Explorateur</h3>
                                 <div class="ligne"></div>
-                                <p>$messageFlash</p> 
+                                <p></p>
+                            </div>
                             </div>
                             HTML;
             }

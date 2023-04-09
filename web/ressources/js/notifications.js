@@ -1,14 +1,17 @@
-const msgButton = document.getElementById('form')
-const notification = document.querySelector(".messageFlash");
 
-msgButton.addEventListener("submit", () => {
+const notification = document.getElementById("notif");
+
+searchButton.addEventListener('click',notif);
+function notif(message){
     notification.classList.remove("notification-hidden");
+    document.querySelector('.messageFlash > p').textContent=message;
     notification.classList.add("notification-show");
-});
+    // On l'efface 10 secondes plus tard
+    setTimeout(() => {
+        notification.classList.add('notification-hidden');
+        notification.classList.remove('notification-show');
 
+    },5000);
 
-// On l'efface 10 secondes plus tard
-setTimeout(() => {
-    notification.classList.remove('notification-show');
-    notification.classList.add('notification-hidden');
-},10000);
+}
+

@@ -127,7 +127,6 @@ function addInputDest() {
         indexInput++;
         if(indexInput > 10)
         {
-
             newCircleAdd.remove()
             newButton.remove()
             newCircles.remove()
@@ -344,20 +343,4 @@ document.getElementById("mapContainer").addEventListener("click",()=>{for(let i=
     videVille(i)
 }})
 
-/*
-document.body.addEventListener("click",()=>{for(let i=1;i<=document.getElementsByClassName("autocompletion").length;i++){
-    videVille(i)
-}})
 
- */
-
-
-
-
-function search(){
-    let depart = document.getElementById('ville1').value;
-    let arrivee = document.getElementById('ville2').value;
-
-    let requete = new URL(`api/getPlusCourt/${depart}/${arrivee}`, document.baseURI);
-    fetch(requete.href).then(response => response.json()).then(data => addRoad(map, data.multiline));
-}
