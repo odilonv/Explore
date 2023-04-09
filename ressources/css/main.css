@@ -39,6 +39,9 @@ body {
     filter: opacity(0.6);
 }
 
+.crossIcon{
+    margin-left: 1.5px;
+}
 
 .contain{
     background: #efeeee;
@@ -116,6 +119,8 @@ body {
     width: 20px ;
     margin-bottom: 4px;
 }
+
+
 .iconsLocationStart{
     height: 15px;
     width: 15px;
@@ -451,7 +456,7 @@ a{
 
 
 
-.autocompletion p:hover, .autocompletion selected{
+.autocompletion p:hover, .autocompletion p.selected{
     background-color: #ffae9e;
     color:white ;
 }
