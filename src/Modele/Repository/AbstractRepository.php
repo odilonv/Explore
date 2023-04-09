@@ -165,6 +165,10 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
 
         $objetFormatTableau = $object->exporterEnFormatRequetePreparee();
 
+        echo $sql;
+        $pdoStatement->execute($objetFormatTableau);
+        return true;
+        /*
         try {
             $pdoStatement->execute($objetFormatTableau);
             return true;
@@ -177,5 +181,6 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
                 throw $exception;
             }
         }
+        */
     }
 }

@@ -19,19 +19,13 @@ class ControleurNoeudCommuneAPI
         $this->noeudCommuneService = $noeudCommuneService;
     }
 
-    public function getPlusCourt(string $nomCommuneDepart, string $nomCommuneArrivee){
-        try{
+    public function getPlusCourt(string $nomCommuneDepart, string $nomCommuneArrivee)
+    {
+        try {
             $reponseJSON = $this->noeudCommuneService->requetePlusCourt($nomCommuneDepart, $nomCommuneArrivee);
             return new JsonResponse($reponseJSON);
-        }catch (ServiceException $se){
-            return new JsonResponse(
-                ["error" => $se->getMessage()],
-                $se->getCode());
-        }catch (JsonException $exception) {
-            return new JsonResponse(
-                ["error" => "Corps de la requête mal formé"],
-                Response::HTTP_BAD_REQUEST
-            );
+        } catch (ServiceException $se) {
+            return new JsonResponse(["error" => $se->getMessage()], $se->getCode());
         }
     }
 }

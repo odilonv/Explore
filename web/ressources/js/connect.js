@@ -20,34 +20,41 @@ function addForm() {
     connect.appendChild(newHeader);
 
 
-    addInput('Ex: Bernard', '*******');
-    addConnectButton('se connecter');
+    const connectForm = document.createElement('form');
+    connectForm.method = "post";
+    connectForm.action = "../web/connexion";
+
+    connectForm.appendChild(addInput("text","Login","login","invite"));
+    connectForm.appendChild(addInput("password","********","mdp","motDePasse123"));
+    connectForm.appendChild(addConnectButton('se connecter'));
+
+    connect.appendChild(connectForm)
+
     addRegisterButton('s\'inscrire');
     addExitButton();
 }
 
 // Fonction pour ajouter les champs de texte pour le nom et le mot de passe
-function addInput(placeholderName, placeholderMdp) {
-    const inputName = document.createElement('input');
-    const inputMdp = document.createElement('input');
-
-    inputName.placeholder = placeholderName;
-    inputMdp.placeholder = placeholderMdp;
-
-    inputName.classList.add('lines');
-    inputMdp.classList.add('lines');
-
-    connect.appendChild(inputName);
-    connect.appendChild(inputMdp);
+function addInput(type ,placeholder,name="" ,value="") {
+    const input = document.createElement('input');
+    input.type = type;
+    input.placeholder = placeholder;
+    input.name = name;
+    input.value = value;
+    input.classList.add('lines');
+    return input
 }
 
 // Fonction pour ajouter le bouton "se connecter"
 function addConnectButton(text) {
-    const connectButton = document.createElement('button');
+    const connectButton = document.createElement('input');
+    connectButton.type = "submit";
+
     connectButton.classList.add('connectButton');
     connectButton.textContent = text;
 
-    connect.appendChild(connectButton);
+
+    return connectButton;
 }
 
 // Fonction pour ajouter le lien pour s'inscrire

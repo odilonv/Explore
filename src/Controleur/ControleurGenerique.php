@@ -10,7 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
-class ControleurGenerique {
+class ControleurGenerique
+{
 
     protected static function afficherVue(string $cheminVue, array $parametres = []): Response
     {
@@ -22,12 +23,11 @@ class ControleurGenerique {
         return new Response($corpsReponse);
     }
 
-    public static function rediriger($route, $parametres=[]) : RedirectResponse
+    public static function rediriger($route, $parametres = []): RedirectResponse
     {
         $gen = Conteneur::recupererService("generateur");
         $url = $gen->generate($route, $parametres);
         return new RedirectResponse($url);
-
     }
 
     public static function afficherErreur($errorMessage = "", $statusCode = 400): Response
@@ -46,7 +46,7 @@ class ControleurGenerique {
             // Remplacez xxx par le bon code d'erreur
             $reponse = ControleurGenerique::afficherErreur($exception->getMessage(), 400);
         } catch (ResourceNotFoundException $exception) {
-            $reponse = ControleurGenerique::afficherErreur($exception->getMessage(),404) ;
+            $reponse = ControleurGenerique::afficherErreur($exception->getMessage(), 404);
         }
 
         $reponse->setStatusCode($statusCode);
@@ -59,5 +59,4 @@ class ControleurGenerique {
         $twig = Conteneur::recupererService("twig");
         return new Response($twig->render($cheminVue, $parametres));
     }
-
 }
