@@ -2,7 +2,7 @@
 
 namespace Explore\Lib;
 
-use Explore\Configuration\ConfigurationBDDPostgreSQL;
+use Explore\Modele\DataObject\aStar\EtatNoeud;
 use Explore\Modele\DataObject\aStar\NoeudStar;
 use Explore\Modele\Repository\NoeudRoutierRepositoryInterface;
 
@@ -21,17 +21,43 @@ class PlusCourtChemin
     }
 
     public function calculer3():?NoeudStar{
+        Utils::startTimer();
         $queuStar = $this->noeudRoutierRepository->getForStar($this->noeudRoutierDepartGid, $this->noeudRoutierArriveeGid);
 
         $dernierNoeud = null;
+        $tmp1 = 0;
+        $tmp2 = 0;
+        $tmp3 = 0;
+        $tailleMax=1;
         do{
-            $dernierNoeud = $queuStar->getTop();
+            $tailleMax=$tailleMax<$queuStar->getSize()?$queuStar->getSize():$tailleMax;
+            $tmp = Utils::getDuree();
+            $dernierNoeud = $queuStar->removeTop();
+            $tmp1 += Utils::getDuree()-$tmp;
 
+            $tmp = Utils::getDuree();
             $dernierNoeud->selectionner();
+            $tmp2 += Utils::getDuree()-$tmp;
 
-            $queuStar->removeTop();
+            $tmp = Utils::getDuree();
+            foreach ($dernierNoeud->getNoeudsVoisins() as $infosVoisin){
+                $voisin = $infosVoisin['voisin'];
+                if($voisin->getState() == EtatNoeud::PAUSE){
+                    $voisin->setState(EtatNoeud::POSSIBLE);
+                    $queuStar->insert($voisin);
+                }
+            }
+            $tmp3 += Utils::getDuree()-$tmp;
         }
         while($queuStar->getSize()>0 && $dernierNoeud->getGid() != $this->noeudRoutierArriveeGid);
+
+        Utils::log(
+            "(calculer) temps 1: $tmp1 <br>
+             (calculer) temps 2: $tmp2 <br>
+             (calculer) temps 3: $tmp3");
+        Utils::log("taille max du tas: " . $tailleMax);
+
+        Utils::log("total calculer : " . Utils::getDuree());
 
         return $dernierNoeud->getGid()==$this->noeudRoutierArriveeGid?$dernierNoeud:null;
     }

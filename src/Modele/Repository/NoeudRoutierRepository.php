@@ -167,7 +167,6 @@ class NoeudRoutierRepository extends AbstractRepository implements NoeudRoutierR
             $gid = $key;
             $noeud = new NoeudStar($gid, ['latitude' => $infos['latitude'], 'longitude' => $infos['longitude']], $dist);
             $noeudsDist[$gid] = $noeud;
-            $noeud->setPrioQ($starQueue);
         }
 
         foreach ($result as $key=>$lstNoeuds){
