@@ -161,13 +161,17 @@ class RouteurURL
                 'strict_variables' => true
             ]
         );
-        
+
         // Créer une instance de la classe ConnexionUtilisateur
         $utilisateurConnecte = new ConnexionUtilisateur();
         // Obtenir l'identifiant de l'utilisateur connecté
         $idUtilisateurConnecte = $utilisateurConnecte->getLoginUtilisateurConnecte();
         // Ajouter la variable globale à l'environnement Twig
         $twig->addGlobal('idUtilisateurConnecte', $idUtilisateurConnecte);
+
+        $administrateur = new ConnexionUtilisateur();
+        $adminConnecte = $administrateur->estAdministrateur();
+        $twig->addGlobal('adminConnecte', $adminConnecte);
 
         // Récupérez tous les messages Flash
         $messagesFlash = MessageFlash::lireTousMessages();
@@ -182,7 +186,7 @@ class RouteurURL
 
         $twig->addGlobal('debug', \Explore\Lib\Utils::$debug);
         $twig->addGlobal('logs', \Explore\Lib\Utils::getLogs());
-        
+
         Conteneur::ajouterService("twig", $twig);
 
         Conteneur::ajouterService("assistant", $assistantUrl);

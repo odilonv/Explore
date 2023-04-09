@@ -32,7 +32,7 @@
             <p>Connecte-toi pour accéder à plus d'informations.</p> 
             </li>
         </ul>
-    {% elseif idUtilisateurConnecte %}
+    {% elseif idUtilisateurConnecte and adminConnecte %}
         <ul id="sousmenu" class="sousmenu-hidden">
             <li>
             <img src="{{ asset("ressources/img/icons/clock-solid.svg") }}" class="icons">

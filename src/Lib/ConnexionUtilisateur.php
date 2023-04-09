@@ -45,7 +45,7 @@ class ConnexionUtilisateur
         );
     }
 
-    public static function estAdministrateur() : bool
+    public static function estAdministrateur(): bool
     {
         $loginConnecte = ConnexionUtilisateur::getLoginUtilisateurConnecte();
 
