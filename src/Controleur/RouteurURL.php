@@ -41,9 +41,6 @@ class RouteurURL
         // Route afficherFormulaireConnexion
         $route = new Route("/connexion", [
             "_controller" => "utilisateur_controleur::afficherFormulaireConnexion",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
         ]);
         $route->setMethods(["GET"]);
         $routes->add("afficherFormulaireConnexion", $route);
@@ -52,36 +49,27 @@ class RouteurURL
 
         $route = new Route("/connexion", [
             "_controller" => "utilisateur_controleur::connecter",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
         ]);
         $route->setMethods(["POST"]);
         $routes->add("connecter", $route);
 
         $route = new Route("/deconnexion", [
             "_controller" => "utilisateur_controleur::deconnecter",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $routes->add("deconnecter", $route);
 
 
         $route = new Route("/inscription", [
             "_controller" => "utilisateur_controleur::afficherFormulaireCreation",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $route->setMethods(["GET"]);
         $routes->add("afficherFormulaireCreation", $route);
 
         $route = new Route("/inscription", [
             "_controller" => "utilisateur_controleur::creerDepuisFormulaire",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $route->setMethods(["POST"]);
         $routes->add("creerDepuisFormulaire", $route);
@@ -90,35 +78,27 @@ class RouteurURL
 
         $route = new Route("/modification/{idUser}", [
             "_controller" => "utilisateur_controleur::afficherFormulaireMiseAJour",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $routes->add("afficherFormulaireMiseAJour", $route);
 
         $route = new Route("/modification/{idUser}", [
             "_controller" => "utilisateur_controleur::mettreAJour",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $routes->add("mettreAJour ", $route);
 
 
         $route = new Route("/utilisateurs", [
             "_controller" => "utilisateur_controleur::afficherListe",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $routes->add("afficherListe", $route);
 
 
         $route = new Route("/utilisateur/{idUser}", [
             "_controller" => "utilisateur_controleur::afficherDetail",
-            // Syntaxes équivalentes
-            // "_controller" => ControleurUtilisateur::class . "::afficherFormulaireConnexion",
-            // "_controller" => [ControleurUtilisateur::class, "afficherFormulaireConnexion"],
+
         ]);
         $route->setMethods(["GET"]);
         $routes->add("afficherDetail", $route);

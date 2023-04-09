@@ -95,8 +95,6 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
         // Note: fetch() renvoie false si pas de voiture correspondante
         $objetFormatTableau = $pdoStatement->fetch();
 
-
-
         if ($objetFormatTableau !== false) {
             return $this->construireDepuisTableau($objetFormatTableau);
         }

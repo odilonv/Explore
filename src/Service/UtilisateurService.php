@@ -44,7 +44,7 @@ class UtilisateurService implements UtilisateurServiceInterface
             throw new ServiceException("Un compte est déjà enregistré avec cette adresse mail!");
         }
 
-        $passwordChiffre = MotDePasse::hacher($password);
+        //$passwordChiffre = MotDePasse::hacher($password);
 
         // Upload des photos de profil
         // Plus d'informations :
@@ -71,7 +71,7 @@ class UtilisateurService implements UtilisateurServiceInterface
 
 
         $utilisateur = Utilisateur::construireDepuisFormulaire(array("login" => $login,
-            "mdp" => $passwordChiffre,
+            "mdp" => $password,
             "email" => $adresseMail,
             "profilePictureName" => $profilePictureData));
         $utilisateurRepository->ajouter($utilisateur);
@@ -114,14 +114,16 @@ class UtilisateurService implements UtilisateurServiceInterface
         }
         $utilisateurRepository = $this->utilisateurRepository;
         /** @var Utilisateur $utilisateur */
-        $utilisateur = $utilisateurRepository->getByLogin($_POST["login"]);
+        $utilisateur = $utilisateurRepository->recupererParClePrimaire($login);
 
         if ($utilisateur == null) {
-            throw new ServiceException("afficherFormulaireConnexion");
+            throw new ServiceException("utilisateur inexistant");
         }
 
-        if (!MotDePasse::verifier($_POST["password"], $utilisateur->getMdpHache())) {
-            throw new ServiceException("afficherFormulaireConnexion");
+
+
+        if (!MotDePasse::verifier($password, $utilisateur->getMdpHache())) {
+            throw new ServiceException("mot de passe incorrect");
         }
         ConnexionUtilisateur::connecter($utilisateur->getLogin());
     }

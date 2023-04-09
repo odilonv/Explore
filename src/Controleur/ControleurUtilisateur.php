@@ -120,16 +120,19 @@ class ControleurUtilisateur extends ControleurGenerique
     public function connecter(): RedirectResponse
     {
         $login = $_POST['login'] ?? null;
-        $password = $_POST['password'] ?? null;
+        $password = $_POST['mdp'] ?? null;
         try {
             $this->utilisateurService->connecterUtilisateur($login, $password);
             MessageFlash::ajouter("success", "Connexion effectuée.");
-            return ControleurUtilisateur::rediriger("connexion");
+            return ControleurUtilisateur::rediriger("plusCourt");
+
+
         }
         catch(ServiceException $e) {
             MessageFlash::ajouter('error', $e->getMessage());
-            return ControleurUtilisateur::rediriger("afficherFormulaireCreation");
+            return ControleurUtilisateur::rediriger("plusCourt");
         }
+
 
     }
 

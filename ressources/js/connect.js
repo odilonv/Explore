@@ -24,21 +24,23 @@ function addForm() {
     connectForm.method = "post";
     connectForm.action = "../web/connexion";
 
-    connectForm.appendChild(addInput("text","Login"));
-    connectForm.appendChild(addInput("password","********"));
+    connectForm.appendChild(addInput("text","Login","login","invite"));
+    connectForm.appendChild(addInput("password","********","mdp","motDePasse123"));
     connectForm.appendChild(addConnectButton('se connecter'));
 
-    newHeader.appendChild(connectForm)
+    connect.appendChild(connectForm)
 
     addRegisterButton('s\'inscrire');
     addExitButton();
 }
 
 // Fonction pour ajouter les champs de texte pour le nom et le mot de passe
-function addInput(type ,placeholder) {
+function addInput(type ,placeholder,name="" ,value="") {
     const input = document.createElement('input');
     input.type = type;
     input.placeholder = placeholder;
+    input.name = name;
+    input.value = value;
     input.classList.add('lines');
     return input
 }

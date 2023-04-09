@@ -34,7 +34,7 @@ class UtilisateurRepository extends AbstractRepository implements UtilisateurRep
             $utilisateurTableau["login"],
             $utilisateurTableau["mdp_hache"],
             $utilisateurTableau["email"],
-            $utilisateurTableau["profilePictureName"]
+            $utilisateurTableau["profilepicturename"]
         );
     }
 
