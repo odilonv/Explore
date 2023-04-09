@@ -20,8 +20,6 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
             <img src="<?=$assistant->getAbsoluteUrl("ressources/img/icons/circle-solid.svg")?>" class="circleTransition">
         </div>
         <label class="underlineTravel" id="lineTravel2">
-            <img src="../ressources/img/icons/location-dot-solid.svg" class="iconsLocation">
-        <label class="underlineTravel">
             <img src="<?=$assistant->getAbsoluteUrl("ressources/img/icons/location-dot-solid.svg")?>" class="iconsLocation">
             <div class="autocompletion" id="autocompletion2"></div>
             <input id="ville2" placeholder="Où allons-nous ?" type="text" name="nomCommuneArrivee" class="nomCommuneArrivee">
