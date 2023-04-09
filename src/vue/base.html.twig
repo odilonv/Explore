@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+
+    <title>{{ pagetitle }}</title>
+
+    <link rel="shortcut icon" type="image/png" href="{{ asset("ressources/img/3d-illustration-travel-location.png") }}" />
+
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+
+    <link rel="stylesheet" href="{{ asset("ressources/css/main.css") }}">
+</head>
+
+<body>
+    <div id="mapContainer"></div>
+
+    <div id="logo">
+        <h1>Explore</h1>
+        <img id="iconmenu" src="{{ asset("ressources/img/icons/caret-down-solid.svg") }}">
+    </div>
+
+    {% if not (idUtilisateurConnecte) %}
+        <ul id="sousmenu" class="sousmenu-hidden">
+            <li>
+            <p>Connecte-toi pour accéder à plus d'informations.</p> 
+            </li>
+        </ul>
+    {% elseif idUtilisateurConnecte and adminConnecte %}
+        <ul id="sousmenu" class="sousmenu-hidden">
+            <li>
+            <img src="{{ asset("ressources/img/icons/clock-solid.svg") }}" class="icons">
+            <h3>Historique</h3> 
+            </li>
+            <li>
+            <img src="{{ asset("ressources/img/icons/compass-solid.svg") }}" class="icons">
+            <h3>Communes</h3> 
+            </li>
+            <li>
+            <img src="{{ asset("ressources/img/icons/user-solid.svg") }}" class="icons">
+            <h3>Utilisateurs</h3> 
+            </li>
+        </ul>
+          {% elseif idUtilisateurConnecte %}
+        <ul id="sousmenu" class="sousmenu-hidden">
+            <li>
+            <img src="{{ asset("ressources/img/icons/clock-solid.svg") }}" class="icons">
+            <h3>Historique</h3> 
+            </li>
+        </ul>
+    {% endif %}
+
+    {% if debug %}
+        {% for log in logs %}
+            {{ log }} <br>
+        {% endfor %}
+    {% endif %}
+
+    <div id="loader"></div>
+
+    <footer>
+        {% for type in ['success', 'info', 'warning', 'danger'] %}
+            {% for messageFlash in messagesFlash[type] %}
+                <div class="notification-hidden" id="notif">
+                    <div class="messageFlash alert-{{ type }}">
+                        <h3>Message d'Explorateur</h3>
+                        <div class="ligne"></div>
+                        <p>{{ messageFlash }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        {% if not (idUtilisateurConnecte) %}
+            <div class="connectFooter clickable">
+                <div class="connectHeader">
+                    <img src="{{ asset("ressources/img/icons/user-solid.svg") }}" class="icons">
+                    <h2 id="h2Connexion">Se connecter</h2>
+                    </div>
+            </div>
+        {% else %}
+            {% set loginHTML = idUtilisateurConnecte|escape %}
+            {% set loginURL = idUtilisateurConnecte|url_encode %}
+            <form class="connectFooter clickable">
+                <a href="/utilisateur/{{ loginURL }}" id="connectFooter">
+                    <img src="{{ asset("ressources/img/icons/user-solid.svg") }}" class="icons">
+                    <h2>{{ loginHTML }}</h2>
+                </a>
+            </form>
+        {% endif %}
+
+        <script defer type="text/javascript" src="{{ asset("ressources/js/connect.js") }}"></script>
+        <script defer type="text/javascript" src="{{ asset("ressources/js/menu.js") }}"></script>
+        <script defer type="text/javascript" src="{{ asset("ressources/js/map.js") }}"></script>
+        <script defer type="text/javascript" src="{{ asset("ressources/js/notifications.js") }}"></script>
+
+{% block page_content %}{% endblock %}
+</body>
+
+</html>

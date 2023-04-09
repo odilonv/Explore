@@ -3,9 +3,6 @@
 namespace Explore\Lib;
 
 use Explore\Configuration\ConfigurationBDDPostgreSQL;
-use Explore\Modele\DataObject\aStar\QueueStar;
-use Explore\Modele\Repository\ConnexionBaseDeDonnees;
-use Explore\Modele\Repository\NoeudRoutierRepository;
 use Explore\Modele\DataObject\aStar\NoeudStar;
 use Explore\Modele\Repository\NoeudRoutierRepositoryInterface;
 
@@ -24,8 +21,7 @@ class PlusCourtChemin
     }
 
     public function calculer3():?NoeudStar{
-        $queuStar = new QueueStar();
-        $this->noeudRoutierRepository->getForStar($this->noeudRoutierDepartGid, $this->noeudRoutierArriveeGid, $queuStar);
+        $queuStar = $this->noeudRoutierRepository->getForStar($this->noeudRoutierDepartGid, $this->noeudRoutierArriveeGid);
 
         $dernierNoeud = null;
         do{

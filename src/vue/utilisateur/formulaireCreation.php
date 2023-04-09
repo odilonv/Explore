@@ -16,10 +16,16 @@ function generateRandomString($length = 10) {
 
 
 
+<?php
+use Symfony\Component\HttpFoundation\UrlHelper;
+use Symfony\Component\Routing\Generator\UrlGenerator;
+/** @var UrlGenerator $generateur */
+/** @var UrlHelper $assistant */
+?>
 <section class="fond-page">
-    <form class="box-inscription" method="post" action="../web/inscription">
+    <form class="box-inscription" method="<?= $method ?>" action="controleurFrontal.php">
         <div class="exitLine">
-        <div class="exitButton"><img class="icons" src="../ressources/img/icons/xmark-solid.svg" alt="exit"></div>
+        <a class="exitButton" href="<?=$generateur->generate("plusCourt");?>"><img class="icons" src="<?=$assistant->getAbsoluteUrl("ressources/img/icons/xmark-solid.svg");?>" alt="exit"></a>
         </div>
         <label for="login_id">Login&#42;
                 <input type="text" placeholder="Ex : rlebreton" name="login" id="login_id"  value="<?php echo generateRandomString()?>">

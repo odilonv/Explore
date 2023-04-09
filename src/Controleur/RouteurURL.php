@@ -1,4 +1,5 @@
 <?php
+
 namespace Explore\Controleur;
 
 
@@ -25,10 +26,14 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Explore\Lib\Conteneur;
+use Twig\TwigFunction;
+use Explore\Lib\ConnexionUtilisateur;
+use Explore\Lib\MessageFlash;
 
 class RouteurURL
 {
-    public static function traiterRequete(Request $request) : Response {
+    public static function traiterRequete(Request $request): Response
+    {
 
         $routes = new RouteCollection();
 
@@ -117,35 +122,55 @@ class RouteurURL
         $routes->add("requeteVille", $route);
 
 
-        $route = new Route("/getPlusCourt/{depart}/{arrivee}", [
-            "_controller" => "noeudcommune_controleur::requetePlusCourt"
+        $route = new Route("api/getPlusCourt/{nomCommuneDepart}/{nomCommuneArrivee}", [
+            "_controller" => "noeudcommune_controleur_api::getPlusCourt"
         ]);
-        $routes->add("requetePlusCourt", $route);
-
-
-
-
-
-
-
-        // $twigLoader = new FilesystemLoader(__DIR__ . '/../vue/');
-        // $twig = new Environment(
-        //     $twigLoader,
-        //     [
-        //         'autoescape' => 'html',
-        //         'strict_variables' => true
-        //     ]
-        // );
-        // Conteneur::ajouterService("twig", $twig);
-
+        $route->setMethods(["GET"]);
+        $routes->add("getPlusCourt", $route);
 
         $contexteRequete = (new RequestContext())->fromRequest($request);
-        //print_r($contexteRequete);
-
         $assistantUrl = new UrlHelper(new RequestStack(), $contexteRequete);
         $generateurUrl = new UrlGenerator($routes, $contexteRequete);
-        Conteneur::ajouterService("assistant",$assistantUrl);
-        Conteneur::ajouterService("generateur",$generateurUrl);
+
+        //TWIG
+        $twigLoader = new FilesystemLoader(__DIR__ . '/../vue/');
+        $twig = new Environment(
+            $twigLoader,
+            [
+                'autoescape' => 'html',
+                'strict_variables' => true
+            ]
+        );
+
+        // Créer une instance de la classe ConnexionUtilisateur
+        $utilisateurConnecte = new ConnexionUtilisateur();
+        // Obtenir l'identifiant de l'utilisateur connecté
+        $idUtilisateurConnecte = $utilisateurConnecte->getLoginUtilisateurConnecte();
+        // Ajouter la variable globale à l'environnement Twig
+        $twig->addGlobal('idUtilisateurConnecte', $idUtilisateurConnecte);
+
+        $administrateur = new ConnexionUtilisateur();
+        $adminConnecte = $administrateur->estAdministrateur();
+        $twig->addGlobal('adminConnecte', $adminConnecte);
+
+        // Récupérez tous les messages Flash
+        $messagesFlash = MessageFlash::lireTousMessages();
+        // Ajoutez les messages Flash en tant que variable globale à l'environnement Twig
+        $twig->addGlobal('messagesFlash', $messagesFlash);
+
+        $callable =  $generateurUrl->generate(...);
+        $twig->addFunction(new TwigFunction("route", $callable));
+
+        $callable =  $assistantUrl->getAbsoluteUrl(...);
+        $twig->addFunction(new TwigFunction("asset", $callable));
+
+        $twig->addGlobal('debug', \Explore\Lib\Utils::$debug);
+        $twig->addGlobal('logs', \Explore\Lib\Utils::getLogs());
+
+        Conteneur::ajouterService("twig", $twig);
+
+        Conteneur::ajouterService("assistant", $assistantUrl);
+        Conteneur::ajouterService("generateur", $generateurUrl);
 
         $conteneur = new ContainerBuilder();
 
@@ -155,27 +180,30 @@ class RouteurURL
         $connexionBaseService->setArguments([new Reference('config_bdd')]);
 
 
-        $utilisateurRepositoryService = $conteneur->register('utilisateur_repository',UtilisateurRepository::class);
+        $utilisateurRepositoryService = $conteneur->register('utilisateur_repository', UtilisateurRepository::class);
         $utilisateurRepositoryService->setArguments([new Reference('connexion_base')]);
 
         $utilisateurService = $conteneur->register('utilisateur_service', UtilisateurService::class);
         $utilisateurService->setArguments([new Reference('utilisateur_repository')]);
 
-        $utilisateurControleurService = $conteneur->register('utilisateur_controleur',ControleurUtilisateur::class);
+        $utilisateurControleurService = $conteneur->register('utilisateur_controleur', ControleurUtilisateur::class);
         $utilisateurControleurService->setArguments([new Reference('utilisateur_service')]);
 
 
-        $noeudRoutierRepositoryService = $conteneur->register('noeudroutier_repository',NoeudRoutierRepository::class);
+        $noeudRoutierRepositoryService = $conteneur->register('noeudroutier_repository', NoeudRoutierRepository::class);
         $noeudRoutierRepositoryService->setArguments([new Reference('connexion_base')]);
 
 
-        $noeudCommuneRepositoryService = $conteneur->register('noeudcommune_repository',NoeudCommuneRepository::class);
+        $noeudCommuneRepositoryService = $conteneur->register('noeudcommune_repository', NoeudCommuneRepository::class);
         $noeudCommuneRepositoryService->setArguments([new Reference('connexion_base')]);
 
         $noeudCommuneService = $conteneur->register('noeudcommune_service', NoeudCommuneService::class);
         $noeudCommuneService->setArguments([new Reference('noeudcommune_repository'), new Reference('noeudroutier_repository')]);
 
-        $noeudCommuneControleurService = $conteneur->register('noeudcommune_controleur',ControleurNoeudCommune::class);
+        $noeudCommuneControleurService = $conteneur->register('noeudcommune_controleur', ControleurNoeudCommune::class);
+        $noeudCommuneControleurService->setArguments([new Reference('noeudcommune_service')]);
+
+        $noeudCommuneControleurService = $conteneur->register('noeudcommune_controleur_api', ControleurNoeudCommuneAPI::class);
         $noeudCommuneControleurService->setArguments([new Reference('noeudcommune_service')]);
 
 
@@ -206,10 +234,5 @@ class RouteurURL
         */
 
         return call_user_func_array($controleur, $arguments);
-
     }
-
-
-
-
 }

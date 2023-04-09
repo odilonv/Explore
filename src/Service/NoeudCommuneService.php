@@ -10,6 +10,7 @@ use Explore\Modele\Repository\NoeudCommuneRepositoryInterface;
 use Explore\Modele\Repository\NoeudRoutierRepository;
 use Explore\Modele\Repository\NoeudRoutierRepositoryInterface;
 use Explore\Service\Exception\ServiceException;
+use Symfony\Component\HttpFoundation\Response;
 
 class NoeudCommuneService implements NoeudCommuneServiceInterface
 {
@@ -124,48 +125,46 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
     /**
      * @throws ServiceException
      */
-    public function requetePlusCourt($depart, $arrivee){
-        if($depart!=null && $arrivee!=null){
-            $parametres = [];
+    public function requetePlusCourt($nomCommuneDepart, $nomCommuneArrivee){
+        if(is_null($nomCommuneDepart) || is_null($nomCommuneArrivee)){
+            throw new ServiceException('départ ou arrivée inconnue.', Response::HTTP_NOT_FOUND);
+        }
+        $resultat = [];
 
-            $nomCommuneDepart = $depart;
-            $nomCommuneArrivee = $arrivee;
+        /** @var NoeudCommune $noeudCommuneDepart */
+        $noeudCommuneDepart = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart])[0];
+        /** @var NoeudCommune $noeudCommuneArrivee */
+        $noeudCommuneArrivee = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee])[0];
 
-            /** @var NoeudCommune $noeudCommuneDepart */
-            $noeudCommuneDepart = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart])[0];
-            /** @var NoeudCommune $noeudCommuneArrivee */
-            $noeudCommuneArrivee = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee])[0];
+        if(is_null($noeudCommuneDepart) || is_null($noeudCommuneArrivee)){
+            throw new ServiceException('départ ou arrivée inconnue.', Response::HTTP_NOT_FOUND);
+        }
 
-            $noeudRoutierDepartGid = $this->noeudRoutierRepository->recupererPar([
+        $noeudRoutierDepartGid = $this->noeudRoutierRepository->recupererPar([
                 "id_rte500" => $noeudCommuneDepart->getId_nd_rte()
-            ])[0]->getGid();
-            $noeudRoutierArriveeGid = $this->noeudRoutierRepository->recupererPar([
-                "id_rte500" => $noeudCommuneArrivee->getId_nd_rte()
-            ])[0]->getGid();
+        ])[0]->getGid();
+        $noeudRoutierArriveeGid = $this->noeudRoutierRepository->recupererPar([
+           "id_rte500" => $noeudCommuneArrivee->getId_nd_rte()
+        ])[0]->getGid();
 
-            $pcc = new PlusCourtChemin($noeudRoutierDepartGid, $noeudRoutierArriveeGid, $this->noeudRoutierRepository);
+        $pcc = new PlusCourtChemin($noeudRoutierDepartGid, $noeudRoutierArriveeGid, $this->noeudRoutierRepository);
 
-            // $distance = $pcc->calculer();
+        $dernierNoeud = $pcc->calculer3();
 
-            $dernierNoeud = $pcc->calculer3();
-            $multiline = [];
-            foreach ($dernierNoeud->refaireChemin() as $noeud){
-                $coords = $noeud->getCoords();
-                $multiline[] = ['lat'=>$coords['latitude'], 'lng'=>$coords['longitude']];
-            }
-            $distance = $dernierNoeud->getDistanceDebut();
-
-            $parametres['multiline'] = $multiline;
-            $parametres["nomCommuneDepart"] = $nomCommuneDepart;
-            $parametres["nomCommuneArrivee"] = $nomCommuneArrivee;
-            $parametres["distance"] = $distance;
-
-            return $parametres;
+        $multiline = [];
+        foreach ($dernierNoeud->refaireChemin() as $noeud){
+            $coords = $noeud->getCoords();
+            $multiline[] = ['lat'=>$coords['latitude'], 'lng'=>$coords['longitude']];
         }
-        else{
-            throw new ServiceException('départ ou arrivée inconnue.');
-        }
+        $distance = $dernierNoeud->getDistanceDebut();
 
+        $resultat['multiline'] = $multiline;
+        $resultat["nomCommuneDepart"] = $nomCommuneDepart;
+        $resultat["nomCommuneArrivee"] = $nomCommuneArrivee;
+        $resultat["distance"] = $distance;
+        $resultat["message"] = "Le plus court chemin entre $nomCommuneDepart et $nomCommuneArrivee mesure $distance km.";
+
+        return $resultat;
     }
 
 

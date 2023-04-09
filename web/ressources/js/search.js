@@ -9,7 +9,7 @@ lineTravel.classList.add('underlineTravel');
 lineTravel.id = 'lineTravel3';
 
 const circleAdd = document.createElement('img');
-circleAdd.src = '../ressources/img/icons/circle-regular.svg';
+circleAdd.src = '../web/ressources/img/icons/circle-regular.svg';
 circleAdd.classList.add('iconsLocationStart');
 
 const cross = document.createElement('img');
@@ -21,7 +21,7 @@ circles.classList.add('circles');
 circles.id = 'circles2';
 
 const circleTemplate = document.createElement('img');
-circleTemplate.src = '../ressources/img/icons/circle-solid.svg';
+circleTemplate.src = '../web/ressources/img/icons/circle-solid.svg';
 circleTemplate.classList.add('circleTransition');
 
 for (let i = 0; i < 3; i++) {
@@ -72,13 +72,13 @@ function addInputDest() {
         oldInput.placeholder = 'Un point d\'arrêt ?';
         oldInput.classList.remove('nomCommuneArrivee');
 
-        oldIconLocation.src = '../ressources/img/icons/circle-solid.svg';
+        oldIconLocation.src = '../web/ressources/img/icons/circle-solid.svg';
         oldIconLocation.classList.add('iconsLocationStart');
         oldIconLocation.classList.remove('iconsLocation');
 
         oldCircle.classList.remove('iconsLocationStart');
         oldCircle.classList.add('iconsLocation');
-        oldCircle.src = '../ressources/img/icons/location-dot-solid.svg';
+        oldCircle.src = '../web/ressources/img/icons/location-dot-solid.svg';
 
         const input = document.createElement('input');
         input.classList.add('nomCommuneArrivee');
@@ -116,7 +116,7 @@ function addInputDest() {
         }
 
         const newCircleAdd = document.createElement('img');
-        newCircleAdd.src = '../ressources/img/icons/circle-regular.svg';
+        newCircleAdd.src = '../web/ressources/img/icons/circle-regular.svg';
         newCircleAdd.classList.add('iconsLocationStart');
 
 
@@ -510,22 +510,4 @@ function hide()
     }
 }
 
-/*
-document.body.addEventListener("click",()=>{for(let i=1;i<=document.getElementsByClassName("autocompletion").length;i++){
-    videVille(i)
-}})
 
- */
-
-
-
-
-function search(){
-    let depart = document.getElementById('nomCommuneDepart_id').value;
-    let arrivee = document.getElementById('nomCommuneArrivee_id').value;
-
-    let requete = `http://localhost/devWeb/SAE/web/getPlusCourt/${depart}/${arrivee}`;
-    fetch(requete).then(response => response.json()).then(data => addRoad(map, data.multiline));
-}
-
-document.getElementById('searchButton').addEventListener('click', search);

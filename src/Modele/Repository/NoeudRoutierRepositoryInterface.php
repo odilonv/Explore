@@ -55,6 +55,6 @@ interface NoeudRoutierRepositoryInterface
 
     public function recupererParClePrimaire(string $valeurClePrimaire): ?AbstractDataObject;
 
-    public function getForStar(string $gidDep, string $gidArrivee, QueueStar $starQueue);
+    public function getForStar(string $gidDep, string $gidArrivee):QueueStar;
 
 }

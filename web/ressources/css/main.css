@@ -31,6 +31,69 @@ body {
 }
 
 
+#iconmenu{
+    width: 15px;
+    height: 15px;
+}
+
+.sousmenu-hidden{
+    opacity: 0;
+    border-radius: 0.5em;
+
+
+}
+.sousmenu-show{
+    opacity: 1;
+    border-radius: 0 0 0.5em 0.5em ;
+}
+
+#sousmenu{
+    position: fixed;
+    display: flex;
+    z-index: 1;
+    right: 20px;
+    top: 65px;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    width: 10%;
+    height: 120px;
+    background-color: #fff;
+}
+
+#sousmenu li a{
+    color: rgba(15, 22, 33, 0.6);
+}
+
+#sousmenu h3{
+    font-size: 0.8em;
+}
+
+#sousmenu li{
+    display: flex;
+    width: 90%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+#sousmenu li > a{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: space-evenly;
+}
+#sousmenu li > p{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    font-size: 0.7em;
+    text-align: center;
+    color: rgba(15, 22, 33, 0.6);
+}
+
 
 
 .icons{
@@ -76,7 +139,7 @@ body {
     border-radius: 5px;
 }
 
-.box-inscription{
+.box-inscription, .box-liste{
     display: flex;
     width: 30%;
     height: 50%;
@@ -89,6 +152,52 @@ body {
     border-radius: 0.5em;
     background: #efeeee;
 }
+
+.box-inscription{
+    width: 30%;
+    padding: 20px 30px;
+    align-items: center;
+
+
+}
+
+.box-liste .exitLine > .exitButton{
+    width: 5%;
+}
+
+.box-liste > h1{
+    font-size: 2em;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    color: rgba(15, 22, 33, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.2em;
+    background: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+    font-family: Poppins, serif;
+}
+
+.box-liste{
+    overflow-y: scroll;
+    width: 60%;
+}
+
+.box-liste{
+    padding: 20px;
+}
+
+.box-liste > li{
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-size: 0.8em;
+}
+
 
 .box-inscription > label{
     display: flex;
@@ -113,14 +222,13 @@ body {
     justify-content: center;
     display: flex;
     flex-direction: column;
+    z-index: 1;
 }
 .iconsLocation{
     height: 20px;
     width: 20px ;
     margin-bottom: 4px;
 }
-
-
 .iconsLocationStart{
     height: 15px;
     width: 15px;
@@ -168,12 +276,15 @@ button, .registerButton, .exitButton, .connectButton{
     background-color: white;
 }
 .connectHeader:hover,
-.registerButton:hover{
+.registerButton:hover,
+#sousmenu li a:hover
+{
     color: rgba(15, 22, 33, 0.8);
 }
 
 .connectHeader:hover > img,
-.exitButton:hover > img{
+.exitButton:hover > img,
+#sousmenu li a:hover > img{
 
     filter: opacity(1);
 
@@ -269,8 +380,10 @@ footer{
     right: 20px;
     height: 40px;
     top: 25px;
+    z-index: 2;
     width: 10%;
     background-color: #ffae9e;
+    border-radius: 0.5em;
 }
 #logo > h1{
     font-size: 1em;
@@ -278,18 +391,18 @@ footer{
 }
 
 .connectFooter, #logo{
-    z-index: -1;
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     position: absolute;
-    border-radius: 0.5em;
-
     box-shadow: 0em 0 0.4em 0 rgba(15, 22, 33, 0.6);
 }
 .connectFooter{
     height: 40px;
     background-color: #fff;
+    border-radius: 0.5em;
+
 }
 .connectFooter > div{
     display: flex;
@@ -317,7 +430,7 @@ footer{
     width: 150px;
 }
 
-@keyframes warning {
+@keyframes show {
     0% {
         opacity: 0;
         bottom: 0;
@@ -331,15 +444,56 @@ footer{
     }
 }
 
+
 .notification-show{
-    animation: warning 400ms ease-in-out;
+    animation: show 400ms ease-in-out;
     display: flex;
 }
+
 .notification-hidden{
     display: none;
 }
 
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: none;
+}
+
+#loader:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    margin: -30px 0 0 -30px;
+    border-radius: 50%;
+    border: 5px solid #ffae9e;
+    border-color: #ffae9e transparent #ffae9e transparent;
+    animation: loader 1.2s linear infinite;
+}
+
+@keyframes loader {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+
 .messageFlash{
+
+    display: flex;
     position: absolute;
     bottom: 25px;
     height: 20%;

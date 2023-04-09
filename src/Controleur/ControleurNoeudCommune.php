@@ -9,6 +9,7 @@ use Explore\Modele\DataObject\NoeudCommune;
 use Explore\Modele\Repository\NoeudCommuneRepository;
 use Explore\Service\Exception\ServiceException;
 use Explore\Service\NoeudCommuneServiceInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use http\Env\Request;
@@ -90,26 +91,19 @@ class ControleurNoeudCommune extends ControleurGenerique
         }
     }
 
-    public function requetePlusCourt($depart, $arrivee){
-        try {
-            $parametres= $this->noeudCommuneService->requetePlusCourt($depart, $arrivee);
-            echo json_encode($parametres);
-        }
-        catch (ServiceException $e){
-            MessageFlash::ajouter('danger', $e->getMessage());
-            return ControleurUtilisateur::rediriger("plusCourt");
-        }
-    }
 
-    /**
-     * @throws ServiceException
-     */
-    public function requeteVille($ville) : Response
+    public function requeteVille($ville) : JsonResponse
     {
-        $tab = $this->noeudCommuneService->afficherAutocompletion($ville);
-        return ControleurNoeudCommune::afficherVue('noeudCommune/requeteVille.php', [
+        try{
+        $json = $this->noeudCommuneService->afficherAutocompletion($ville);
+        return new JsonResponse($json);
+        } catch (ServiceException $se){
+            return new JsonResponse(["error" => $se->getMessage()], $se->getCode());
+        }
+
+        /*return ControleurNoeudCommune::afficherVue('noeudCommune/requeteVille.php', [
             "tab" => $tab,
             "pagetitle" => "requeteVille"
-        ]);
+        ]);*/
     }
 }
