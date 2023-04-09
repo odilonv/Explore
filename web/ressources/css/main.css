@@ -54,27 +54,44 @@ body {
     right: 20px;
     top: 65px;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     flex-direction: column;
     width: 10%;
-    height: 5%;
+    height: 120px;
     background-color: #fff;
-    color: #ffae9e;
+}
+
+#sousmenu li a{
+    color: rgba(15, 22, 33, 0.6);
 }
 
 #sousmenu h3{
-    font-size: 1em;
-
+    font-size: 0.8em;
 }
 
 #sousmenu li{
     display: flex;
+    width: 90%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+#sousmenu li > a{
+    display: flex;
     width: 100%;
-    height: 25%;
+    height: 100%;
     align-items: center;
     justify-content: space-evenly;
-
-
+}
+#sousmenu li > p{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    font-size: 0.7em;
+    text-align: center;
+    color: rgba(15, 22, 33, 0.6);
 }
 
 
@@ -255,12 +272,15 @@ button, .registerButton, .exitButton{
     background-color: white;
 }
 .connectHeader:hover,
-.registerButton:hover{
+.registerButton:hover,
+#sousmenu li a:hover
+{
     color: rgba(15, 22, 33, 0.8);
 }
 
 .connectHeader:hover > img,
-.exitButton:hover > img{
+.exitButton:hover > img,
+#sousmenu li a:hover > img{
 
     filter: opacity(1);
 
