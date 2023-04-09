@@ -2,6 +2,7 @@
 <!-- 
 -----------------------    
 PAGE A NE PLUS UTILISER  
+MODIFIEZ PLUTOT base.html.twig
 -----------------------
 -->
 
