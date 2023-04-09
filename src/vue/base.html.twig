@@ -26,14 +26,28 @@
         <img id="iconmenu" src="{{ asset("ressources/img/icons/caret-down-solid.svg") }}">
     </div>
 
-    {% if idUtilisateurConnecte %}
+    {% if not (idUtilisateurConnecte) %}
+        <ul id="sousmenu" class="sousmenu-hidden">
+            <li>
+            <p>Connecte-toi pour accéder à plus d'informations.</p> 
+            </li>
+        </ul>
+    {% elseif idUtilisateurConnecte %}
         <ul id="sousmenu" class="sousmenu-hidden">
             <li>
             <img src="{{ asset("ressources/img/icons/clock-solid.svg") }}" class="icons">
             <h3>Historique</h3> 
             </li>
+            <li>
+            <img src="{{ asset("ressources/img/icons/compass-solid.svg") }}" class="icons">
+            <h3>Communes</h3> 
+            </li>
+            <li>
+            <img src="{{ asset("ressources/img/icons/user-solid.svg") }}" class="icons">
+            <h3>Utilisateurs</h3> 
+            </li>
         </ul>
-    {% elseif idUtilisateurConnecte %}
+          {% elseif idUtilisateurConnecte %}
         <ul id="sousmenu" class="sousmenu-hidden">
             <li>
             <img src="{{ asset("ressources/img/icons/clock-solid.svg") }}" class="icons">
