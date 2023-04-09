@@ -1,3 +1,11 @@
+
+<!-- 
+-----------------------    
+PAGE A NE PLUS UTILISER  
+-----------------------
+-->
+
+
 <?php
 
 use Explore\Lib\ConnexionUtilisateur;
@@ -35,15 +43,15 @@ $assistant = Conteneur::recupererService("assistant");
 
 <body>
 
-<div id="mapContainer"></div>
-<div id="logo">
-    <h1>Explore</h1>
-    <img id="iconmenu" src="<?=$assistant->getAbsoluteUrl("ressources/img/icons/caret-down-solid.svg")?>">
-</div>
+    <div id="mapContainer"></div>
+    <div id="logo">
+        <h1>Explore</h1>
+        <img id="iconmenu" src="<?= $assistant->getAbsoluteUrl("ressources/img/icons/caret-down-solid.svg") ?>">
+    </div>
 
-<?php
-if (!ConnexionUtilisateur::estConnecte()) {
-    echo '
+    <?php
+    if (!ConnexionUtilisateur::estConnecte()) {
+        echo '
                     <ul id="sousmenu" class="sousmenu-hidden">
                     <li>
                         <p>Connecte-toi pour accéder à plus d\'informations.</p> 
@@ -51,8 +59,8 @@ if (!ConnexionUtilisateur::estConnecte()) {
                     </ul>
                     
                     ';
-} else if(ConnexionUtilisateur::estConnecte() /*&& $admin*/){
-    echo '    
+    } else if (ConnexionUtilisateur::estConnecte() /*&& $admin*/) {
+        echo '    
                     <ul id="sousmenu" class="sousmenu-hidden">
                         <li><a href="">
                             <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/clock-solid.svg") . '" class="icons">
@@ -69,8 +77,8 @@ if (!ConnexionUtilisateur::estConnecte()) {
                         
                     </ul>
                     ';
-}else if(ConnexionUtilisateur::estConnecte()){
-    echo '
+    } else if (ConnexionUtilisateur::estConnecte()) {
+        echo '
                     <ul id="sousmenu" class="sousmenu-hidden">
                         <li><a href="">
                         <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/clock-solid.svg") . '" class="icons">

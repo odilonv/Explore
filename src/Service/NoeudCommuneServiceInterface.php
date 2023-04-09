@@ -30,7 +30,4 @@ interface NoeudCommuneServiceInterface
      * @throws ServiceException
      */
     public function afficherAutocompletion($ville);
-
-
-
 }

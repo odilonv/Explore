@@ -39,7 +39,7 @@ class UtilisateurService implements UtilisateurServiceInterface
             throw new ServiceException("Ce login est déjà pris!");
         }
 
-        $utilisateur = $utilisateurRepository->recupererPar(["email"=>$adresseMail]);
+        $utilisateur = $utilisateurRepository->recupererPar(["email" => $adresseMail]);
         if ($utilisateur != null) {
             throw new ServiceException("Un compte est déjà enregistré avec cette adresse mail!");
         }
@@ -50,12 +50,9 @@ class UtilisateurService implements UtilisateurServiceInterface
         // Plus d'informations :
         // http://romainlebreton.github.io/R3.01-DeveloppementWeb/assets/tut4-complement.html
 
-        if($profilePictureData == null)
-        {
+        if ($profilePictureData == null) {
             $profilePictureData = 'unknown.jpg';
-        }
-        else
-        {
+        } else {
             // On récupère l'extension du fichier
             $explosion = explode('.', $profilePictureData['name']);
             $fileExtension = end($explosion);
@@ -70,20 +67,22 @@ class UtilisateurService implements UtilisateurServiceInterface
         }
 
 
-        $utilisateur = Utilisateur::construireDepuisFormulaire(array("login" => $login,
+        $utilisateur = Utilisateur::construireDepuisFormulaire(array(
+            "login" => $login,
             "mdp" => $password,
             "email" => $adresseMail,
-            "profilePictureName" => $profilePictureData));
+            "profilePictureName" => $profilePictureData
+        ));
         $utilisateurRepository->ajouter($utilisateur);
-
     }
 
     /**
      * @throws ServiceException
      */
-    public function recupererUtilisateur($idUtilisateur, $autoriserNull = true) {
+    public function recupererUtilisateur($idUtilisateur, $autoriserNull = true)
+    {
         $utilisateur = $this->utilisateurRepository->recupererParClePrimaire($idUtilisateur);
-        if(!$autoriserNull && $utilisateur!=null) {
+        if (!$autoriserNull && $utilisateur != null) {
             throw new ServiceException('L\'utilisateur n\'existe pas !');
         }
         return $utilisateur;
@@ -95,13 +94,11 @@ class UtilisateurService implements UtilisateurServiceInterface
     public function recupererListeUtilisateur($autoriserNull = true)
     {
         $utilisateurs = $this->utilisateurRepository->recuperer();
-        if(!$autoriserNull && $utilisateurs!=null) {
+        if (!$autoriserNull && $utilisateurs != null) {
             throw new ServiceException('L\'utilisateur n\'existe pas !');
-        }
-        else{
+        } else {
             return $utilisateurs;
         }
-
     }
 
     /**
@@ -109,7 +106,7 @@ class UtilisateurService implements UtilisateurServiceInterface
      */
     public function connecterUtilisateur($login, $password): void
     {
-        if ($login==null ||  $password==null) {
+        if ($login == null ||  $password == null) {
             throw new ServiceException("Login ou mot de passe manquant.");
         }
         $utilisateurRepository = $this->utilisateurRepository;
@@ -138,5 +135,4 @@ class UtilisateurService implements UtilisateurServiceInterface
         }
         ConnexionUtilisateur::deconnecter();
     }
-
 }

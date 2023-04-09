@@ -13,7 +13,7 @@
             <input type='hidden' name='action' value='connecter'>
             <input type='hidden' name='controleur' value='utilisateur'>
             <p>
-                <input class="InputAddOn-field" type="submit" value="Envoyer"/>
+                <input class="InputAddOn-field" type="submit" value="Envoyer" />
             </p>
         </fieldset>
     </form>
