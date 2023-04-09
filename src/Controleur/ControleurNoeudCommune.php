@@ -79,9 +79,9 @@ class ControleurNoeudCommune extends ControleurGenerique
 
         try{
             $parametres += $this->noeudCommuneService->plusCourtCheminNC($nomCommuneDepart, $nomCommuneArrivee);
-            MessageFlash::ajouter('success', "
+            /*MessageFlash::ajouter('success', "
             Le plus court chemin entre $nomCommuneDepart et  $nomCommuneArrivee mesure " .  $parametres["distance"] . " km.
-            ");
+            ");*/
 
             return ControleurNoeudCommune::afficherVue('vueGenerale.php', $parametres);
         }

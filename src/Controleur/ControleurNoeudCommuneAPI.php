@@ -2,10 +2,13 @@
 
 namespace Explore\Controleur;
 
+use Explore\Lib\MessageFlash;
 use Explore\Service\Exception\ServiceException;
 use Explore\Service\NoeudCommuneService;
 use Explore\Service\NoeudCommuneServiceInterface;
+use Symfony\Component\HttpFoundation\Exception\JsonException;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class ControleurNoeudCommuneAPI
 {
@@ -21,7 +24,14 @@ class ControleurNoeudCommuneAPI
             $reponseJSON = $this->noeudCommuneService->requetePlusCourt($nomCommuneDepart, $nomCommuneArrivee);
             return new JsonResponse($reponseJSON);
         }catch (ServiceException $se){
-            return new JsonResponse(["error" => $se->getMessage()], $se->getCode());
+            return new JsonResponse(
+                ["error" => $se->getMessage()],
+                $se->getCode());
+        }catch (JsonException $exception) {
+            return new JsonResponse(
+                ["error" => "Corps de la requête mal formé"],
+                Response::HTTP_BAD_REQUEST
+            );
         }
     }
 }
