@@ -64,6 +64,9 @@
 
     <div id="loader"></div>
 
+{% block page_content %}{% endblock %}
+
+
     <footer>
         {% for type in ['success', 'info', 'warning', 'danger'] %}
             {% for messageFlash in messagesFlash[type] %}
@@ -82,7 +85,7 @@
                 <div class="connectHeader">
                     <img src="{{ asset("ressources/img/icons/user-solid.svg") }}" class="icons">
                     <h2 id="h2Connexion">Se connecter</h2>
-                    </div>
+                </div>
             </div>
         {% else %}
             {% set loginHTML = idUtilisateurConnecte|escape %}
@@ -100,7 +103,7 @@
         <script defer type="text/javascript" src="{{ asset("ressources/js/map.js") }}"></script>
         <script defer type="text/javascript" src="{{ asset("ressources/js/notifications.js") }}"></script>
 
-{% block page_content %}{% endblock %}
+    </footer>
 </body>
 
 </html>
