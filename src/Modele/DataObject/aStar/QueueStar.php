@@ -6,8 +6,11 @@ class QueueStar{
     /** @var NoeudStar[] $t */
     private array $t;
 
+    private int $size;
+
     public function __construct()
     {
+        $this->size = 0;
         $this->t = [];
     }
 
@@ -31,7 +34,7 @@ class QueueStar{
 
     public function getSize():int
     {
-        return sizeof($this->t);
+        return $this->size;
     }
 
     public function isInf(NoeudStar $a, NoeudStar $b):bool{
@@ -45,10 +48,7 @@ class QueueStar{
                 return true;
             }
             elseif ($diffFin == 0){
-                $diffDebut = $a->getDistanceDebut() - $b->getDistanceDebut();
-                if($diffDebut < 0){
-                    return true;
-                }
+                return $a->getDistanceDebut() - $b->getDistanceDebut() < 0;
             }
         }
         return false;
@@ -64,16 +64,23 @@ class QueueStar{
     }
 
     public function heapifyDown(int $i){
-        $filsG = $this->left($i);
-        $filsD = $this->right($i);
+        $continu = true;
+        $index = $i;
+        do{
+            $filsG = $this->left($index);
+            $filsD = $this->right($index);
 
-        if ($filsD>=sizeof($this->t))return;
+            if ($filsD>=$this->size)return;
 
-        $indexCompare = $this->isInf($this->t[$filsG], $this->t[$filsD]) ? $filsG : $filsD;
-        if($this->isInf($this->t[$indexCompare], $this->t[$i])){
-            $this->swap($indexCompare, $i);
-            $this->heapifyDown($indexCompare);
-        }
+            $indexCompare = $this->isInf($this->t[$filsG], $this->t[$filsD]) ? $filsG : $filsD;
+            if($this->isInf($this->t[$indexCompare], $this->t[$index])){
+                $this->swap($indexCompare, $index);
+                $index = $indexCompare;
+            }
+            else{
+                $continu = false;
+            }
+        }while($continu);
     }
 
     public function getTop():NoeudStar
@@ -90,15 +97,16 @@ class QueueStar{
     {
         $value = $this->t[$i];
 
-        $this->swap($i, sizeof($this->t) - 1);
-        unset($this->t[sizeof($this->t)-1]);
+        $this->swap($i, $this->size - 1);
+        $this->size--;
         $this->heapifyDown($i);
 
         return $value;
     }
 
     public function insert(NoeudStar $noeud){
-        $this->t[sizeof($this->t)] = $noeud;
-        $this->heapifyUp(sizeof($this->t)-1);
+        $this->t[$this->size] = $noeud;
+        $this->heapifyUp($this->size-1);
+        $this->size++;
     }
 }
