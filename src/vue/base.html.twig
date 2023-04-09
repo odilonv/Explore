@@ -63,12 +63,12 @@
             {% endfor %}
         {% endfor %}
 
-        {% if idUtilisateurConnecte %}
+        {% if not (idUtilisateurConnecte) %}
             <div class="connectFooter clickable">
                 <div class="connectHeader">
                     <img src="{{ asset("ressources/img/icons/user-solid.svg") }}" class="icons">
                     <h2 id="h2Connexion">Se connecter</h2>
-                                    </div>
+                    </div>
             </div>
         {% else %}
             {% set loginHTML = idUtilisateurConnecte|escape %}
