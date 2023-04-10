@@ -168,4 +168,8 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
 
         return $resultat;
     }
+
+    public function getNearCoord($lat, $lng){
+        return ['nomCommune' => $this->noeudCommuneRepository->recupererParProximite($lat, $lng)];
+    }
 }
