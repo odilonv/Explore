@@ -52,4 +52,20 @@ class UtilisateurRepository extends AbstractRepository implements UtilisateurRep
     {
         return ["login", "mdp_hache",  "email", "profilePictureName"];
     }
+    public function getHistorique(string $login){
+        $requeteSQL = <<<SQL
+        SELECT idtrajet, points FROM historiquetrajets
+        WHERE idlogin=:login;
+        SQL;
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteSQL);
+
+        $pdoStatement->execute(['login' => $login]);
+
+        $tab = [];
+        foreach ($pdoStatement as $tabId) {
+            $tab[] = $tabId['idtrajet'];
+        }
+
+        return $tab;
+    }
 }

@@ -82,7 +82,7 @@ class UtilisateurService implements UtilisateurServiceInterface
     public function recupererUtilisateur($idUtilisateur, $autoriserNull = true)
     {
         $utilisateur = $this->utilisateurRepository->recupererParClePrimaire($idUtilisateur);
-        if (!$autoriserNull && $utilisateur != null) {
+        if (!$autoriserNull && $utilisateur == null) {
             throw new ServiceException('L\'utilisateur n\'existe pas !');
         }
         return $utilisateur;
@@ -94,10 +94,23 @@ class UtilisateurService implements UtilisateurServiceInterface
     public function recupererListeUtilisateur($autoriserNull = true)
     {
         $utilisateurs = $this->utilisateurRepository->recuperer();
-        if (!$autoriserNull && $utilisateurs != null) {
+        if (!$autoriserNull && $utilisateurs == null) {
             throw new ServiceException('L\'utilisateur n\'existe pas !');
         } else {
             return $utilisateurs;
+        }
+    }
+
+    /**
+     * @throws ServiceException
+     */
+    public function recupererHistorique($idUser, $autoriserNull = true)
+    {
+        $historique = $this->utilisateurRepository->getHistorique($idUser);
+        if (!$autoriserNull && $historique == null) {
+            throw new ServiceException('Vous n\'êtes pas connecté !');
+        } else {
+            return $historique;
         }
     }
 

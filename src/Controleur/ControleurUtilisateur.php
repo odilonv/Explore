@@ -62,8 +62,6 @@ class ControleurUtilisateur extends ControleurGenerique
             $adresseMail = $_POST['email'] ?? null;
             $profilePicture = $_FILES['profilePicture'] ?? null;
 
-
-
             $this->utilisateurService->creerUtilisateur($login, $password, $adresseMail, $profilePicture);
 
             MessageFlash::ajouter("success", "L'utilisateur a bien été créé !");
@@ -163,6 +161,21 @@ class ControleurUtilisateur extends ControleurGenerique
             "pagetitle" => "Liste des utilisateurs",
             "cheminVueBody" => "utilisateur/liste.php"
         ]);
+    }
+
+    public function historique(): Response
+    {
+        try {
+            $historique = $this->utilisateurService->recupererHistorique(ConnexionUtilisateur::getLoginUtilisateurConnecte());
+            return ControleurUtilisateur::afficherVue('vueGenerale.php', [
+                "historique" => $historique,
+                "pagetitle" => "Historique",
+                "cheminVueBody" => "utilisateur/historique.php"
+            ]);
+        } catch (ServiceException $e) {
+            MessageFlash::ajouter('error', $e->getMessage());
+            return ControleurNoeudCommune::rediriger("plusCourt");
+        }
     }
 
 

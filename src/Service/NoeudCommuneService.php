@@ -32,12 +32,42 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
     public function recupererListeNoeudsCommunes($autoriserNull = true)
     {
         $noeuds = $this->noeudCommuneRepository->recuperer();
-        if (!$autoriserNull && $noeuds != null) {
-            throw new ServiceException('Aucun noeuds n\' est disponible n\'existe pas !');
+        if (!$autoriserNull || $noeuds == null) {
+            throw new ServiceException('Aucun noeud n\' est disponible !');
         } else {
             return $noeuds;
         }
     }
+
+    /**
+     * @throws ServiceException
+     */
+    public function afficherDetailNoeudCommune($gid, $autoriserNull = true)
+    {
+        if (!$autoriserNull || $gid == null) {
+            throw new ServiceException('Immatriculation manquante');
+        } else {
+            $noeudCommune = $this->noeudCommuneRepository->recupererParClePrimaire($gid);
+            if ($noeudCommune == null) {
+                throw new ServiceException('Noeud commune non repertorié.');
+            } else {
+                return $noeudCommune;
+            }
+        }
+    }
+
+    /**
+     * @throws ServiceException
+     */
+    public function afficherAutocompletion($ville)
+    {
+        if ($ville != null) {
+            return $this->noeudCommuneRepository->getCommune($ville);
+        } else {
+            throw new ServiceException('Ville introuvable');
+        }
+    }
+
 
     /**
      * @throws ServiceException
@@ -81,35 +111,6 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
             return $parametres;
         } else {
             throw new ServiceException('Veuillez renseigner un point de départ et un point d\'arrivée');
-        }
-    }
-
-    /**
-     * @throws ServiceException
-     */
-    public function afficherDetailNoeudCommune($gid)
-    {
-        if ($gid == null) {
-            throw new ServiceException('Immatriculation manquante');
-        } else {
-            $noeudCommune = $this->noeudCommuneRepository->recupererParClePrimaire($gid);
-            if ($noeudCommune == null) {
-                throw new ServiceException('gid inconnue.');
-            } else {
-                return $noeudCommune;
-            }
-        }
-    }
-
-    /**
-     * @throws ServiceException
-     */
-    public function afficherAutocompletion($ville)
-    {
-        if ($ville != null) {
-            return $this->noeudCommuneRepository->getCommune($ville);
-        } else {
-            throw new ServiceException('ville inconnue');
         }
     }
 
