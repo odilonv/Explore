@@ -2,6 +2,7 @@
 
 namespace Explore\Test;
 
+use Explore\Lib\PlusCourtChemin;
 use Explore\Modele\DataObject\NoeudCommune;
 use Explore\Modele\Repository\NoeudCommuneRepositoryInterface;
 use Explore\Modele\Repository\NoeudRoutierRepositoryInterface;
@@ -17,12 +18,14 @@ class NoeudCommuneTest extends TestCase
 
     private NoeudCommuneRepositoryInterface $noeudCommuneRepositoryMock;
     private NoeudRoutierRepositoryInterface $noeudRoutierRepositoryMock;
+    private PlusCourtChemin $plusCourtCheminMock;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->noeudRoutierRepositoryMock = $this->createMock(NoeudRoutierRepositoryInterface::class);
         $this->noeudCommuneRepositoryMock = $this->createMock(NoeudCommuneRepositoryInterface::class);
+        $this->plusCourtCheminMock = $this->createMock(PlusCourtChemin::class);
         $this->service = new NoeudCommuneService($this->noeudCommuneRepositoryMock, $this->noeudRoutierRepositoryMock);
     }
 
@@ -66,19 +69,39 @@ class NoeudCommuneTest extends TestCase
         $this->service->afficherAutocompletion(null);
     }
 
-    public function testRequetePlusCourtPtDeDepartNonValide(){
+    public function testRequetePlusCourtPtDeDepartOuArriveeNull(){
         $this->expectException(ServiceException::class);
-        // ADAPT MSG $this->expectExceptionMessage("départ ou arrivée inconnue.");
+        $this->expectExceptionMessage("départ ou arrivée inconnue.");
         $this->expectExceptionCode(Response::HTTP_NOT_FOUND);
         $this->service->requetePlusCourt(null, "Agde");
+        $this->service->requetePlusCourt("Agde", null);
+        $this->service->requetePlusCourt(null, null);
     }
 
-    public function testRequetePlusCourtPtArriveeNonValide(){
+    public function testRequetePlusCourtPtDepartNonRepertorie(){
         $this->expectException(ServiceException::class);
-        // ADAPT MSG $this->expectExceptionMessage("départ ou arrivée inconnue.");
+        $this->expectExceptionMessage("La ville de départ n'existe pas");
         $this->expectExceptionCode(Response::HTTP_NOT_FOUND);
-        $this->service->requetePlusCourt("Agde", null);
+        $this->service->requetePlusCourt("YoLesPotes", "Agde");
     }
+    public function testRequetePlusCourtPtArriveeNonRepertorie(){
+        $this->expectException(ServiceException::class);
+        $this->expectExceptionMessage("La ville d'arrivée n'existe pas");
+        $this->expectExceptionCode(Response::HTTP_NOT_FOUND);
+        $this->service->requetePlusCourt("Agde", "NinjaSQL");
+    }
+
+    public function testRequetePlusCourtDernierNoeudNull(){
+        $this->expectException(ServiceException::class);
+        $this->expectExceptionMessage("Le trajet est impossible");
+        $this->expectExceptionCode(400);
+
+        $this->plusCourtCheminMock->method("calculer3")->willReturn(null);
+
+        $this->service->requetePlusCourt("Agde", "Montpellier");
+    }
+
+
 
 
 

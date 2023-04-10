@@ -24,7 +24,7 @@ interface NoeudCommuneServiceInterface
     /**
      * @throws ServiceException
      */
-    public function requetePlusCourt($depart, $arrivee);
+    public function requetePlusCourt($nomCommuneDepart, $nomCommuneArrivee);
 
     /**
      * @throws ServiceException
