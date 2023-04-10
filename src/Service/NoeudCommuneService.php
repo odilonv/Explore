@@ -126,12 +126,12 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
 
         /** @var NoeudCommune $noeudCommuneDepart */
         $dep = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart]);
-        if(isNull($dep)){throw new ServiceException("La ville de départ n'existe pas", Response::HTTP_NOT_FOUND);}
+        if(sizeof($dep)==0){throw new ServiceException("La ville de départ n'existe pas", Response::HTTP_NOT_FOUND);}
         $noeudCommuneDepart = $dep[0];
 
         /** @var NoeudCommune $noeudCommuneArrivee */
         $arr = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee]);
-        if(isNull($arr)){throw new ServiceException("La ville d'arrivée n'existe pas", Response::HTTP_NOT_FOUND);}
+        if(sizeof($arr)==0){throw new ServiceException("La ville d'arrivée n'existe pas", Response::HTTP_NOT_FOUND);}
         $noeudCommuneArrivee = $arr[0];
 
         if (is_null($noeudCommuneDepart) || is_null($noeudCommuneArrivee)) {
@@ -149,7 +149,7 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
 
         $dernierNoeud = $pcc->calculer3();
 
-        if(isNull($dernierNoeud)){
+        if($dernierNoeud===null){
             throw new ServiceException("Le trajet est impossible", 400);
         }
 

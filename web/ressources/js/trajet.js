@@ -14,7 +14,6 @@ async function combineRoads(){
             let data = await reponse.json();
 
             if(!reponse.ok){
-                console.log(reponse);
                 throw new Error(reponse.status + ": " + data.error);
             }
 
