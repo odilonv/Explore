@@ -6,7 +6,7 @@ PAGE A NE PLUS UTILISER
 -->
 
 
-?>
+
 
 <?php
 
@@ -23,19 +23,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
         </div>
         <label for="login_id">Login&#42;
             <input type="text" placeholder="Ex : rlebreton" name="login" id="login_id" value="<?php echo generateRandomString() ?>">
-
-
         </label>
-        <!--
-                        <label for="prenom_id">Prenom&#42;
-                        <input type="text" value="" placeholder="Ex : Romain" name="prenom" id="prenom_id" required>
-                        </label>
-
-                        <label for="nom_id">Nom&#42;
-                        <input class="InputAddOn-field" type="text" value="" placeholder="Ex : Lebreton" name="nom" id="nom_id" required>
-                    </label>
-                    -->
-
 
         <label for="email_id">Email&#42;
             <input class="InputAddOn-field" type="email" value="<?php echo generateRandomString() . '@' . generateRandomString(3) . '.com' ?>" placeholder="rlebreton@yopmail.com" name="email" id="email_id" required>

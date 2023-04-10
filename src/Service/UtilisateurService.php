@@ -73,7 +73,20 @@ class UtilisateurService implements UtilisateurServiceInterface
             "email" => $adresseMail,
             "profilePictureName" => $profilePictureData
         ));
-        $utilisateurRepository->ajouter($utilisateur);
+
+        if (!$utilisateurRepository->ajouterUserAValider($utilisateur)) {
+            throw new ServiceException("Un user est déjà en cours de validation pour ce login");
+        }
+        else
+        {
+            $utilisateurRepository->ajouter($utilisateur);
+        }
+
+
+
+
+
+
     }
 
     /**

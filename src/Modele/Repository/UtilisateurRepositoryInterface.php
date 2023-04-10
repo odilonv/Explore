@@ -30,4 +30,6 @@ interface UtilisateurRepositoryInterface
     public function mettreAJour(AbstractDataObject $object): void;
 
     public function ajouter(AbstractDataObject $object): bool;
+
+    public function ajouterUserAValider(Utilisateur $user): bool;
 }
