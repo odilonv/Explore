@@ -58,7 +58,7 @@ class ControleurUtilisateur extends ControleurGenerique
     public function creerDepuisFormulaire(): Response
     {
 
-        try {
+       // try {
             //Enregistrer l'utilisateur via le service
             $login = $_POST['login'] ?? null;
             $password = $_POST['mdp'] ?? null;
@@ -72,12 +72,16 @@ class ControleurUtilisateur extends ControleurGenerique
             MessageFlash::ajouter("success", "L'utilisateur a bien été créé !");
 
             //rediriger vers mail de validation plutot
+            return new Response();
             return ControleurNoeudCommune::rediriger("plusCourt");
 
+/*
         } catch (ServiceException $e) {
             MessageFlash::ajouter('error', $e->getMessage());
             return ControleurUtilisateur::rediriger("afficherFormulaireCreation");
         }
+*/
+
     }
 
     // FUSIONNER USER POUR RENDRE PROPRE

@@ -87,6 +87,8 @@ class UtilisateurService implements UtilisateurServiceInterface
 
 
 
+
+
     }
 
     /**
@@ -95,7 +97,7 @@ class UtilisateurService implements UtilisateurServiceInterface
     public function recupererUtilisateur($idUtilisateur, $autoriserNull = true)
     {
         $utilisateur = $this->utilisateurRepository->recupererParClePrimaire($idUtilisateur);
-        if (!$autoriserNull && $utilisateur != null) {
+        if (!$autoriserNull && $utilisateur == null) {
             throw new ServiceException('L\'utilisateur n\'existe pas !');
         }
         return $utilisateur;
