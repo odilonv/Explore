@@ -27,7 +27,6 @@ function search() {
                 loader.style.display = 'none'; // Masquer le loader en cas d'erreur
             });
     }
-    console.log(villes.length);
 }
 
 function addRoad(map, points){
