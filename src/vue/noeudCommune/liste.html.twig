@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+
+{% block page_content %}
+
+<p>{{ 'liste.html.twig'}}</p>
+
+<section class="fond-page">
+    <ul class="box-liste">
+        <div class="exitLine">
+            <a class="exitButton" href="{{ route("plusCourt") }}">
+                <img class="icons" src="{{ asset("ressources/img/icons/xmark-solid.svg") }}" alt="exit">
+            </a>
+        </div>
+        <h1>Noeuds Communes</h1>
+        {% for noeudCommune in noeudsCommunes %}
+            <li>
+                <span>Commune de <strong>{{ noeudCommune.getNomCommune() }}</strong></span>
+                <span>
+                    Gid : <strong>{{ noeudCommune.getGid() }}</strong>,
+                    Identifiant Route : <strong>{{ noeudCommune.getId_rte500() }}</strong>
+                </span>
+            </li>
+        {% endfor %}
+    </ul>
+</section>
+
+{% endblock %}

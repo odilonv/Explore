@@ -1,4 +1,10 @@
-<section class="fond-page">
+<!-- 
+-----------------------    
+PAGE A NE PLUS UTILISER  
+-----------------------
+-->
+
+<!-- <section class="fond-page">
     <ul class="box-liste">
         <div class="exitLine">
             <a class="exitButton" href="<?= $generateur->generate("plusCourt"); ?>"><img class="icons" src="<?= $assistant->getAbsoluteUrl("ressources/img/icons/xmark-solid.svg"); ?>" alt="exit"></a>
@@ -12,4 +18,4 @@
         }
         echo "</ul>\n";
         ?>
-</section>
+</section> -->

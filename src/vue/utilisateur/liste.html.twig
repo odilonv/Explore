@@ -1,0 +1,25 @@
+{% extends "base.html.twig" %}
+
+{% block page_content %}
+
+<p>{{ 'liste.html.twig'}}</p>
+    <section class="fond-page">
+        <ul class="box-liste">
+            <div class="exitLine">
+                <a class="exitButton" href="{{ route("plusCourt") }}">
+                    <img class="icons" src="{{ asset("ressources/img/icons/xmark-solid.svg") }}" alt="exit">
+                </a>
+            </div>
+            <h1>Utilisateurs</h1>
+            {% for utilisateur in utilisateurs %}
+                {% set loginHTML = utilisateur.getLogin()|escape %}
+                {# A quoi sert la ligne suivante ? #}
+                {% set loginURL = utilisateur.getLogin()|url_encode %}
+                <li>
+                    Utilisateur de login {{ loginHTML }}
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+{% endblock %}

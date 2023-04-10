@@ -1,3 +1,10 @@
+<!-- 
+-----------------------    
+PAGE A NE PLUS UTILISER  
+MODIFIEZ PLUTOT liste.html.twig
+-----------------------
+-->
+
 <?php
 
 use Explore\Modele\DataObject\Utilisateur;

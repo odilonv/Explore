@@ -183,10 +183,9 @@ class ControleurUtilisateur extends ControleurGenerique
             MessageFlash::ajouter('error', $e->getMessage());
             return ControleurNoeudCommune::rediriger("plusCourt");
         }
-        return ControleurUtilisateur::afficherVue('vueGenerale.php', [
+        return ControleurUtilisateur::afficherTwig('utilisateur/liste.html.twig', [
             "utilisateurs" => $utilisateurs,
             "pagetitle" => "Liste des utilisateurs",
-            "cheminVueBody" => "utilisateur/liste.php"
         ]);
     }
 
@@ -194,10 +193,9 @@ class ControleurUtilisateur extends ControleurGenerique
     {
         try {
             $historique = $this->utilisateurService->recupererHistorique(ConnexionUtilisateur::getLoginUtilisateurConnecte());
-            return ControleurUtilisateur::afficherVue('vueGenerale.php', [
+            return ControleurUtilisateur::afficherTwig('utilisateur/historique.html.twig', [
                 "historique" => $historique,
                 "pagetitle" => "Historique",
-                "cheminVueBody" => "utilisateur/historique.php"
             ]);
         } catch (ServiceException $e) {
             MessageFlash::ajouter('error', $e->getMessage());

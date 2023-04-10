@@ -36,51 +36,51 @@ class ControleurNoeudCommune extends ControleurGenerique
             MessageFlash::ajouter('danger', $e->getMessage());
             return ControleurNoeudCommune::rediriger("plusCourt");
         }
-        return ControleurNoeudCommune::afficherVue('vueGenerale.php', [
+        return ControleurNoeudCommune::afficherTwig('noeudCommune/liste.html.twig', [
             "noeudsCommunes" => $noeudsCommunes,
             "pagetitle" => "Liste des Noeuds Routiers",
-            "cheminVueBody" => "noeudCommune/liste.php"
         ]);
     }
 
-    public function afficherDetail(): Response
-    {
-        $noeud = null;
-        try {
-            $gid = $_REQUEST['gid'] ?? null;
-            $noeud = $this->noeudCommuneService->afficherDetailNoeudCommune($gid);
-        } catch (ServiceException $e) {
-            MessageFlash::ajouter('danger', $e->getMessage());
-            return ControleurNoeudCommune::rediriger("afficherListe");
-        }
+    //On à combiner detail et liste
+    // public function afficherDetail(): Response
+    // {
+    //     $noeud = null;
+    //     try {
+    //         $gid = $_REQUEST['gid'] ?? null;
+    //         $noeud = $this->noeudCommuneService->afficherDetailNoeudCommune($gid);
+    //     } catch (ServiceException $e) {
+    //         MessageFlash::ajouter('danger', $e->getMessage());
+    //         return ControleurNoeudCommune::rediriger("afficherListe");
+    //     }
 
-        return ControleurNoeudCommune::afficherVue('vueGenerale.php', [
-            "noeudCommune" => $noeud,
-            "pagetitle" => "Détail de la noeudCommune",
-            "cheminVueBody" => "noeudCommune/detail.php"
-        ]);
-    }
+    //     return ControleurNoeudCommune::afficherVue('vueGenerale.php', [
+    //         "noeudCommune" => $noeud,
+    //         "pagetitle" => "Détail de la noeudCommune",
+    //         "cheminVueBody" => "noeudCommune/detail.php"
+    //     ]);
+    // }
 
     public function plusCourtChemin($depart = null, $arrivee = null): Response
     {
         $nomCommuneDepart = $_REQUEST["nomCommuneDepart"] ?? null;
         $nomCommuneArrivee = $_REQUEST["nomCommuneArrivee"] ?? null;
 
-        $parametres = [
-            "pagetitle" => "Explore",
-            "cheminVueBody" => "noeudCommune/plusCourtChemin.php",
-        ];
 
         try {
-            $parametres += $this->noeudCommuneService->plusCourtCheminNC($nomCommuneDepart, $nomCommuneArrivee);
             /*MessageFlash::ajouter('success', "
             Le plus court chemin entre $nomCommuneDepart et  $nomCommuneArrivee mesure " .  $parametres["distance"] . " km.
             ");*/
 
-            return ControleurNoeudCommune::afficherTwig('base.html.twig', $parametres);
+            return ControleurNoeudCommune::afficherVue('noeudCommune/plusCourtChemin.html.twig', [
+                "pagetitle" => "Explore",
+                $this->noeudCommuneService->plusCourtCheminNC($nomCommuneDepart, $nomCommuneArrivee),
+            ]);
         } catch (ServiceException $e) {
             MessageFlash::ajouter('danger', $e->getMessage());
-            return ControleurNoeudCommune::afficherTwig('base.html.twig', $parametres);
+            return ControleurNoeudCommune::afficherTwig('noeudCommune/plusCourtChemin.html.twig', [
+                "pagetitle" => "Explore",
+            ]);
         }
     }
 

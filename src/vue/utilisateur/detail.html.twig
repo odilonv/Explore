@@ -1,0 +1,21 @@
+{% extends "base.html.twig" %}
+
+{% block page_content %}
+
+    {% set login = utilisateur.getLogin() %}
+    {% set loginHTML = login|escape %}
+    {% set prenomHTML = utilisateur.getPrenom()|escape %}
+    {% set nomHTML = utilisateur.getNom()|escape %}
+    {% set loginURL = login|url_encode %}
+
+    <br>
+    <p>
+        Utilisateur {{ prenomHTML ~ ' ' ~ nomHTML }} de login {{ loginHTML }}
+
+        {% if ConnexionUtilisateur.estUtilisateur(login) or ConnexionUtilisateur.estAdministrateur() %}
+            <a href="controleurFrontal.php?action=afficherFormulaireMiseAJour&controleur=utilisateur&login={{ loginURL }}">(mettre à jour)</a>
+            <a href="controleurFrontal.php?action=supprimer&controleur=utilisateur&login={{ loginURL }}">(supprimer)</a>
+        {% endif %}
+    </p>
+
+{% endblock %}
