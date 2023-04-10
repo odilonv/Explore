@@ -22,30 +22,21 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 /** @var UrlHelper $assistant */
 ?>
 <section class="fond-page">
-    <form class="box-inscription" method="POST" action="../web/inscription">
+    <form class="box-inscription" style="height: 250px" method="POST" action="../web/validation">
         <div class="exitLine">
             <a class="exitButton" href="<?= $generateur->generate("plusCourt"); ?>"><img class="icons" src="<?= $assistant->getAbsoluteUrl("ressources/img/icons/xmark-solid.svg"); ?>" alt="exit"></a>
         </div>
-        <label for="login_id">Login&#42;
-            <input type="text" placeholder="Ex : rlebreton" name="login" id="login_id" value="<?php echo generateRandomString() ?>">
+        <label for="nonce">Code de validation
+            <input class="inputForm" type="text" placeholder="123 456" name="nonce" id="nonce" value="">
         </label>
 
-        <label for="email_id">Email&#42;
-            <input class="InputAddOn-field" type="email" value="<?php echo generateRandomString() . '@' . generateRandomString(3) . '.com' ?>" placeholder="rlebreton@yopmail.com" name="email" id="email_id" required>
-        </label>
 
-        <label for="mdp_id">Mot de passe&#42;
-            <input class="InputAddOn-field" type="password" value="<?php echo 'motDePasse123' ?>" placeholder="" name="mdp" id="mdp_id" required>
-        </label>
-        <label for="mdp2_id">Vérification du mot de passe&#42;
-            <input class="InputAddOn-field" type="password" value="<?php echo 'motDePasse123' ?>" placeholder="" name="mdp2" id="mdp2_id" required>
-        </label>
         <?php
 
         use Explore\Lib\ConnexionUtilisateur;
 
         if (ConnexionUtilisateur::estAdministrateur()) {
-        ?>
+            ?>
             <p class="InputAddOn">
                 <label class="InputAddOn-item" for="estAdmin_id">Administrateur</label>
                 <input class="InputAddOn-field" type="checkbox" placeholder="" name="estAdmin" id="estAdmin_id">
@@ -56,7 +47,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
         <input type='hidden' name='action' value='creerDepuisFormulaire'>
         <input type='hidden' name='controleur' value='utilisateur'>
 
-        <input class="inscriptionButton" type="submit" value="S'inscrire" />
+        <input class="inscriptionButton" type="submit" value="Valider l'inscription" />
 
     </form>
 </section>

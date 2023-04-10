@@ -2,13 +2,20 @@
 
 namespace Explore\Lib;
 
-use Explore\Lib\vieux\Utilisateur;
+use Explore\Modele\DataObject\Utilisateur;
 use Explore\Modele\HTTP\Session;
 use Explore\Modele\Repository\UtilisateurRepository;
+use Explore\Modele\Repository\UtilisateurRepositoryInterface;
 
 class ConnexionUtilisateur
 {
     private static string $cleConnexion = "_utilisateurConnecte";
+    private UtilisateurRepositoryInterface $utilisateurRepository;
+
+    public function __construct(UtilisateurRepositoryInterface $utilisateurRepository)
+    {
+        $this->utilisateurRepository = $utilisateurRepository;
+    }
 
 
     public static function connecter(string $loginUtilisateur): void
@@ -45,7 +52,7 @@ class ConnexionUtilisateur
         );
     }
 
-    public static function estAdministrateur(): bool
+    public function estAdministrateur(): bool
     {
         $loginConnecte = ConnexionUtilisateur::getLoginUtilisateurConnecte();
 
@@ -53,9 +60,9 @@ class ConnexionUtilisateur
         if ($loginConnecte === null)
             return false;
 
-        $utilisateurRepository = new UtilisateurRepository();
+
         /** @var Utilisateur $utilisateurConnecte */
-        $utilisateurConnecte = $utilisateurRepository->recupererParClePrimaire($loginConnecte);
+        $utilisateurConnecte = $this->utilisateurRepository->recupererParClePrimaire($loginConnecte);
 
         return ($utilisateurConnecte !== null && $utilisateurConnecte->getEstAdmin());
     }

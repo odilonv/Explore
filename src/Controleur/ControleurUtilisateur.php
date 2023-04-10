@@ -58,7 +58,7 @@ class ControleurUtilisateur extends ControleurGenerique
     public function creerDepuisFormulaire(): Response
     {
 
-       // try {
+       try {
             //Enregistrer l'utilisateur via le service
             $login = $_POST['login'] ?? null;
             $password = $_POST['mdp'] ?? null;
@@ -72,15 +72,14 @@ class ControleurUtilisateur extends ControleurGenerique
             MessageFlash::ajouter("success", "L'utilisateur a bien été créé !");
 
             //rediriger vers mail de validation plutot
-            return new Response();
-            return ControleurNoeudCommune::rediriger("plusCourt");
+            return ControleurNoeudCommune::rediriger("afficherFormulaireValidation");
 
-/*
+
         } catch (ServiceException $e) {
             MessageFlash::ajouter('error', $e->getMessage());
             return ControleurUtilisateur::rediriger("afficherFormulaireCreation");
         }
-*/
+
 
     }
 
@@ -133,6 +132,24 @@ class ControleurUtilisateur extends ControleurGenerique
     //         "method" => Configuration::getDebug() ? "get" : "post",
     //     ]);
     // }
+
+    public function afficherFormulaireValidation(): Response
+    {
+        return ControleurUtilisateur::afficherVue('vueGenerale.php', [
+            "pagetitle" => "Validation du compte",
+            "cheminVueBody" => "utilisateur/formulaireValidation.php",
+            "method" => Configuration::getDebug() ? "get" : "post",
+        ]);
+    }
+
+    public function validerUtilisateur():Response
+    {
+        $nonce = $_POST['nonce'] ?? null;
+
+        return new Response();
+    }
+
+
 
     public function connecter(): RedirectResponse
     {
