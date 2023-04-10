@@ -11,6 +11,7 @@ use Explore\Modele\Repository\NoeudRoutierRepository;
 use Explore\Modele\Repository\NoeudRoutierRepositoryInterface;
 use Explore\Service\Exception\ServiceException;
 use Symfony\Component\HttpFoundation\Response;
+use function PHPUnit\Framework\isNull;
 
 class NoeudCommuneService implements NoeudCommuneServiceInterface
 {
@@ -142,6 +143,10 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
         $pcc = new PlusCourtChemin($noeudRoutierDepartGid, $noeudRoutierArriveeGid, $this->noeudRoutierRepository);
 
         $dernierNoeud = $pcc->calculer3();
+
+        if(isNull($dernierNoeud)){
+            throw new ServiceException("Le trajet est impossible", 400);
+        }
 
         $multiline = [];
         foreach ($dernierNoeud->refaireChemin() as $noeud) {
