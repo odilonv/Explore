@@ -11,6 +11,7 @@ use Explore\Modele\Repository\NoeudRoutierRepository;
 use Explore\Modele\Repository\NoeudRoutierRepositoryInterface;
 use Explore\Service\Exception\ServiceException;
 use Symfony\Component\HttpFoundation\Response;
+use function PHPUnit\Framework\isNull;
 
 class NoeudCommuneService implements NoeudCommuneServiceInterface
 {
@@ -32,12 +33,42 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
     public function recupererListeNoeudsCommunes($autoriserNull = true)
     {
         $noeuds = $this->noeudCommuneRepository->recuperer();
-        if (!$autoriserNull && $noeuds != null) {
-            throw new ServiceException('Aucun noeuds n\' est disponible n\'existe pas !');
+        if (!$autoriserNull || $noeuds == null) {
+            throw new ServiceException('Aucun noeud n\' est disponible !');
         } else {
             return $noeuds;
         }
     }
+
+    /**
+     * @throws ServiceException
+     */
+    public function afficherDetailNoeudCommune($gid, $autoriserNull = true)
+    {
+        if (!$autoriserNull || $gid == null) {
+            throw new ServiceException('Immatriculation manquante');
+        } else {
+            $noeudCommune = $this->noeudCommuneRepository->recupererParClePrimaire($gid);
+            if ($noeudCommune == null) {
+                throw new ServiceException('Noeud commune non repertorié.');
+            } else {
+                return $noeudCommune;
+            }
+        }
+    }
+
+    /**
+     * @throws ServiceException
+     */
+    public function afficherAutocompletion($ville)
+    {
+        if ($ville != null) {
+            return $this->noeudCommuneRepository->getCommune($ville);
+        } else {
+            throw new ServiceException('Ville introuvable');
+        }
+    }
+
 
     /**
      * @throws ServiceException
@@ -87,35 +118,6 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
     /**
      * @throws ServiceException
      */
-    public function afficherDetailNoeudCommune($gid)
-    {
-        if ($gid == null) {
-            throw new ServiceException('Immatriculation manquante');
-        } else {
-            $noeudCommune = $this->noeudCommuneRepository->recupererParClePrimaire($gid);
-            if ($noeudCommune == null) {
-                throw new ServiceException('gid inconnue.');
-            } else {
-                return $noeudCommune;
-            }
-        }
-    }
-
-    /**
-     * @throws ServiceException
-     */
-    public function afficherAutocompletion($ville)
-    {
-        if ($ville != null) {
-            return $this->noeudCommuneRepository->getCommune($ville);
-        } else {
-            throw new ServiceException('ville inconnue');
-        }
-    }
-
-    /**
-     * @throws ServiceException
-     */
     public function requetePlusCourt($nomCommuneDepart, $nomCommuneArrivee)
     {
         if (is_null($nomCommuneDepart) || is_null($nomCommuneArrivee)) {
@@ -124,9 +126,14 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
         $resultat = [];
 
         /** @var NoeudCommune $noeudCommuneDepart */
-        $noeudCommuneDepart = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart])[0];
+        $dep = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart]);
+        if(sizeof($dep)==0){throw new ServiceException("La ville de départ n'existe pas", Response::HTTP_NOT_FOUND);}
+        $noeudCommuneDepart = $dep[0];
+
         /** @var NoeudCommune $noeudCommuneArrivee */
-        $noeudCommuneArrivee = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee])[0];
+        $arr = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee]);
+        if(sizeof($arr)==0){throw new ServiceException("La ville d'arrivée n'existe pas", Response::HTTP_NOT_FOUND);}
+        $noeudCommuneArrivee = $arr[0];
 
         if (is_null($noeudCommuneDepart) || is_null($noeudCommuneArrivee)) {
             throw new ServiceException('départ ou arrivée inconnue.', Response::HTTP_NOT_FOUND);
@@ -142,6 +149,10 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
         $pcc = new PlusCourtChemin($noeudRoutierDepartGid, $noeudRoutierArriveeGid, $this->noeudRoutierRepository);
 
         $dernierNoeud = $pcc->calculer3();
+
+        if($dernierNoeud===null){
+            throw new ServiceException("Le trajet est impossible", 400);
+        }
 
         $multiline = [];
         foreach ($dernierNoeud->refaireChemin() as $noeud) {

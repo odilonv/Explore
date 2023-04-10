@@ -52,66 +52,20 @@ class UtilisateurRepository extends AbstractRepository implements UtilisateurRep
     {
         return ["login", "mdp_hache",  "email", "profilePictureName"];
     }
+    public function getHistorique(string $login){
+        $requeteSQL = <<<SQL
+        SELECT idtrajet, points FROM historiquetrajets
+        WHERE idlogin=:login;
+        SQL;
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteSQL);
 
-    public function ajouterUserAValider(Utilisateur $user): bool
-    {
-        //on verifie si un user n'est pas deja en cours de validation
-        $sql = "SELECT login from usersexploreavalider WHERE login = :loginTag";
+        $pdoStatement->execute(['login' => $login]);
 
-        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($sql);
-
-        $values = array(
-            "loginTag" => $user->getLogin(),
-        );
-
-        $pdoStatement->execute($values);
-        $result = $pdoStatement->fetch();
-        if($result != null)
-        {
-            return false;
+        $tab = [];
+        foreach ($pdoStatement as $tabId) {
+            $tab[] = $tabId['idtrajet'];
         }
 
-        $sql = "INSERT INTO usersexploreavalider VALUES (:loginTag,:nonceTag, :emailTag)";
-
-        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($sql);
-
-        $values = array(
-            "loginTag" => $user->getLogin(),
-            "nonceTag" => $this->genererNonce(),
-            "emailTag" => $user->getEmail()
-        );
-
-        $pdoStatement->execute($values);
-        return true;
-
-    }
-
-    function genererNonce():string {
-        $characters = '0123456789';
-        $randomString = '';
-        for ($i = 0; $i < 6; $i++) {
-            $randomString .= $characters[rand(0, 9)];
-        }
-        return $randomString;
-    }
-
-    protected function getNonce($user): ?int
-    {
-        $sql = "SELECT nonce FROM usersexploreavalider WHERE login = :loginTag";
-
-        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($sql);
-
-        $values = array(
-            "loginTag" => $user->getLogin()
-        );
-
-        $pdoStatement->execute($values);
-
-        $result = $pdoStatement->fetch();
-        if($result != null)
-        {
-            return $result['NONCE'];
-        }
-        else return null;
+        return $tab;
     }
 }

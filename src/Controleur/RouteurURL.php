@@ -129,6 +129,12 @@ class RouteurURL
         ]);
         $routes->add("noeudscommune", $route);
 
+        $route = new Route("/historique", [
+            "_controller" => "utilisateur_controleur::historique",
+
+        ]);
+        $routes->add("historique", $route);
+
 
         $route = new Route("/requeteVille/{ville}", [
             "_controller" => "noeudcommune_controleur::requeteVille",
