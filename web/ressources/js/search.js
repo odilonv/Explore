@@ -81,6 +81,7 @@ function addInputDest() {
         const input = document.createElement('input');
         input.classList.add('nomCommuneArrivee');
         input.placeholder = 'Où allons-nous ?';
+        input.autocomplete = "off";
 
 
         const autocompletion = document.createElement('div');
@@ -329,25 +330,23 @@ document.getElementById("ville2").addEventListener('click', ()=>{showOldAutocomp
 
 
 function autoCompletion(element,i){
-
-
     if(element.value.length >2)
     {
         maRequeteAJAX(element.value,i);
     }
     else {
-
         videVille(i);
     }
 }
 
 function showOldAutocompletion(element,i){
     if( element.contains( event.target ) && element.value.length >2){
-
         maRequeteAJAX(element.value,i);
+        console.log("in")
     }
     else
     {
+        console.log("out")
         hide()
     }
 }
@@ -380,6 +379,7 @@ function checkKey(e) {
 }
 
 document.addEventListener('keydown', (event)=> {
+    console.log(event.code)
     if(event.code === 'Tab' || event.code === 'Escape' )
     {
         hide();
@@ -392,6 +392,7 @@ document.addEventListener('keydown', (event)=> {
     }
     else if(event.code === 'Enter'){
         select();
+        hide();
     }
 });
 
@@ -468,8 +469,6 @@ function highlightDown()
 }
 
 function select(){
-
-
     let autocompletion;
     for(let ac of document.getElementsByClassName("autocompletion"))
     {
@@ -478,7 +477,6 @@ function select(){
             autocompletion =ac;
         }
     }
-
 
     if(currentIndex !== -1 && autocompletion !== undefined)
     {
