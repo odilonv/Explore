@@ -32,5 +32,8 @@ interface NoeudCommuneServiceInterface
      */
     public function afficherAutocompletion($ville);
 
+    /**
+     * @throws ServiceException
+     */
     public function getNearCoord($lat, $lng);
 }

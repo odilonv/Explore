@@ -6,7 +6,7 @@ use Explore\Modele\DataObject\aStar\EtatNoeud;
 use Explore\Modele\DataObject\aStar\NoeudStar;
 use Explore\Modele\Repository\NoeudRoutierRepositoryInterface;
 
-class PlusCourtChemin
+class PlusCourtChemin implements PlusCourtCheminInterface
 {
     private NoeudRoutierRepositoryInterface $noeudRoutierRepository;
 

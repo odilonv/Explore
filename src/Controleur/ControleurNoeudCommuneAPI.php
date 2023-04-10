@@ -30,7 +30,12 @@ class ControleurNoeudCommuneAPI
     }
 
     public function getNear(float $lat, float $lng){
-        $reponseJSON = $this->noeudCommuneService->getNearCoord($lat, $lng);
-        return new JsonResponse($reponseJSON);
+        try {
+            $reponseJSON = $this->noeudCommuneService->getNearCoord($lat, $lng);
+            return new JsonResponse($reponseJSON);
+        } catch (ServiceException $se) {
+            return new JsonResponse(["error" => $se->getMessage()], $se->getCode());
+        }
+
     }
 }

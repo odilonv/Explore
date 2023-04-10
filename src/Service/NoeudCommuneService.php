@@ -21,7 +21,7 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
 
     public function __construct(
         NoeudCommuneRepositoryInterface $noeudCommuneRepository,
-        NoeudRoutierRepositoryInterface $noeudRoutierRepository
+        NoeudRoutierRepositoryInterface $noeudRoutierRepository,
     ) {
         $this->noeudCommuneRepository = $noeudCommuneRepository;
         $this->noeudRoutierRepository = $noeudRoutierRepository;
@@ -80,7 +80,7 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
             $noeudCommuneDepart = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart])[0] ?? null;
             $noeudCommuneArrivee = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee])[0] ?? null;
             if ($noeudCommuneDepart == null || $noeudCommuneArrivee == null) {
-                throw new ServiceException('Veuillez renseigner un point de départ et un point d\'arrivée valide');
+                throw new ServiceException('Veuillez renseigner un point de départ et un point d\'arrivée valide', 400);
             }
 
             $noeudRoutierDepartGid = $this->noeudRoutierRepository->recupererPar([
@@ -110,7 +110,7 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
 
             return $parametres;
         } else {
-            throw new ServiceException('Veuillez renseigner un point de départ et un point d\'arrivée');
+            throw new ServiceException('Veuillez renseigner un point de départ et un point d\'arrivée',400);
         }
     }
 
@@ -130,7 +130,6 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
             throw new ServiceException("La ville de départ n'existe pas", Response::HTTP_NOT_FOUND);
         }
         $noeudCommuneDepart = $dep[0];
-
         /** @var NoeudCommune $noeudCommuneArrivee */
         $arr = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee]);
         if(sizeof($arr)==0){
@@ -141,7 +140,6 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
         if (is_null($noeudCommuneDepart) || is_null($noeudCommuneArrivee)) {
             throw new ServiceException('départ ou arrivée inconnue.', Response::HTTP_NOT_FOUND);
         }
-
         $noeudRoutierDepartGid = $this->noeudRoutierRepository->recupererPar([
             "id_rte500" => $noeudCommuneDepart->getId_nd_rte()
         ])[0]->getGid();
@@ -150,13 +148,10 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
         ])[0]->getGid();
 
         $pcc = new PlusCourtChemin($noeudRoutierDepartGid, $noeudRoutierArriveeGid, $this->noeudRoutierRepository);
-
         $dernierNoeud = $pcc->calculer3();
-
         if($dernierNoeud===null){
             throw new ServiceException("Le trajet est impossible", 400);
         }
-
         $multiline = [];
         foreach ($dernierNoeud->refaireChemin() as $noeud) {
             $coords = $noeud->getCoords();
@@ -172,7 +167,17 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
         return $resultat;
     }
 
+    /**
+     * @throws ServiceException
+     */
     public function getNearCoord($lat, $lng){
-        return ['nomCommune' => $this->noeudCommuneRepository->recupererParProximite($lat, $lng)];
+        $val= $this->noeudCommuneRepository->recupererParProximite($lat, $lng);
+        if($val==null){
+            throw new ServiceException("Commune introuvable", 400);
+        }
+        else{
+            return ['nomCommune' => $val];
+        }
+
     }
 }
