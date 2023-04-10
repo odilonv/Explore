@@ -1,12 +1,13 @@
 <?php
 
-/** @var $utilisateur */
+/** @var \Explore\Modele\DataObject\Utilisateur $utilisateur */
 
 use Explore\Lib\ConnexionUtilisateur;
 
 $login = $utilisateur->getLogin();
 $loginHTML = htmlspecialchars($login);
 $loginURL = rawurlencode($login);
+$picture = $utilisateur->getProfilePictureName();
 ?>
 <section class="fond-page">
     <form class="box-inscription" style="height: 250px;width:300px" method="POST" action="../web/validation">
@@ -17,7 +18,7 @@ $loginURL = rawurlencode($login);
 
         <h2><?php echo $login?></h2>
         <br>
-        <img id="notFound" src="../ressources/img/icons/face-grimace-solid.svg">
+        <img id="profilePicture" src="../ressources/img/utilisateurs/<?php echo $picture ?>">
 
 
 

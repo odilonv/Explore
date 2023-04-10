@@ -391,6 +391,17 @@ footer{
     border-radius: 0.5em;
 }
 
+#profilePictureInput{
+    box-shadow: none;
+}
+
+#profilePicture{
+
+
+    height: 100px;
+    width: 100px;
+}
+
 .contain .addDest{
     width: 100%;
     height: 25%;

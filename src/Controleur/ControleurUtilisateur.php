@@ -68,7 +68,6 @@ class ControleurUtilisateur extends ControleurGenerique
             $profilePicture = $_FILES['profilePicture'] ?? null;
 
 
-
             $this->utilisateurService->creerUtilisateur($login, $password, $adresseMail, $profilePicture);
             $user = $this->utilisateurService->recupererUtilisateur($login);
 
