@@ -15,6 +15,8 @@ function moveMapToFrance(map){
 const platform = new H.service.Platform({
     'apikey': 'xT0meObIDwRziElCoHGOgcuY1RT0AVfJQGG-HF8ZtDk'
 });
+
+
 let defaultLayers = platform.createDefaultLayers();
 
 //Step 2: initialize a map - this map is centered over Europe
@@ -39,8 +41,12 @@ map.addEventListener('rightclick', function (evt) {
 let behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
 
 // Create the default UI components
-let ui = H.ui.UI.createDefault(map, defaultLayers);
-
+let ui = H.ui.UI.createDefault(map, defaultLayers, "fr-FR");
+let mapsettings = ui.getControl('mapsettings');
+let menuEntries = mapsettings.getChildren()[1].getChildren();
+menuEntries[0].getElement().style.borderBottom = 'none';
+for (let i=1; i<menuEntries.length; i++)
+    menuEntries[i].setVisibility(false);
 // Now use the map as required...
 window.onload = function () {
     moveMapToFrance(map);
