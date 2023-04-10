@@ -33,45 +33,56 @@ class UtilisateurService implements UtilisateurServiceInterface
             throw new ServiceException("L'adresse mail est incorrecte!");
         }
         $utilisateurRepository = $this->utilisateurRepository;
-        $utilisateur = $utilisateurRepository->getByLogin($login);
+
+        $utilisateur = $utilisateurRepository->recupererParClePrimaire($login);
         if ($utilisateur != null) {
             throw new ServiceException("Ce login est déjà pris!");
         }
 
-        $utilisateur = $utilisateurRepository->getByAdresseMail($adresseMail);
+        $utilisateur = $utilisateurRepository->recupererPar(["email" => $adresseMail]);
         if ($utilisateur != null) {
             throw new ServiceException("Un compte est déjà enregistré avec cette adresse mail!");
         }
 
-        $passwordChiffre = MotDePasse::hacher($password);
+        //$passwordChiffre = MotDePasse::hacher($password);
 
         // Upload des photos de profil
         // Plus d'informations :
         // http://romainlebreton.github.io/R3.01-DeveloppementWeb/assets/tut4-complement.html
 
-        // On récupère l'extension du fichier
-        $explosion = explode('.', $profilePictureData['name']);
-        $fileExtension = end($explosion);
-        if (!in_array($fileExtension, ['png', 'jpg', 'jpeg'])) {
-            throw new ServiceException("La photo de profil n'est pas au bon format!");
+        if ($profilePictureData == null) {
+            $profilePictureData = 'unknown.jpg';
+        } else {
+            // On récupère l'extension du fichier
+            $explosion = explode('.', $profilePictureData['name']);
+            $fileExtension = end($explosion);
+            if (!in_array($fileExtension, ['png', 'jpg', 'jpeg'])) {
+                throw new ServiceException("La photo de profil n'est pas au bon format!");
+            }
+            // La photo de profil sera enregistrée avec un nom de fichier aléatoire
+            $pictureName = uniqid() . '.' . $fileExtension;
+            $from = $profilePictureData['tmp_name'];
+            $to = __DIR__ . "/../../web/assets/img/utilisateurs/$pictureName";
+            move_uploaded_file($from, $to);
         }
-        // La photo de profil sera enregistrée avec un nom de fichier aléatoire
-        $pictureName = uniqid() . '.' . $fileExtension;
-        $from = $profilePictureData['tmp_name'];
-        $to = __DIR__ . "/../../web/assets/img/utilisateurs/$pictureName";
-        move_uploaded_file($from, $to);
 
-        $utilisateur = Utilisateur::construireDepuisFormulaire($login, $passwordChiffre, $adresseMail, $pictureName);
+
+        $utilisateur = Utilisateur::construireDepuisFormulaire(array(
+            "login" => $login,
+            "mdp" => $password,
+            "email" => $adresseMail,
+            "profilePictureName" => $profilePictureData
+        ));
         $utilisateurRepository->ajouter($utilisateur);
-
     }
 
     /**
      * @throws ServiceException
      */
-    public function recupererUtilisateur($idUtilisateur, $autoriserNull = true) {
+    public function recupererUtilisateur($idUtilisateur, $autoriserNull = true)
+    {
         $utilisateur = $this->utilisateurRepository->recupererParClePrimaire($idUtilisateur);
-        if(!$autoriserNull && $utilisateur!=null) {
+        if (!$autoriserNull && $utilisateur != null) {
             throw new ServiceException('L\'utilisateur n\'existe pas !');
         }
         return $utilisateur;
@@ -83,13 +94,11 @@ class UtilisateurService implements UtilisateurServiceInterface
     public function recupererListeUtilisateur($autoriserNull = true)
     {
         $utilisateurs = $this->utilisateurRepository->recuperer();
-        if(!$autoriserNull && $utilisateurs!=null) {
+        if (!$autoriserNull && $utilisateurs != null) {
             throw new ServiceException('L\'utilisateur n\'existe pas !');
-        }
-        else{
+        } else {
             return $utilisateurs;
         }
-
     }
 
     /**
@@ -97,19 +106,21 @@ class UtilisateurService implements UtilisateurServiceInterface
      */
     public function connecterUtilisateur($login, $password): void
     {
-        if ($login==null ||  $password==null) {
+        if ($login == null ||  $password == null) {
             throw new ServiceException("Login ou mot de passe manquant.");
         }
         $utilisateurRepository = $this->utilisateurRepository;
         /** @var Utilisateur $utilisateur */
-        $utilisateur = $utilisateurRepository->getByLogin($_POST["login"]);
+        $utilisateur = $utilisateurRepository->recupererParClePrimaire($login);
 
         if ($utilisateur == null) {
-            throw new ServiceException("afficherFormulaireConnexion");
+            throw new ServiceException("utilisateur inexistant");
         }
 
-        if (!MotDePasse::verifier($_POST["password"], $utilisateur->getMdpHache())) {
-            throw new ServiceException("afficherFormulaireConnexion");
+
+
+        if (!MotDePasse::verifier($password, $utilisateur->getMdpHache())) {
+            throw new ServiceException("mot de passe incorrect");
         }
         ConnexionUtilisateur::connecter($utilisateur->getLogin());
     }
@@ -124,5 +135,4 @@ class UtilisateurService implements UtilisateurServiceInterface
         }
         ConnexionUtilisateur::deconnecter();
     }
-
 }

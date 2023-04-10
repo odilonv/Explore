@@ -11,30 +11,34 @@ class Utils
 
     private static array $logs = [];
 
-    static function startTimer(){
+    static function startTimer()
+    {
         Utils::$running = true;
         Utils::$startTime = microtime(true);
     }
 
-    static function getDuree(){
-        if(Utils::$running) {
+    static function getDuree()
+    {
+        if (Utils::$running) {
             return microtime(true) - Utils::$startTime;
-        }
-        else{
+        } else {
             return Utils::$endTime - Utils::$startTime;
         }
     }
 
-    static function endTimer(){
-        Utils::$running=false;
+    static function endTimer()
+    {
+        Utils::$running = false;
         Utils::$endTime = microtime(true);
     }
 
-    static function log(string $message){
-        Utils::$logs[]=$message;
+    static function log(string $message)
+    {
+        Utils::$logs[] = $message;
     }
 
-    static function getLogs(){
+    static function getLogs()
+    {
         return Utils::$logs;
     }
 }

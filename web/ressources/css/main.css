@@ -31,6 +31,69 @@ body {
 }
 
 
+#iconmenu{
+    width: 15px;
+    height: 15px;
+}
+
+.sousmenu-hidden{
+    opacity: 0;
+    border-radius: 0.5em;
+
+
+}
+.sousmenu-show{
+    opacity: 1;
+    border-radius: 0 0 0.5em 0.5em ;
+}
+
+#sousmenu{
+    position: fixed;
+    display: flex;
+    z-index: 1;
+    right: 20px;
+    top: 65px;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    width: 10%;
+    height: 120px;
+    background-color: #fff;
+}
+
+#sousmenu li a{
+    color: rgba(15, 22, 33, 0.6);
+}
+
+#sousmenu h3{
+    font-size: 0.8em;
+}
+
+#sousmenu li{
+    display: flex;
+    width: 90%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+#sousmenu li > a{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: space-evenly;
+}
+#sousmenu li > p{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    font-size: 0.7em;
+    text-align: center;
+    color: rgba(15, 22, 33, 0.6);
+}
+
 
 
 .icons{
@@ -39,6 +102,9 @@ body {
     filter: opacity(0.6);
 }
 
+.crossIcon{
+    margin-left: 1.5px;
+}
 
 .contain{
     background: #efeeee;
@@ -73,10 +139,10 @@ body {
     border-radius: 5px;
 }
 
-.box-inscription{
+.box-inscription, .box-liste{
     display: flex;
     width: 30%;
-    height: 85%;
+    height: 50%;
     padding: 20px 30px;
     z-index: 1;
     position: relative;
@@ -86,6 +152,52 @@ body {
     border-radius: 0.5em;
     background: #efeeee;
 }
+
+.box-inscription{
+    width: 30%;
+    padding: 20px 30px;
+    align-items: center;
+
+
+}
+
+.box-liste .exitLine > .exitButton{
+    width: 5%;
+}
+
+.box-liste > h1{
+    font-size: 2em;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    color: rgba(15, 22, 33, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.2em;
+    background: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+    font-family: Poppins, serif;
+}
+
+.box-liste{
+    overflow-y: scroll;
+    width: 60%;
+}
+
+.box-liste{
+    padding: 20px;
+}
+
+.box-liste > li{
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-size: 0.8em;
+}
+
 
 .box-inscription > label{
     display: flex;
@@ -110,6 +222,7 @@ body {
     justify-content: center;
     display: flex;
     flex-direction: column;
+    z-index: 1;
 }
 .iconsLocation{
     height: 20px;
@@ -135,7 +248,7 @@ body {
     margin-bottom: 3px;
 }
 
-button, .registerButton, .exitButton{
+button, .registerButton, .exitButton, .connectButton{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -163,12 +276,15 @@ button, .registerButton, .exitButton{
     background-color: white;
 }
 .connectHeader:hover,
-.registerButton:hover{
+.registerButton:hover,
+#sousmenu li a:hover
+{
     color: rgba(15, 22, 33, 0.8);
 }
 
 .connectHeader:hover > img,
-.exitButton:hover > img{
+.exitButton:hover > img,
+#sousmenu li a:hover > img{
 
     filter: opacity(1);
 
@@ -207,7 +323,7 @@ button, .registerButton, .exitButton{
 
 .connectButton{
     width: 100%;
-    height: 100%;
+    height: 30px;
 }
 .connectButton, .inscriptionButton{
     background: #ffae9e;
@@ -264,8 +380,11 @@ footer{
     right: 20px;
     height: 40px;
     top: 25px;
+    z-index: 2;
     width: 10%;
     background-color: #ffae9e;
+    border-radius: 0.5em;
+    cursor: pointer;
 }
 #logo > h1{
     font-size: 1em;
@@ -273,25 +392,25 @@ footer{
 }
 
 .connectFooter, #logo{
-    z-index: -1;
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     position: absolute;
-    border-radius: 0.5em;
-
     box-shadow: 0em 0 0.4em 0 rgba(15, 22, 33, 0.6);
 }
 .connectFooter{
     height: 40px;
     background-color: #fff;
+    border-radius: 0.5em;
+
 }
 .connectFooter > div{
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    height: 100%;
+    height: 30px;
 }
 .connectHeader{
     padding: 0 10%;
@@ -312,29 +431,65 @@ footer{
     width: 150px;
 }
 
-@keyframes warning {
+@keyframes show {
     0% {
-        opacity: 0;
-        bottom: 0;
-    }
-    5% {
         opacity: 0;
     }
     100% {
         opacity: 1;
-        bottom: 25px;
     }
 }
 
+
 .notification-show{
-    animation: warning 400ms ease-in-out;
+    animation: show 1s ease forwards;
     display: flex;
 }
+
 .notification-hidden{
     display: none;
 }
 
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: none;
+}
+
+#loader:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    margin: -30px 0 0 -30px;
+    border-radius: 50%;
+    border: 5px solid #ffae9e;
+    border-color: #ffae9e transparent #ffae9e transparent;
+    animation: loader 1.2s linear infinite;
+}
+
+@keyframes loader {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+
 .messageFlash{
+
+    display: flex;
     position: absolute;
     bottom: 25px;
     height: 20%;
@@ -348,29 +503,54 @@ footer{
     align-items: center;
 }
 
-.messageFlash > h3{
-    color: #fff;
+#icon-exit-notif{
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+
+}
+#imgnotif{
+    width: 40px;
+    height: 40px;
+    margin-left: 5%;
+}
+
+.separate{
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    align-items: center;
+}
+.separate:first-child{
     height: 19%;
+    margin-top: 1%;
+}
+
+.separate:last-child{
+    height: 79.5%;
+
+}
+
+.messageFlash div > h3{
+    color: #fff;
     margin-bottom: 0.5%;
     display: flex;
     align-items: end;
-    width: 90%;
     font-size: 0.65em;
 }
 
 .messageFlash > .ligne{
     display: flex;
-    width: 90%;
     height: 1%;
+    width: 90%;
     background-color: #fff;
     border-radius: 0.5em;
 }
-.messageFlash > p{
+.messageFlash div > p{
     display: flex;
-    width: 90%;
-    height: 79.5%;
+    margin-left: 10%;
     align-items: center;
-    font-size: 1em;
+    font-size: 0.9em;
     color: #fff;
 
 
@@ -381,13 +561,22 @@ footer{
 
 
 .formConnect{
-    height: 220px;
+    height: 180px;
     width: 25%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     background: #efeeee;
     padding: 15px;
+    gap: 10%;
+}
+
+.formConnect form{
+
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 10%;
 }
 
@@ -442,7 +631,7 @@ a{
 
 
 
-.autocompletion p:hover, .autocompletion selected{
+.autocompletion p:hover, .autocompletion p.selected{
     background-color: #ffae9e;
     color:white ;
 }

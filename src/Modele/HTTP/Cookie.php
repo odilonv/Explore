@@ -5,7 +5,8 @@ namespace Explore\Modele\HTTP;
 class Cookie
 {
 
-    public static function existeCle($cle) : bool {
+    public static function existeCle($cle): bool
+    {
         return isset($_COOKIE[$cle]);
     }
 
@@ -23,7 +24,7 @@ class Cookie
         return unserialize($_COOKIE[$cle]);
     }
 
-    public static function supprimer($cle) : void
+    public static function supprimer($cle): void
     {
         unset($_COOKIE[$cle]);
         setcookie($cle, "", 1);

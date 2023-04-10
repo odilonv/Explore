@@ -3,12 +3,12 @@
 namespace Explore\Test;
 
 use Exception;
-
 use PHPUnit\Framework\TestCase;
 
 // Pattern class test
 
-class EnsembleTest extends TestCase {
+class EnsembleTest extends TestCase
+{
 
     private $ensembleTeste;
 
@@ -19,11 +19,13 @@ class EnsembleTest extends TestCase {
         $this->ensembleTeste = new Ensemble();
     }
 
-    public function testVideDepart() {
+    public function testVideDepart()
+    {
         $this->assertEquals(0, $this->ensembleTeste->getTaille());
     }
 
-    public function testAjout() {
+    public function testAjout()
+    {
         $this->assertFalse($this->ensembleTeste->contient(7));
         $this->ensembleTeste->ajouter(7);
         $this->assertTrue($this->ensembleTeste->contient(7));
@@ -33,7 +35,8 @@ class EnsembleTest extends TestCase {
         $this->assertEquals(1, $this->ensembleTeste->getTaille());
     }
 
-    public function testPop() {
+    public function testPop()
+    {
         $this->ensembleTeste->ajouter(1);
         $this->ensembleTeste->ajouter(2);
         $this->ensembleTeste->ajouter(3);

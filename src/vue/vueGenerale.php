@@ -1,9 +1,19 @@
+
+<!-- 
+-----------------------    
+PAGE A NE PLUS UTILISER  
+-----------------------
+-->
+
+
 <?php
+
 use Explore\Lib\ConnexionUtilisateur;
 use Explore\Lib\Conteneur;
 use Explore\Lib\Utils;
 use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+
 /** @var UrlGenerator $generateur */
 $generateur = Conteneur::recupererService("generateur");
 /** @var UrlHelper $assistant */
@@ -14,11 +24,12 @@ $assistant = Conteneur::recupererService("assistant");
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     <title><?= $pagetitle ?></title>
-    <link rel="shortcut icon" type="image/png" href="<?=$assistant->getAbsoluteUrl("ressources/img/3d-illustration-travel-location.png")?>"/>
+    <link rel="shortcut icon" type="image/png" href="<?= $assistant->getAbsoluteUrl("ressources/img/3d-illustration-travel-location.png") ?>" />
 
     <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
@@ -27,48 +38,99 @@ $assistant = Conteneur::recupererService("assistant");
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
 
 
-    <link rel="stylesheet" href="<?=$assistant->getAbsoluteUrl("ressources/css/main.css")?>">
+    <link rel="stylesheet" href="<?= $assistant->getAbsoluteUrl("ressources/css/main.css") ?>">
 </head>
+
 <body>
 
-<div id="mapContainer"></div>
-<div id="logo">
-    <h1>Explore</h1>
-</div>
+    <div id="mapContainer"></div>
+    <div id="logo">
+        <h1>Explore</h1>
+        <img id="iconmenu" src="<?= $assistant->getAbsoluteUrl("ressources/img/icons/caret-down-solid.svg") ?>">
+    </div>
+
+    <?php
+    if (!ConnexionUtilisateur::estConnecte()) {
+        echo '
+                    <ul id="sousmenu" class="sousmenu-hidden">
+                    <li>
+                        <p>Connecte-toi pour accéder à plus d\'informations.</p> 
+                        </li>
+                    </ul>
+                    
+                    ';
+    } else if (ConnexionUtilisateur::estConnecte() /*&& $admin*/) {
+        echo '    
+                    <ul id="sousmenu" class="sousmenu-hidden">
+                        <li><a href="">
+                            <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/clock-solid.svg") . '" class="icons">
+                            <h3>Historique</h3> 
+                        </a></li>
+                        <li><a href="">
+                            <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/compass-solid.svg") . '" class="icons">
+                            <h3>Communes</h3> 
+                        </a></li>
+                        <li><a href="">
+                            <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/user-solid.svg") . '" class="icons">
+                            <h3>Utilisateurs</h3> 
+                        </a></li>
+                        
+                    </ul>
+                    ';
+    } else if (ConnexionUtilisateur::estConnecte()) {
+        echo '
+                    <ul id="sousmenu" class="sousmenu-hidden">
+                        <li><a href="">
+                        <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/clock-solid.svg") . '" class="icons">
+                        <h3>Historique</h3> 
+                        </a></li>
+                    </ul>
+                    
+                    ';
+    }
+    ?>
 
 
     <?php
-            if(Utils::$debug){
-                foreach (Utils::getLogs() as $log){
-                    echo $log . ' <br>';
-                }
-            }
-            /**
-             * @var string $cheminVueBody
-             */
+    if (Utils::$debug) {
+        foreach (Utils::getLogs() as $log) {
+            echo $log . ' <br>';
+        }
+    }
+    /**
+     * @var string $cheminVueBody
+     */
     require __DIR__ . "/{$cheminVueBody}";
     ?>
 
 
+
+    <div id="loader"></div>
     <footer>
         <?php
+
         foreach (["success", "info", "warning", "danger"] as $type) {
             foreach ($messagesFlash[$type] as $messageFlash) {
-                echo <<<HTML
-                            <div class="messageFlash notification-hidden alert-$type">
-                                <h3>Message d'Explorateur</h3>
+                echo '
+                            <div class="notification-hidden" id="notif">
+                            <div class="messageFlash alert-'.$type.'">
+                                <div class="separate"><h3>Message de ton ami Explorateur</h3>
+                                <img id="icon-exit-notif" src="' . $assistant->getAbsoluteUrl("ressources/img/icons/xmark-solid-white.svg") . '">
+                                </div>
                                 <div class="ligne"></div>
-                                <p>$messageFlash</p> 
+                                <div class="separate"><img id="imgnotif" src="' . $assistant->getAbsoluteUrl("ressources/img/icons/$type-solid.svg") . '"><p>'.$messageFlash.'</p></div>
                             </div>
-                            HTML;
+                            
+                            </div>
+                            ';
             }
         }
         ?>
 
         <?php
 
-    if (!ConnexionUtilisateur::estConnecte()) {
-        echo '
+        if (!ConnexionUtilisateur::estConnecte()) {
+            echo '
                     <div class="connectFooter clickable">
                     <div class="connectHeader">
                         <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/user-solid.svg") . '" class="icons">
@@ -76,27 +138,29 @@ $assistant = Conteneur::recupererService("assistant");
                       </div>
                     </div>
                     ';
-    } else {
-        $loginHTML = htmlspecialchars(ConnexionUtilisateur::getLoginUtilisateurConnecte());
-        $loginURL = rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte());
-        echo '
+        } else {
+            $loginHTML = htmlspecialchars(ConnexionUtilisateur::getLoginUtilisateurConnecte());
+            $loginURL = rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte());
+            echo '
                                 <form class="connectFooter clickable">
                                     <!--<a href="controleurFrontal.php?action=afficherDetail&controleur=utilisateur&login=$loginURL" id="connectFooter">¡-->
                                     <a href="/utilisateur/{idUser}" id="connectFooter">
                                         <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/user-solid.svg") . '" class="icons">
-                                        <h2>' .$loginHTML .'</h2>
+                                        <h2>' . $loginHTML . '</h2>
                                     </a>
                                 </form>
                     ';
-    }
-    ?>
+        }
+        ?>
 
 
-<script defer type="text/javascript" src="<?=$assistant->getAbsoluteUrl("ressources/js/connect.js")?>"></script>
-<script defer type="text/javascript" src="<?=$assistant->getAbsoluteUrl("ressources/js/map.js")?>"></script>
-<script defer type="text/javascript" src="<?=$assistant->getAbsoluteUrl("ressources/js/notifications.js")?>"></script>
+        <script defer type="text/javascript" src="<?= $assistant->getAbsoluteUrl("ressources/js/connect.js") ?>"></script>
+        <script defer type="text/javascript" src="<?= $assistant->getAbsoluteUrl("ressources/js/menu.js") ?>"></script>
+        <script defer type="text/javascript" src="<?= $assistant->getAbsoluteUrl("ressources/js/map.js") ?>"></script>
+        <script defer type="text/javascript" src="<?= $assistant->getAbsoluteUrl("ressources/js/notifications.js") ?>"></script>
 
 
 
 </body>
+
 </html>

@@ -21,12 +21,10 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
     public function __construct(
         NoeudCommuneRepositoryInterface $noeudCommuneRepository,
         NoeudRoutierRepositoryInterface $noeudRoutierRepository
-    )
-    {
+    ) {
         $this->noeudCommuneRepository = $noeudCommuneRepository;
         $this->noeudRoutierRepository = $noeudRoutierRepository;
     }
-
 
     /**
      * @throws ServiceException
@@ -34,10 +32,9 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
     public function recupererListeNoeudsCommunes($autoriserNull = true)
     {
         $noeuds = $this->noeudCommuneRepository->recuperer();
-        if(!$autoriserNull && $noeuds!=null) {
+        if (!$autoriserNull && $noeuds != null) {
             throw new ServiceException('Aucun noeuds n\' est disponible n\'existe pas !');
-        }
-        else{
+        } else {
             return $noeuds;
         }
     }
@@ -45,12 +42,13 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
     /**
      * @throws ServiceException
      */
-    public function plusCourtCheminNC($nomCommuneDepart, $nomCommuneArrivee){
-        if ($nomCommuneDepart!=null && $nomCommuneArrivee!=null) {
+    public function plusCourtCheminNC($nomCommuneDepart, $nomCommuneArrivee)
+    {
+        if ($nomCommuneDepart != null && $nomCommuneArrivee != null) {
 
             $noeudCommuneDepart = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart])[0] ?? null;
             $noeudCommuneArrivee = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee])[0] ?? null;
-            if($noeudCommuneDepart==null || $noeudCommuneArrivee==null){
+            if ($noeudCommuneDepart == null || $noeudCommuneArrivee == null) {
                 throw new ServiceException('Veuillez renseigner un point de départ et un point d\'arrivée valide');
             }
 
@@ -70,10 +68,9 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
             // $distance = $pcc->calculer();
 
             $dernierNoeud = $pcc->calculer3();
-            if($dernierNoeud == null){
+            if ($dernierNoeud == null) {
                 $distance = -1;
-            }
-            else{
+            } else {
                 $distance = $dernierNoeud->getDistanceDebut();
             }
 
@@ -82,28 +79,23 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
             $parametres["distance"] = $distance;
 
             return $parametres;
-
-        }
-        else{
+        } else {
             throw new ServiceException('Veuillez renseigner un point de départ et un point d\'arrivée');
         }
-
-
     }
 
     /**
      * @throws ServiceException
      */
-    public function afficherDetailNoeudCommune($gid){
-        if($gid==null){
+    public function afficherDetailNoeudCommune($gid)
+    {
+        if ($gid == null) {
             throw new ServiceException('Immatriculation manquante');
-        }
-        else{
+        } else {
             $noeudCommune = $this->noeudCommuneRepository->recupererParClePrimaire($gid);
-            if($noeudCommune==null){
+            if ($noeudCommune == null) {
                 throw new ServiceException('gid inconnue.');
-            }
-            else{
+            } else {
                 return $noeudCommune;
             }
         }
@@ -112,21 +104,21 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
     /**
      * @throws ServiceException
      */
-    public function afficherAutocompletion($ville){
-        if($ville!=null){
+    public function afficherAutocompletion($ville)
+    {
+        if ($ville != null) {
             return $this->noeudCommuneRepository->getCommune($ville);
-        }
-        else{
+        } else {
             throw new ServiceException('ville inconnue');
         }
-
     }
 
     /**
      * @throws ServiceException
      */
-    public function requetePlusCourt($nomCommuneDepart, $nomCommuneArrivee){
-        if(is_null($nomCommuneDepart) || is_null($nomCommuneArrivee)){
+    public function requetePlusCourt($nomCommuneDepart, $nomCommuneArrivee)
+    {
+        if (is_null($nomCommuneDepart) || is_null($nomCommuneArrivee)) {
             throw new ServiceException('départ ou arrivée inconnue.', Response::HTTP_NOT_FOUND);
         }
         $resultat = [];
@@ -136,15 +128,15 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
         /** @var NoeudCommune $noeudCommuneArrivee */
         $noeudCommuneArrivee = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee])[0];
 
-        if(is_null($noeudCommuneDepart) || is_null($noeudCommuneArrivee)){
+        if (is_null($noeudCommuneDepart) || is_null($noeudCommuneArrivee)) {
             throw new ServiceException('départ ou arrivée inconnue.', Response::HTTP_NOT_FOUND);
         }
 
         $noeudRoutierDepartGid = $this->noeudRoutierRepository->recupererPar([
-                "id_rte500" => $noeudCommuneDepart->getId_nd_rte()
+            "id_rte500" => $noeudCommuneDepart->getId_nd_rte()
         ])[0]->getGid();
         $noeudRoutierArriveeGid = $this->noeudRoutierRepository->recupererPar([
-           "id_rte500" => $noeudCommuneArrivee->getId_nd_rte()
+            "id_rte500" => $noeudCommuneArrivee->getId_nd_rte()
         ])[0]->getGid();
 
         $pcc = new PlusCourtChemin($noeudRoutierDepartGid, $noeudRoutierArriveeGid, $this->noeudRoutierRepository);
@@ -152,9 +144,9 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
         $dernierNoeud = $pcc->calculer3();
 
         $multiline = [];
-        foreach ($dernierNoeud->refaireChemin() as $noeud){
+        foreach ($dernierNoeud->refaireChemin() as $noeud) {
             $coords = $noeud->getCoords();
-            $multiline[] = ['lat'=>$coords['latitude'], 'lng'=>$coords['longitude']];
+            $multiline[] = ['lat' => $coords['latitude'], 'lng' => $coords['longitude']];
         }
         $distance = $dernierNoeud->getDistanceDebut();
 
@@ -162,9 +154,8 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
         $resultat["nomCommuneDepart"] = $nomCommuneDepart;
         $resultat["nomCommuneArrivee"] = $nomCommuneArrivee;
         $resultat["distance"] = $distance;
+        $resultat["message"] = "Le plus court chemin entre $nomCommuneDepart et $nomCommuneArrivee mesure $distance km.";
 
         return $resultat;
     }
-
-
 }
