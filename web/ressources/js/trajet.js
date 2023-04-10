@@ -47,6 +47,7 @@ function search2(){
 
 
         let requete = new URL(`api/getPlusCourt/${depart}/${arrivee}`, document.baseURI);
+        console.log(requete.href);
         URLs.push(requete.href);
     }
     combineRoads();

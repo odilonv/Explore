@@ -6,6 +6,7 @@ use Explore\Lib\Utils;
 
 class NoeudStar
 {
+    private static array $noeuds=[];
     private string $gid;
     /* @var double[] $coords */
     private array $coords;
@@ -21,6 +22,7 @@ class NoeudStar
 
     public function __construct(string $gid, array $coords, float $distanceFin)
     {
+        self::$noeuds[$gid] = $this;
         $this->coords = $coords;
         $this->distanceFin = $distanceFin;
         $this->gid = $gid;
@@ -32,6 +34,15 @@ class NoeudStar
     public function getCoords(): array
     {
         return $this->coords;
+    }
+
+    public function compare(NoeudStar $noeud):float{
+        $diffTotal = $this->getTotal() - $noeud->getTotal();
+        if($diffTotal <> 0){return $diffTotal;}
+        else{
+            $diffFin = $this->distanceFin - $noeud->distanceFin;
+            return $diffFin <> 0? $diffFin : $this->distanceDebut - $noeud->distanceDebut;
+        }
     }
 
     /**
@@ -99,7 +110,7 @@ class NoeudStar
 
 
     public function addVoisin(NoeudStar $voisin, float $longueur, string $gidTR){
-        $this->noeudsVoisins[] = ['voisin' => $voisin,
+        $this->noeudsVoisins[] = ['gidVoisin' => $voisin->gid,
             'distance' => $longueur,
             'gidTR' => $gidTR];
     }
@@ -114,11 +125,15 @@ class NoeudStar
         }
     }
 
-    public function selectionner(){
+    public function selectionner():array{
         $this->state = EtatNoeud::VERIFIE;
+        $result = [];
         foreach ($this->noeudsVoisins as $infos) {
-            $infos['voisin']->recalculer($this->distanceDebut + $infos['distance'], $this);
+            $n = self::$noeuds[$infos['gidVoisin']];
+            $result[] = $n;
+            $n->recalculer($this->distanceDebut + $infos['distance'], $this);
         }
+        return $result;
     }
 
     public function refaireChemin():array

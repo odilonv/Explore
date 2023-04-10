@@ -38,20 +38,13 @@ class QueueStar{
     }
 
     public function isInf(NoeudStar $a, NoeudStar $b):bool{
-        $diffTotal = $a->getTotal() - $b->getTotal();
-        if($diffTotal < 0){
+        $c = $a->compare($b);
+        if($c<0){
             return true;
         }
-        elseif ($diffTotal == 0){
-            $diffFin = $a->getDistanceFin() - $b->getDistanceFin();
-            if($diffFin < 0){
-                return true;
-            }
-            elseif ($diffFin == 0){
-                return $a->getDistanceDebut() - $b->getDistanceDebut() < 0;
-            }
+        else{
+            return false;
         }
-        return false;
     }
 
     public function heapifyUp(int $i){
