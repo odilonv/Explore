@@ -11,6 +11,7 @@ use Explore\Modele\Repository\NoeudRoutierRepository;
 use Explore\Modele\Repository\NoeudRoutierRepositoryInterface;
 use Explore\Service\Exception\ServiceException;
 use Symfony\Component\HttpFoundation\Response;
+use function PHPUnit\Framework\isNull;
 
 class NoeudCommuneService implements NoeudCommuneServiceInterface
 {
@@ -125,9 +126,14 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
         $resultat = [];
 
         /** @var NoeudCommune $noeudCommuneDepart */
-        $noeudCommuneDepart = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart])[0];
+        $dep = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart]);
+        if(isNull($dep)){throw new ServiceException("La ville de départ n'existe pas", Response::HTTP_NOT_FOUND);}
+        $noeudCommuneDepart = $dep[0];
+
         /** @var NoeudCommune $noeudCommuneArrivee */
-        $noeudCommuneArrivee = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee])[0];
+        $arr = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee]);
+        if(isNull($arr)){throw new ServiceException("La ville d'arrivée n'existe pas", Response::HTTP_NOT_FOUND);}
+        $noeudCommuneArrivee = $arr[0];
 
         if (is_null($noeudCommuneDepart) || is_null($noeudCommuneArrivee)) {
             throw new ServiceException('départ ou arrivée inconnue.', Response::HTTP_NOT_FOUND);
@@ -143,6 +149,10 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
         $pcc = new PlusCourtChemin($noeudRoutierDepartGid, $noeudRoutierArriveeGid, $this->noeudRoutierRepository);
 
         $dernierNoeud = $pcc->calculer3();
+
+        if(isNull($dernierNoeud)){
+            throw new ServiceException("Le trajet est impossible", 400);
+        }
 
         $multiline = [];
         foreach ($dernierNoeud->refaireChemin() as $noeud) {

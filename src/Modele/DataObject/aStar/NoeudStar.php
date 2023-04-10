@@ -11,8 +11,6 @@ class NoeudStar
     private array $coords;
     private ?NoeudStar $precedentVoisin = null;
 
-    private QueueStar $prioQ;
-
     private array $noeudsVoisins = [];
 
     private float $distanceDebut = PHP_FLOAT_MAX;
@@ -45,11 +43,6 @@ class NoeudStar
     }
 
 
-
-    public function setPrioQ(QueueStar $p){
-        $this->prioQ = $p;
-    }
-
     /**
      * @return string
      */
@@ -75,9 +68,33 @@ class NoeudStar
         return $this->distanceFin;
     }
 
+    /**
+     * @return array
+     */
+    public function getNoeudsVoisins(): array
+    {
+        return $this->noeudsVoisins;
+    }
+
     public function getTotal():float
     {
         return $this->distanceDebut + $this->distanceFin;
+    }
+
+    /**
+     * @return EtatNoeud
+     */
+    public function getState(): EtatNoeud
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param EtatNoeud $state
+     */
+    public function setState(EtatNoeud $state): void
+    {
+        $this->state = $state;
     }
 
 
@@ -91,17 +108,9 @@ class NoeudStar
     // problème: très vite les appels risquent de se multiplier
     // methode appellé depuis les autres noeuds
     public function recalculer(float $nouvelleValeurDepuisVoisin, NoeudStar $voisin){
-        if($this->state == EtatNoeud::PAUSE){
-            $this->state = EtatNoeud::POSSIBLE;
-            $this->prioQ->insert($this);
+        if($this->distanceDebut > $nouvelleValeurDepuisVoisin){
             $this->distanceDebut = $nouvelleValeurDepuisVoisin;
             $this->precedentVoisin = $voisin;
-        }
-        elseif ($this->state == EtatNoeud::POSSIBLE) {
-            if ($this->distanceDebut > $nouvelleValeurDepuisVoisin) {
-                $this->distanceDebut = $nouvelleValeurDepuisVoisin;
-                $this->precedentVoisin = $voisin;
-            }
         }
     }
 
@@ -110,14 +119,6 @@ class NoeudStar
         foreach ($this->noeudsVoisins as $infos) {
             $infos['voisin']->recalculer($this->distanceDebut + $infos['distance'], $this);
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function getNoeudsVoisins(): array
-    {
-        return $this->noeudsVoisins;
     }
 
     public function refaireChemin():array
