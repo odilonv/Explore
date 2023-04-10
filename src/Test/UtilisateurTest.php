@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class UtilisateurTest extends TestCase
 {
-    private UtilisateurService $utilisateurService;
+    private UtilisateurService $service;
     private UtilisateurRepositoryInterface $utilisateurRepositoryMock;
 
     protected function setUp(): void
