@@ -33,16 +33,16 @@ class ControleurUtilisateur extends ControleurGenerique
 
 
 
-    public static function afficherFormulaireCreation(): Response
-    {
-        return ControleurUtilisateur::afficherVue('vueGenerale.php', [
-            "pagetitle" => "Création d'un utilisateur",
-            "cheminVueBody" => "utilisateur/formulaireCreation.php",
-            "method" => Configuration::getDebug() ? "get" : "post",
-       ]);
-    }
+    // public static function afficherFormulaireCreation(): Response
+    // {
+    //     return ControleurUtilisateur::afficherVue('vueGenerale.php', [
+    //         "pagetitle" => "Création d'un utilisateur",
+    //         "cheminVueBody" => "utilisateur/formulaireCreation.php",
+    //         "method" => Configuration::getDebug() ? "get" : "post",
+    //    ]);
+    // }
 
-    /*
+    
     public static function afficherFormulaireCreation(): Response
     {
         return ControleurUtilisateur::afficherTwig('utilisateur/creation.html.twig', [
@@ -50,7 +50,7 @@ class ControleurUtilisateur extends ControleurGenerique
             "method" => Configuration::getDebug() ? "get" : "post",
         ]);
     }
-    */
+    
 
 
 

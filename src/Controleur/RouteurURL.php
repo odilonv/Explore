@@ -167,21 +167,13 @@ class RouteurURL
 
         //A CHANGER
 
-        /*
-        $utilisateurConnecte = new ConnexionUtilisateur();
-        $idUtilisateurConnecte = $utilisateurConnecte->getLoginUtilisateurConnecte();
-        */
-        $idUtilisateurConnecte = "TEMP";
+        // $idUtilisateurConnecte = "TEMP";
+        $idUtilisateurConnecte = ConnexionUtilisateur::getLoginUtilisateurConnecte();
         $twig->addGlobal('idUtilisateurConnecte', $idUtilisateurConnecte);
 
         //Ajout aux variables globales de Twig la vérif de l'admin
 
-        //A CHANGER
-        /*
-        $administrateur = new ConnexionUtilisateur();
-        $adminConnecte = $administrateur->estAdministrateur();
-        */
-
+        // $adminConnecte = ConnexionUtilisateur::estAdministrateur();       
         $adminConnecte = true;
         $twig->addGlobal('adminConnecte', $adminConnecte);
 
