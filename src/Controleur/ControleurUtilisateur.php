@@ -45,7 +45,7 @@ class ControleurUtilisateur extends ControleurGenerique
     
     public static function afficherFormulaireCreation(): Response
     {
-        return ControleurUtilisateur::afficherTwig('utilisateur/creation.html.twig', [
+        return ControleurUtilisateur::afficherTwig('utilisateur/formulaireCreation.html.twig', [
             "pagetitle" => "Création d'un utilisateur",
             "method" => Configuration::getDebug() ? "get" : "post",
         ]);
