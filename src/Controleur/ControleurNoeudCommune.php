@@ -77,10 +77,10 @@ class ControleurNoeudCommune extends ControleurGenerique
             Le plus court chemin entre $nomCommuneDepart et  $nomCommuneArrivee mesure " .  $parametres["distance"] . " km.
             ");*/
 
-            return ControleurNoeudCommune::afficherVue('vueGenerale.php', $parametres);
+            return ControleurNoeudCommune::afficherTwig('base.html.twig', $parametres);
         } catch (ServiceException $e) {
             MessageFlash::ajouter('danger', $e->getMessage());
-            return ControleurNoeudCommune::afficherVue('vueGenerale.php', $parametres);
+            return ControleurNoeudCommune::afficherTwig('base.html.twig', $parametres);
         }
     }
 

@@ -35,14 +35,17 @@
     {% elseif idUtilisateurConnecte and adminConnecte %}
         <ul id="sousmenu" class="sousmenu-hidden">
             <li>
-            <img src="{{ asset("ressources/img/icons/clock-solid.svg") }}" class="icons">
-            <h3>Historique</h3> 
+                <a href="{{ route("historique") }}">
+                <img src="{{ asset("ressources/img/icons/clock-solid.svg") }}" class="icons">
+                <h3>Historique</h3> 
             </li>
             <li>
+            <a href="{{ route("noeudscommune") }}">
             <img src="{{ asset("ressources/img/icons/compass-solid.svg") }}" class="icons">
             <h3>Communes</h3> 
             </li>
             <li>
+            <a href="{{ route("afficherListe") }}">
             <img src="{{ asset("ressources/img/icons/user-solid.svg") }}" class="icons">
             <h3>Utilisateurs</h3> 
             </li>
