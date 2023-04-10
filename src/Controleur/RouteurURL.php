@@ -144,6 +144,12 @@ class RouteurURL
         ]);
         $routes->add("noeudscommune", $route);
 
+        $route = new Route("/historique", [
+            "_controller" => "utilisateur_controleur::historique",
+
+        ]);
+        $routes->add("historique", $route);
+
 
 
         $route = new Route("/requeteVille/{ville}", [
@@ -158,6 +164,14 @@ class RouteurURL
         ]);
         $route->setMethods(["GET"]);
         $routes->add("getPlusCourt", $route);
+
+
+        $route = new Route("api/getNear/{lat}/{lng}",[
+            "_controller" => "noeudcommune_controleur_api::getNear"
+        ]);
+        $route->setMethods(["GET"]);
+        $routes->add("getNear", $route);
+
 
         $contexteRequete = (new RequestContext())->fromRequest($request);
         $assistantUrl = new UrlHelper(new RequestStack(), $contexteRequete);

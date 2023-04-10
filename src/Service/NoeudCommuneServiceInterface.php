@@ -2,6 +2,7 @@
 
 namespace Explore\Service;
 
+use Explore\Modele\DataObject\NoeudCommune;
 use Explore\Service\Exception\ServiceException;
 
 interface NoeudCommuneServiceInterface
@@ -30,4 +31,6 @@ interface NoeudCommuneServiceInterface
      * @throws ServiceException
      */
     public function afficherAutocompletion($ville);
+
+    public function getNearCoord($lat, $lng);
 }

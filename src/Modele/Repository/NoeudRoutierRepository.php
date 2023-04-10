@@ -167,7 +167,6 @@ class NoeudRoutierRepository extends AbstractRepository implements NoeudRoutierR
             $gid = $key;
             $noeud = new NoeudStar($gid, ['latitude' => $infos['latitude'], 'longitude' => $infos['longitude']], $dist);
             $noeudsDist[$gid] = $noeud;
-            $noeud->setPrioQ($starQueue);
         }
 
         foreach ($result as $key=>$lstNoeuds){
@@ -187,11 +186,11 @@ class NoeudRoutierRepository extends AbstractRepository implements NoeudRoutierR
     public function genererChaineZone(array $startPoint, array $endPoint){
         $direction = new Vector($endPoint['x']-$startPoint['x'], $endPoint['y']-$startPoint['y']);
         $directionNorm = $direction->normalized();
-        $directionNorm->x /= 4;
-        $directionNorm->y /= 4;
+        $directionNorm->x /= 6;
+        $directionNorm->y /= 6;
         $perpendiculaire = new Vector($direction->y, -$direction->x, true);
-        $perpendiculaire->x /= 2;
-        $perpendiculaire->y /= 2;
+        $perpendiculaire->x /= 3;
+        $perpendiculaire->y /= 3;
 
         $pt1 = new Vector($startPoint['x'] - $directionNorm->x - $perpendiculaire->x, $startPoint['y'] - $directionNorm->y - $perpendiculaire->y);
         $pt2 = new Vector($pt1->x + $direction->x + $directionNorm->x * 2, $pt1->y + $direction->y + $directionNorm->y * 2);

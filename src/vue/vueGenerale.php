@@ -32,10 +32,10 @@ $assistant = Conteneur::recupererService("assistant");
     <link rel="shortcut icon" type="image/png" href="<?= $assistant->getAbsoluteUrl("ressources/img/3d-illustration-travel-location.png") ?>" />
 
     <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+    <script defer type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+    <script defer type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+    <script defer type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+    <script defer type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
 
 
     <link rel="stylesheet" href="<?= $assistant->getAbsoluteUrl("ressources/css/main.css") ?>">
@@ -50,7 +50,7 @@ $assistant = Conteneur::recupererService("assistant");
     </div>
 
     <?php
-    if (!ConnexionUtilisateur::estConnecte()) {
+    if (ConnexionUtilisateur::estConnecte()) {
         echo '
                     <ul id="sousmenu" class="sousmenu-hidden">
                     <li>
@@ -59,18 +59,18 @@ $assistant = Conteneur::recupererService("assistant");
                     </ul>
                     
                     ';
-    } else if (ConnexionUtilisateur::estConnecte() /*&& $admin*/) {
+    } else if (!ConnexionUtilisateur::estConnecte() /*&& $admin*/) {
         echo '    
                     <ul id="sousmenu" class="sousmenu-hidden">
-                        <li><a href="">
+                        <li><a href="'. $generateur->generate("historique") .'">
                             <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/clock-solid.svg") . '" class="icons">
                             <h3>Historique</h3> 
                         </a></li>
-                        <li><a href="">
+                        <li><a href="'. $generateur->generate("noeudscommune") .'">
                             <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/compass-solid.svg") . '" class="icons">
                             <h3>Communes</h3> 
                         </a></li>
-                        <li><a href="">
+                        <li><a href="'. $generateur->generate("afficherListe") .'">
                             <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/user-solid.svg") . '" class="icons">
                             <h3>Utilisateurs</h3> 
                         </a></li>

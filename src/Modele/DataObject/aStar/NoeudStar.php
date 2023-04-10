@@ -6,12 +6,11 @@ use Explore\Lib\Utils;
 
 class NoeudStar
 {
+    private static array $noeuds=[];
     private string $gid;
     /* @var double[] $coords */
     private array $coords;
     private ?NoeudStar $precedentVoisin = null;
-
-    private QueueStar $prioQ;
 
     private array $noeudsVoisins = [];
 
@@ -23,6 +22,7 @@ class NoeudStar
 
     public function __construct(string $gid, array $coords, float $distanceFin)
     {
+        self::$noeuds[$gid] = $this;
         $this->coords = $coords;
         $this->distanceFin = $distanceFin;
         $this->gid = $gid;
@@ -36,6 +36,15 @@ class NoeudStar
         return $this->coords;
     }
 
+    public function compare(NoeudStar $noeud):float{
+        $diffTotal = $this->getTotal() - $noeud->getTotal();
+        if($diffTotal <> 0){return $diffTotal;}
+        else{
+            $diffFin = $this->distanceFin - $noeud->distanceFin;
+            return $diffFin <> 0? $diffFin : $this->distanceDebut - $noeud->distanceDebut;
+        }
+    }
+
     /**
      * @param float $distanceDebut
      */
@@ -44,11 +53,6 @@ class NoeudStar
         $this->distanceDebut = $distanceDebut;
     }
 
-
-
-    public function setPrioQ(QueueStar $p){
-        $this->prioQ = $p;
-    }
 
     /**
      * @return string
@@ -75,14 +79,38 @@ class NoeudStar
         return $this->distanceFin;
     }
 
+    /**
+     * @return array
+     */
+    public function getNoeudsVoisins(): array
+    {
+        return $this->noeudsVoisins;
+    }
+
     public function getTotal():float
     {
         return $this->distanceDebut + $this->distanceFin;
     }
 
+    /**
+     * @return EtatNoeud
+     */
+    public function getState(): EtatNoeud
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param EtatNoeud $state
+     */
+    public function setState(EtatNoeud $state): void
+    {
+        $this->state = $state;
+    }
+
 
     public function addVoisin(NoeudStar $voisin, float $longueur, string $gidTR){
-        $this->noeudsVoisins[] = ['voisin' => $voisin,
+        $this->noeudsVoisins[] = ['gidVoisin' => $voisin->gid,
             'distance' => $longueur,
             'gidTR' => $gidTR];
     }
@@ -91,33 +119,21 @@ class NoeudStar
     // problème: très vite les appels risquent de se multiplier
     // methode appellé depuis les autres noeuds
     public function recalculer(float $nouvelleValeurDepuisVoisin, NoeudStar $voisin){
-        if($this->state == EtatNoeud::PAUSE){
-            $this->state = EtatNoeud::POSSIBLE;
-            $this->prioQ->insert($this);
+        if($this->distanceDebut > $nouvelleValeurDepuisVoisin){
             $this->distanceDebut = $nouvelleValeurDepuisVoisin;
             $this->precedentVoisin = $voisin;
         }
-        elseif ($this->state == EtatNoeud::POSSIBLE) {
-            if ($this->distanceDebut > $nouvelleValeurDepuisVoisin) {
-                $this->distanceDebut = $nouvelleValeurDepuisVoisin;
-                $this->precedentVoisin = $voisin;
-            }
-        }
     }
 
-    public function selectionner(){
+    public function selectionner():array{
         $this->state = EtatNoeud::VERIFIE;
+        $result = [];
         foreach ($this->noeudsVoisins as $infos) {
-            $infos['voisin']->recalculer($this->distanceDebut + $infos['distance'], $this);
+            $n = self::$noeuds[$infos['gidVoisin']];
+            $result[] = $n;
+            $n->recalculer($this->distanceDebut + $infos['distance'], $this);
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function getNoeudsVoisins(): array
-    {
-        return $this->noeudsVoisins;
+        return $result;
     }
 
     public function refaireChemin():array

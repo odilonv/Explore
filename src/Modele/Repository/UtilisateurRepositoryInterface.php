@@ -32,4 +32,6 @@ interface UtilisateurRepositoryInterface
     public function ajouter(AbstractDataObject $object): bool;
 
     public function ajouterUserAValider(Utilisateur $user): bool;
+
+    public function getHistorique(string $login);
 }

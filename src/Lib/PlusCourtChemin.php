@@ -2,14 +2,12 @@
 
 namespace Explore\Lib;
 
-use Explore\Configuration\ConfigurationBDDPostgreSQL;
+use Explore\Modele\DataObject\aStar\EtatNoeud;
 use Explore\Modele\DataObject\aStar\NoeudStar;
 use Explore\Modele\Repository\NoeudRoutierRepositoryInterface;
 
 class PlusCourtChemin
 {
-    private array $distances;
-    private array $noeudsALaFrontiere;
     private NoeudRoutierRepositoryInterface $noeudRoutierRepository;
 
     public function __construct(
@@ -26,12 +24,18 @@ class PlusCourtChemin
 
         $dernierNoeud = null;
         do {
-            $dernierNoeud = $queuStar->getTop();
+            $dernierNoeud = $queuStar->removeTop();
 
-            $dernierNoeud->selectionner();
+            $noeuds = $dernierNoeud->selectionner();
 
-            $queuStar->removeTop();
-        } while ($queuStar->getSize() > 0 && $dernierNoeud->getGid() != $this->noeudRoutierArriveeGid);
+            foreach ($noeuds as $voisin){
+                if($voisin->getState() == EtatNoeud::PAUSE){
+                    $voisin->setState(EtatNoeud::POSSIBLE);
+                    $queuStar->insert($voisin);
+                }
+            }
+        }
+        while($queuStar->getSize()>0 && $dernierNoeud->getGid() != $this->noeudRoutierArriveeGid);
 
         return $dernierNoeud->getGid() == $this->noeudRoutierArriveeGid ? $dernierNoeud : null;
     }

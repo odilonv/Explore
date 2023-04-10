@@ -56,16 +56,16 @@ class ControleurUtilisateur extends ControleurGenerique
 
 
 
-
     public function creerDepuisFormulaire(): Response
     {
 
-       //try {
+        try {
             //Enregistrer l'utilisateur via le service
             $login = $_POST['login'] ?? null;
             $password = $_POST['mdp'] ?? null;
             $adresseMail = $_POST['email'] ?? null;
             $profilePicture = $_FILES['profilePicture'] ?? null;
+
 
 
             $this->utilisateurService->creerUtilisateur($login, $password, $adresseMail, $profilePicture);
@@ -77,13 +77,10 @@ class ControleurUtilisateur extends ControleurGenerique
             //rediriger vers mail de validation plutot
             return ControleurUtilisateur::rediriger("afficherFormulaireValidation");
 
-
-        /*} catch (ServiceException $e) {
+        } catch (ServiceException $e) {
             MessageFlash::ajouter('error', $e->getMessage());
             return ControleurUtilisateur::rediriger("afficherFormulaireCreation");
-        }*/
-
-
+        }
     }
 
     // FUSIONNER USER POUR RENDRE PROPRE
@@ -265,6 +262,21 @@ class ControleurUtilisateur extends ControleurGenerique
             "pagetitle" => "Utilisateur introuvable",
             "cheminVueBody" => "utilisateur/inconnu.php"
         ]);
+    }
+
+    public function historique(): Response
+    {
+        try {
+            $historique = $this->utilisateurService->recupererHistorique(ConnexionUtilisateur::getLoginUtilisateurConnecte());
+            return ControleurUtilisateur::afficherVue('vueGenerale.php', [
+                "historique" => $historique,
+                "pagetitle" => "Historique",
+                "cheminVueBody" => "utilisateur/historique.php"
+            ]);
+        } catch (ServiceException $e) {
+            MessageFlash::ajouter('error', $e->getMessage());
+            return ControleurNoeudCommune::rediriger("plusCourt");
+        }
     }
 
 
