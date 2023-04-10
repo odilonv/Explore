@@ -42,7 +42,8 @@ class ControleurUtilisateur extends ControleurGenerique
        ]);
     }
 
-    /*
+
+/*
     public static function afficherFormulaireCreation(): Response
     {
         return ControleurUtilisateur::afficherTwig('utilisateur/creation.html.twig', [
@@ -50,7 +51,8 @@ class ControleurUtilisateur extends ControleurGenerique
             "method" => Configuration::getDebug() ? "get" : "post",
         ]);
     }
-    */
+*/
+
 
 
 
@@ -58,7 +60,7 @@ class ControleurUtilisateur extends ControleurGenerique
     public function creerDepuisFormulaire(): Response
     {
 
-       try {
+       //try {
             //Enregistrer l'utilisateur via le service
             $login = $_POST['login'] ?? null;
             $password = $_POST['mdp'] ?? null;
@@ -68,17 +70,19 @@ class ControleurUtilisateur extends ControleurGenerique
 
 
             $this->utilisateurService->creerUtilisateur($login, $password, $adresseMail, $profilePicture);
+            $user = $this->utilisateurService->recupererUtilisateur($login);
 
             MessageFlash::ajouter("success", "L'utilisateur a bien été créé !");
 
+            VerificationEmail::envoiEmailValidation($user);
             //rediriger vers mail de validation plutot
-            return ControleurNoeudCommune::rediriger("afficherFormulaireValidation");
+            return ControleurUtilisateur::rediriger("afficherFormulaireValidation");
 
 
-        } catch (ServiceException $e) {
+        /*} catch (ServiceException $e) {
             MessageFlash::ajouter('error', $e->getMessage());
             return ControleurUtilisateur::rediriger("afficherFormulaireCreation");
-        }
+        }*/
 
 
     }
@@ -135,18 +139,64 @@ class ControleurUtilisateur extends ControleurGenerique
 
     public function afficherFormulaireValidation(): Response
     {
-        return ControleurUtilisateur::afficherVue('vueGenerale.php', [
-            "pagetitle" => "Validation du compte",
-            "cheminVueBody" => "utilisateur/formulaireValidation.php",
-            "method" => Configuration::getDebug() ? "get" : "post",
-        ]);
+        $userConnecte = $this->utilisateurService->recupererUtilisateur(ConnexionUtilisateur::getLoginUtilisateurConnecte());
+        if(ConnexionUtilisateur::getLoginUtilisateurConnecte() == null || $this->utilisateurService->userEstValide($userConnecte))
+        {
+            return ControleurUtilisateur::rediriger("plusCourt");
+        }
+        else //l'user nest pas validé
+        {
+            return ControleurUtilisateur::afficherVue('vueGenerale.php', [
+                "pagetitle" => "Validation du compte",
+                "cheminVueBody" => "utilisateur/formulaireValidation.php",
+                "method" => Configuration::getDebug() ? "get" : "post",
+            ]);
+        }
+
+    }
+
+    public function renvoyerCode(): Response
+    {
+        $userConnecte = $this->utilisateurService->recupererUtilisateur(ConnexionUtilisateur::getLoginUtilisateurConnecte());
+        if(ConnexionUtilisateur::getLoginUtilisateurConnecte() == null || $this->utilisateurService->userEstValide($userConnecte))
+        {
+            return ControleurUtilisateur::rediriger("plusCourt");
+        }
+        else //l'user nest pas validé
+        {
+            VerificationEmail::envoiEmailValidation($userConnecte);
+            return ControleurUtilisateur::afficherVue('vueGenerale.php', [
+                "pagetitle" => "Validation du compte",
+                "cheminVueBody" => "utilisateur/formulaireValidation.php",
+                "method" => Configuration::getDebug() ? "get" : "post",
+            ]);
+        }
+
     }
 
     public function validerUtilisateur():Response
     {
         $nonce = $_POST['nonce'] ?? null;
+        $user = $this->utilisateurService->recupererUtilisateur(ConnexionUtilisateur::getLoginUtilisateurConnecte());
 
-        return new Response();
+        if($nonce == null)
+        {
+            MessageFlash::ajouter('error', 'veuillez renseigner le code de validation');
+            return ControleurUtilisateur::rediriger("afficherFormulaireValidation");
+        }
+        else
+        {
+            if($this->utilisateurService->verifierNonce($user,$nonce))
+            {
+                return ControleurUtilisateur::rediriger("plusCourt");
+            }
+            else
+            {
+                MessageFlash::ajouter('error', 'erreur lors de la validation');
+                return ControleurUtilisateur::rediriger("afficherFormulaireValidation");
+            }
+        }
+
     }
 
 
@@ -189,6 +239,32 @@ class ControleurUtilisateur extends ControleurGenerique
             "utilisateurs" => $utilisateurs,
             "pagetitle" => "Liste des utilisateurs",
             "cheminVueBody" => "utilisateur/liste.php"
+        ]);
+    }
+
+    public function afficherDetail($loginUser)
+    {
+        try {
+            $user = $this->utilisateurService->recupererUtilisateur($loginUser,false);
+        }
+        catch (ServiceException $e)
+        {
+            MessageFlash::ajouter('error', $e->getMessage());
+            return ControleurNoeudCommune::rediriger("utilisateurInconnu");
+        }
+
+        return ControleurUtilisateur::afficherVue('vueGenerale.php', [
+            "utilisateur" => $user,
+            "pagetitle" => "Profil de ".$loginUser,
+            "cheminVueBody" => "utilisateur/detail.php"
+        ]);
+    }
+
+    public function utilisateurInconnu()
+    {
+        return ControleurUtilisateur::afficherVue('vueGenerale.php', [
+            "pagetitle" => "Utilisateur introuvable",
+            "cheminVueBody" => "utilisateur/inconnu.php"
         ]);
     }
 

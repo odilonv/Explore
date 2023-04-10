@@ -94,6 +94,12 @@ class RouteurURL
         $route->setMethods(["POST"]);
         $routes->add("validerUtilisateur", $route);
 
+        $route = new Route("/renvoyerCode", [
+            "_controller" => "utilisateur_controleur::renvoyerCode",
+
+        ]);
+        $routes->add("renvoyerCode", $route);
+
 
 
         $route = new Route("/modification/{idUser}", [
@@ -116,18 +122,27 @@ class RouteurURL
         $routes->add("afficherListe", $route);
 
 
-        $route = new Route("/utilisateur/{idUser}", [
+        $route = new Route("/utilisateur/{loginUser}", [
             "_controller" => "utilisateur_controleur::afficherDetail",
 
         ]);
         $route->setMethods(["GET"]);
         $routes->add("afficherDetail", $route);
 
+        $route = new Route("/utilisateurInconnu", [
+            "_controller" => "utilisateur_controleur::utilisateurInconnu",
+
+        ]);
+        $route->setMethods(["GET"]);
+        $routes->add("utilisateurInconnu", $route);
+
+
         $route = new Route("/noeudscommune", [
             "_controller" => "noeudcommune_controleur::afficherListe",
 
         ]);
         $routes->add("noeudscommune", $route);
+
 
 
         $route = new Route("/requeteVille/{ville}", [
@@ -147,57 +162,7 @@ class RouteurURL
         $assistantUrl = new UrlHelper(new RequestStack(), $contexteRequete);
         $generateurUrl = new UrlGenerator($routes, $contexteRequete);
 
-        //TWIG
-        $twigLoader = new FilesystemLoader(__DIR__ . '/../vue/');
-        $twig = new Environment(
-            $twigLoader,
-            [
-                'autoescape' => 'html',
-                'strict_variables' => true
-            ]
-        );
 
-        //Ajout aux variables globales de Twig la vérif de la connexion d'un user
-
-        //A CHANGER
-
-        /*
-        $utilisateurConnecte = new ConnexionUtilisateur();
-        $idUtilisateurConnecte = $utilisateurConnecte->getLoginUtilisateurConnecte();
-        */
-        $idUtilisateurConnecte = "TEMP";
-        $twig->addGlobal('idUtilisateurConnecte', $idUtilisateurConnecte);
-
-        //Ajout aux variables globales de Twig la vérif de l'admin
-
-        //A CHANGER
-        /*
-        $administrateur = new ConnexionUtilisateur();
-        $adminConnecte = $administrateur->estAdministrateur();
-        */
-
-        $adminConnecte = true;
-        $twig->addGlobal('adminConnecte', $adminConnecte);
-
-        //Ajout aux variables globales de Twig les messages flashs
-        $messagesFlash = MessageFlash::lireTousMessages();
-        $twig->addGlobal('messagesFlash', $messagesFlash);
-
-        $twig->addGlobal('debug', \Explore\Lib\Utils::$debug);
-
-        $twig->addGlobal('logs', \Explore\Lib\Utils::getLogs());
-
-
-        $callable =  $generateurUrl->generate(...);
-        $twig->addFunction(new TwigFunction("route", $callable));
-
-        $callable =  $assistantUrl->getAbsoluteUrl(...);
-        $twig->addFunction(new TwigFunction("asset", $callable));
-
-
-        Conteneur::ajouterService("twig", $twig);
-        Conteneur::ajouterService("assistant", $assistantUrl);
-        Conteneur::ajouterService("generateur", $generateurUrl);
 
         $conteneur = new ContainerBuilder();
 
@@ -213,8 +178,12 @@ class RouteurURL
         $utilisateurService = $conteneur->register('utilisateur_service', UtilisateurService::class);
         $utilisateurService->setArguments([new Reference('utilisateur_repository')]);
 
+
         $utilisateurControleurService = $conteneur->register('utilisateur_controleur', ControleurUtilisateur::class);
         $utilisateurControleurService->setArguments([new Reference('utilisateur_service')]);
+
+        $connexionUtilisateurService = $conteneur->register('connexion_utilisateur', ConnexionUtilisateur::class);
+        $connexionUtilisateurService->setArguments([new Reference('utilisateur_service')]);
 
 
         $noeudRoutierRepositoryService = $conteneur->register('noeudroutier_repository', NoeudRoutierRepository::class);
@@ -242,6 +211,45 @@ class RouteurURL
          * @throws ResourceNotFoundException If the resource could not be found
          * @throws MethodNotAllowedException If the resource was found but the request method is not allowed
          */
+
+        //TWIG
+        $twigLoader = new FilesystemLoader(__DIR__ . '/../vue/');
+        $twig = new Environment(
+            $twigLoader,
+            [
+                'autoescape' => 'html',
+                'strict_variables' => true
+            ]
+        );
+
+        //Ajout aux variables globales de Twig la vérif de la connexion d'un user
+        $idUtilisateurConnecte = ConnexionUtilisateur::getLoginUtilisateurConnecte();
+        $twig->addGlobal('idUtilisateurConnecte', $idUtilisateurConnecte);
+
+        //Ajout aux variables globales de Twig la vérif de l'admin
+        $adminConnecte = ConnexionUtilisateur::estAdministrateur(ConnexionUtilisateur::getLoginUtilisateurConnecte());
+
+        $twig->addGlobal('adminConnecte', $adminConnecte);
+
+        //Ajout aux variables globales de Twig les messages flashs
+        $messagesFlash = MessageFlash::lireTousMessages();
+        $twig->addGlobal('messagesFlash', $messagesFlash);
+
+        $twig->addGlobal('debug', \Explore\Lib\Utils::$debug);
+
+        $twig->addGlobal('logs', \Explore\Lib\Utils::getLogs());
+
+
+        $callable =  $generateurUrl->generate(...);
+        $twig->addFunction(new TwigFunction("route", $callable));
+
+        $callable =  $assistantUrl->getAbsoluteUrl(...);
+        $twig->addFunction(new TwigFunction("asset", $callable));
+
+
+        Conteneur::ajouterService("twig", $twig);
+        Conteneur::ajouterService("assistant", $assistantUrl);
+        Conteneur::ajouterService("generateur", $generateurUrl);
 
 
         //print_r($donneesRoute);

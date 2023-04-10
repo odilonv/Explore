@@ -139,6 +139,27 @@ body {
     border-radius: 5px;
 }
 
+#inputNonce{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#renvoyerCode{
+    color: black;
+    transition: 0.1s linear;
+}
+
+#renvoyerCode:hover{
+    color: #ffae9e;
+}
+
+#notFound
+{
+    width: 40%;
+
+}
+
 .box-inscription, .box-liste{
     display: flex;
     width: 30%;
@@ -265,6 +286,7 @@ button, .registerButton, .exitButton, .connectButton{
 
 .exitLine{
     height: 20%;
+    max-height: 25px;
     width: 100%;
     display: flex;
     justify-content: end;

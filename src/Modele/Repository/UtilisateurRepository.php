@@ -86,6 +86,38 @@ class UtilisateurRepository extends AbstractRepository implements UtilisateurRep
 
     }
 
+    public function retirerUserAValider(Utilisateur $user): bool
+    {
+        //on verifie si un l'user est dans la table
+        $sql = "SELECT login from usersexploreavalider WHERE login = :loginTag";
+
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($sql);
+
+        $values = array(
+            "loginTag" => $user->getLogin(),
+        );
+
+        $pdoStatement->execute($values);
+        $result = $pdoStatement->fetch();
+        if($result == null)
+        {
+            return false;
+        }
+
+        $sql = "DELETE FROM usersexploreavalider WHERE login = :loginTag";
+
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($sql);
+
+        $values = array(
+            "loginTag" => $user->getLogin()
+        );
+
+        $pdoStatement->execute($values);
+        return true;
+        //l'user a bien été enlevé
+
+    }
+
     function genererNonce():string {
         $characters = '0123456789';
         $randomString = '';
@@ -95,7 +127,7 @@ class UtilisateurRepository extends AbstractRepository implements UtilisateurRep
         return $randomString;
     }
 
-    protected function getNonce($user): ?int
+    public function getNonce($user): ?int
     {
         $sql = "SELECT nonce FROM usersexploreavalider WHERE login = :loginTag";
 
@@ -110,8 +142,24 @@ class UtilisateurRepository extends AbstractRepository implements UtilisateurRep
         $result = $pdoStatement->fetch();
         if($result != null)
         {
-            return $result['NONCE'];
+            return $result['nonce'];
         }
         else return null;
+    }
+
+    public function estAdmin($user)
+    {
+        $sql = "SELECT login FROM usersadmin WHERE login = :loginTag";
+
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($sql);
+
+        $values = array(
+            "loginTag" => $user->getLogin()
+        );
+
+        $pdoStatement->execute($values);
+
+        $result = $pdoStatement->fetch();
+        return $result != null;
     }
 }

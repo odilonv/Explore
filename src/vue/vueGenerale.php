@@ -144,9 +144,16 @@ $assistant = Conteneur::recupererService("assistant");
             echo '
                                 <form class="connectFooter clickable">
                                     <!--<a href="controleurFrontal.php?action=afficherDetail&controleur=utilisateur&login=$loginURL" id="connectFooter">¡-->
-                                    <a href="/utilisateur/{idUser}" id="connectFooter">
-                                        <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/user-solid.svg") . '" class="icons">
+                                    <a href="../web/utilisateur/{idUser}" id="connectFooter">
+                                    <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/user-solid.svg") . '" class="icons">
+                                    </a>
+                                    
+                                    <a href="../web/utilisateur/{idUser}" id="connectFooter">
                                         <h2>' . $loginHTML . '</h2>
+                                    </a>
+                                    
+                                    <a href="../web/deconnexion">
+                                        <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/arrow-right-from-bracket-solid.svg") . '" class="icons">
                                     </a>
                                 </form>
                     ';

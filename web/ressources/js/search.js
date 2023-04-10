@@ -177,7 +177,6 @@ function deleteLocation(element){
     if(element.contains( event.target )){
         if(i === indexInput-1)
         {
-            console.log(i+" "+indexInput)
             document.getElementById("lineTravel"+(i-1)).remove();
             document.getElementById("circles"+(i-1)).remove();
 
@@ -342,11 +341,9 @@ function autoCompletion(element,i){
 function showOldAutocompletion(element,i){
     if( element.contains( event.target ) && element.value.length >2){
         maRequeteAJAX(element.value,i);
-        console.log("in")
     }
     else
     {
-        console.log("out")
         hide()
     }
 }
@@ -379,7 +376,6 @@ function checkKey(e) {
 }
 
 document.addEventListener('keydown', (event)=> {
-    console.log(event.code)
     if(event.code === 'Tab' || event.code === 'Escape' )
     {
         hide();

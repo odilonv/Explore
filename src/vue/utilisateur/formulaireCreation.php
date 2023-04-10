@@ -40,18 +40,6 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
         <label for="mdp2_id">Vérification du mot de passe&#42;
             <input class="InputAddOn-field" type="password" value="<?php echo 'motDePasse123' ?>" placeholder="" name="mdp2" id="mdp2_id" required>
         </label>
-        <?php
-
-        use Explore\Lib\ConnexionUtilisateur;
-
-        if (ConnexionUtilisateur::estAdministrateur()) {
-        ?>
-            <p class="InputAddOn">
-                <label class="InputAddOn-item" for="estAdmin_id">Administrateur</label>
-                <input class="InputAddOn-field" type="checkbox" placeholder="" name="estAdmin" id="estAdmin_id">
-            </p>
-        <?php } ?>
-
 
         <input type='hidden' name='action' value='creerDepuisFormulaire'>
         <input type='hidden' name='controleur' value='utilisateur'>
