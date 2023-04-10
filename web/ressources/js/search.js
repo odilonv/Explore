@@ -13,7 +13,7 @@ circleAdd.src = '../web/ressources/img/icons/circle-regular.svg';
 circleAdd.classList.add('iconsLocationStart');
 
 const cross = document.createElement('img');
-cross.src = '../ressources/img/icons/xmark-solid.svg';
+cross.src = '../web/ressources/img/icons/xmark-solid.svg';
 cross.classList.add('deleteDestination');
 
 const circles = document.createElement('div');
@@ -31,6 +31,7 @@ for (let i = 0; i < 3; i++) {
 
 const addDest = document.createElement('button');
 addDest.classList.add('addDest');
+addDest.id = 'addDest';
 addDest.textContent = 'Ajouter une destination';
 
 contain.style.height = '29%';
@@ -58,7 +59,8 @@ let oldCircle = circleAdd;
 
 let indexInput = 3
 function addInputDest() {
-    if(indexInput <= 10)
+    hide();
+    if(indexInput <= 9)
     {
         let oldIconTemp = oldCircle;
         let indexTemp = indexInput;
@@ -144,7 +146,7 @@ function addInputDest() {
         document.getElementById("ville"+i).addEventListener('input', ()=>{autoCompletion(document.getElementById("ville"+i),i)});
         document.getElementById("ville"+i).addEventListener('click', ()=>{showOldAutocompletion(document.getElementById("ville"+i),i)});
         indexInput++;
-        if(indexInput > 10)
+        if(indexInput == 9)
         {
             newCircleAdd.remove()
             newButton.remove()
@@ -154,25 +156,36 @@ function addInputDest() {
     }
 }
 
+
+
 let oldIconSrc;
 function overCircle(element){
 
-    oldIconSrc = element.src;
-    element.src = '/web/ressources/img/icons/xmark-solid.svg';
-    element.classList.add("crossIcon");
+    if(indexInput > 3)
+    {
+        oldIconSrc = element.src;
+        element.src = '../web/ressources/img/icons/xmark-solid.svg';
+        element.classList.add("crossIcon");
+    }
+
 }
 
 
 function outCircle(element){
-    element.src = oldIconSrc;
-    element.classList.remove("crossIcon");
-    oldIconSrc = undefined;
+    if(indexInput > 3)
+    {
+        element.src = oldIconSrc;
+        element.classList.remove("crossIcon");
+        oldIconSrc = undefined;
+    }
+
 }
 
 function deleteLocation(element){
 
     let i = parseInt(element.id.slice(-1));
 
+    console.log(i);
 
     if(element.contains( event.target )){
         if(i === indexInput-1)
@@ -185,27 +198,35 @@ function deleteLocation(element){
             document.getElementById("iconTrajet"+(i)).id = "iconTrajet"+(i-1);
             document.getElementById("lineTravel"+(i)).id = "lineTravel"+(i-1);
 
-            document.getElementById("circles"+(i)).id = "circles"+(i-1);
+            if(i !== 8)
+            {
+                document.getElementById("circles"+(i)).id = "circles"+(i-1);
+            }
         }
         else
         {
             document.getElementById("lineTravel"+(i)).remove()
-
             for(let j = i+1; j<indexInput;j++)
             {
                 document.getElementById("ville"+j).id = "ville"+(j-1);
                 document.getElementById("autocompletion"+j).id = "autocompletion"+(j-1);
                 document.getElementById("iconTrajet"+(j)).id = "iconTrajet"+(j-1);
                 document.getElementById("lineTravel"+(j)).id = "lineTravel"+(j-1);
+
+                if(document.getElementById("circles"+(j)) !== null)
+                {
+                    document.getElementById("circles"+(j)).id = "circles"+(j-1);
+                }
+
             }
-
-
+            document.getElementById("circles"+i).remove()
         }
 
-        if(i === 11)
+
+        if(indexInput === 9)
         {
             const newCircleAdd = document.createElement('img');
-            newCircleAdd.src = '../ressources/img/icons/circle-regular.svg';
+            newCircleAdd.src = '../web/ressources/img/icons/circle-regular.svg';
             newCircleAdd.classList.add('iconsLocationStart');
 
             const newButton = document.createElement('button');
@@ -216,12 +237,14 @@ function deleteLocation(element){
 
             const newCircles = document.createElement('div');
             newCircles.classList.add('circles');
-            newCircles.id = 'circles'+indexInput;
+            newCircles.id = 'circles7';
 
             for (let i = 0; i < 3; i++) {
                 const newCircle = circleTemplate.cloneNode(true);
                 newCircles.appendChild(newCircle);
             }
+
+            insideDivide.appendChild(newCircles);
 
             const newLineTravel = document.createElement('div');
             newLineTravel.classList.add('underlineTravel');
@@ -230,13 +253,16 @@ function deleteLocation(element){
             newLineTravel.appendChild(newButton);
 
             insideDivide.appendChild(newLineTravel);
-        }
-        else if(i !== indexInput-1)
-        {
-            document.getElementById("circles"+i).remove()
-        }
 
+            oldLine = newLineTravel;
+            oldInput = document.getElementById("ville7");
+            oldIconLocation = document.getElementById("iconTrajet7");
+            oldCircle = newCircleAdd;
 
+            document.getElementById("ville7").addEventListener('input', ()=>{autoCompletion(document.getElementById("ville7"),7)});
+            document.getElementById("ville7").addEventListener('click', ()=>{showOldAutocompletion(document.getElementById("ville7"),7)});
+
+        }
         indexInput--;
     }
 }
@@ -327,25 +353,37 @@ document.getElementById("ville1").addEventListener('click', ()=>{showOldAutocomp
 document.getElementById("ville2").addEventListener('input', ()=>{autoCompletion(document.getElementById("ville2"),2)});
 document.getElementById("ville2").addEventListener('click', ()=>{showOldAutocompletion(document.getElementById("ville2"),2)});
 
+document.getElementById("recherche").addEventListener('click',hide);
+
 
 function autoCompletion(element,i){
-    if(element.value.length >2)
+    hide();
+    if(element !== null)
     {
-        maRequeteAJAX(element.value,i);
+        if(element.value.length >2)
+        {
+            maRequeteAJAX(element.value,i);
+        }
+        else {
+            videVille(i);
+        }
     }
-    else {
-        videVille(i);
-    }
+
 }
 
 function showOldAutocompletion(element,i){
-    if( element.contains( event.target ) && element.value.length >2){
-        maRequeteAJAX(element.value,i);
-    }
-    else
+    hide()
+    if(element !== null)
     {
-        hide()
+        if( element.contains( event.target ) && element.value.length >2){
+            maRequeteAJAX(element.value,i);
+        }
+        else
+        {
+            hide()
+        }
     }
+
 }
 
 

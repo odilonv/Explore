@@ -132,30 +132,32 @@ $assistant = Conteneur::recupererService("assistant");
         if (!ConnexionUtilisateur::estConnecte()) {
             echo '
                     <div class="connectFooter clickable">
-                    <div class="connectHeader">
-                        <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/user-solid.svg") . '" class="icons">
-                        <h2 id="h2Connexion">Se connecter</h2>
-                      </div>
+                        <div class="connectHeader">
+                            <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/user-solid.svg") . '" class="icons">
+                            <h2 id="h2Connexion">Se connecter</h2>
+                        </div>
                     </div>
                     ';
         } else {
             $loginHTML = htmlspecialchars(ConnexionUtilisateur::getLoginUtilisateurConnecte());
             $loginURL = rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte());
             echo '
-                                <form class="connectFooter clickable">
-                                    <!--<a href="controleurFrontal.php?action=afficherDetail&controleur=utilisateur&login=$loginURL" id="connectFooter">¡-->
-                                    <a href="'.$generateur->generate("afficherDetail", ["loginUser" => ConnexionUtilisateur::getLoginUtilisateurConnecte()]).'" id="connectFooter">
-                                    <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/user-solid.svg") . '" class="icons">
-                                    </a>
-                                    
-                                    <a href="'.$generateur->generate("afficherDetail", ["loginUser" => ConnexionUtilisateur::getLoginUtilisateurConnecte()]).'" id="connectFooter">
-                                        <h2>' . $loginHTML . '</h2>
-                                    </a>
-                                    
-                                    <a href="'.$generateur->generate("deconnecter").'">
-                                        <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/arrow-right-from-bracket-solid.svg") . '" class="icons">
-                                    </a>
-                                </form>
+                                <div class="connectFooter clickable">
+                                    <div class="connectHeader" id="connected">
+                                        <!--<a href="controleurFrontal.php?action=afficherDetail&controleur=utilisateur&login=$loginURL" id="connectFooter">¡-->
+                                        <a href="'.$generateur->generate("afficherDetail", ["loginUser" => ConnexionUtilisateur::getLoginUtilisateurConnecte()]).'" id="connectFooter">
+                                        <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/user-solid.svg") . '" class="icons">
+                                        </a>
+                                        
+                                        <a href="'.$generateur->generate("afficherDetail", ["loginUser" => ConnexionUtilisateur::getLoginUtilisateurConnecte()]).'" id="connectFooter">
+                                            <h2>' . $loginHTML . '</h2>
+                                        </a>
+                                        
+                                        <a href="'.$generateur->generate("deconnecter").'">
+                                            <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/arrow-right-from-bracket-solid.svg") . '" class="icons">
+                                        </a>
+                                    </div>
+                                </div>
                     ';
         }
         ?>

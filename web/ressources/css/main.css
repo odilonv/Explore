@@ -328,7 +328,8 @@ button, .registerButton, .exitButton, .connectButton{
 }
 
 .registerButton{
-    width: 25%;
+    max-width: 100px;
+    width: 30%;
     height: 100%;
     background: white;
     margin-left: 50%;
