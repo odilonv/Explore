@@ -434,20 +434,15 @@ footer{
 @keyframes show {
     0% {
         opacity: 0;
-        bottom: 0;
-    }
-    5% {
-        opacity: 0;
     }
     100% {
         opacity: 1;
-        bottom: 25px;
     }
 }
 
 
 .notification-show{
-    animation: show 400ms ease-in-out;
+    animation: show 1s ease forwards;
     display: flex;
 }
 
@@ -508,29 +503,54 @@ footer{
     align-items: center;
 }
 
-.messageFlash > h3{
-    color: #fff;
+#icon-exit-notif{
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+
+}
+#imgnotif{
+    width: 40px;
+    height: 40px;
+    margin-left: 5%;
+}
+
+.separate{
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    align-items: center;
+}
+.separate:first-child{
     height: 19%;
+    margin-top: 1%;
+}
+
+.separate:last-child{
+    height: 79.5%;
+
+}
+
+.messageFlash div > h3{
+    color: #fff;
     margin-bottom: 0.5%;
     display: flex;
     align-items: end;
-    width: 90%;
     font-size: 0.65em;
 }
 
 .messageFlash > .ligne{
     display: flex;
-    width: 90%;
     height: 1%;
+    width: 90%;
     background-color: #fff;
     border-radius: 0.5em;
 }
-.messageFlash > p{
+.messageFlash div > p{
     display: flex;
-    width: 90%;
-    height: 79.5%;
+    margin-left: 10%;
     align-items: center;
-    font-size: 1em;
+    font-size: 0.9em;
     color: #fff;
 
 

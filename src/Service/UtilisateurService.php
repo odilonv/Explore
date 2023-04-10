@@ -73,7 +73,22 @@ class UtilisateurService implements UtilisateurServiceInterface
             "email" => $adresseMail,
             "profilePictureName" => $profilePictureData
         ));
-        $utilisateurRepository->ajouter($utilisateur);
+
+        if (!$utilisateurRepository->ajouterUserAValider($utilisateur)) {
+            throw new ServiceException("Un user est déjà en cours de validation pour ce login");
+        }
+        else
+        {
+            $utilisateurRepository->ajouter($utilisateur);
+        }
+
+
+
+
+
+
+
+
     }
 
     /**
@@ -82,7 +97,7 @@ class UtilisateurService implements UtilisateurServiceInterface
     public function recupererUtilisateur($idUtilisateur, $autoriserNull = true)
     {
         $utilisateur = $this->utilisateurRepository->recupererParClePrimaire($idUtilisateur);
-        if (!$autoriserNull && $utilisateur != null) {
+        if (!$autoriserNull && $utilisateur == null) {
             throw new ServiceException('L\'utilisateur n\'existe pas !');
         }
         return $utilisateur;

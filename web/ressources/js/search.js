@@ -58,8 +58,6 @@ let oldCircle = circleAdd;
 
 let indexInput = 3
 function addInputDest() {
-
-
     if(indexInput <= 10)
     {
         let oldIconTemp = oldCircle;
@@ -83,6 +81,7 @@ function addInputDest() {
         const input = document.createElement('input');
         input.classList.add('nomCommuneArrivee');
         input.placeholder = 'Où allons-nous ?';
+        input.autocomplete = "off";
 
 
         const autocompletion = document.createElement('div');
@@ -90,6 +89,7 @@ function addInputDest() {
         autocompletion.id = "autocompletion"+indexInput;
         //indexInput = index de la barre de recherche
         input.id = "ville"+indexInput;
+        input.classList.add('inputVille');
 
 
         document.querySelector('.addDest').remove();
@@ -152,15 +152,13 @@ function addInputDest() {
             newLineTravel.remove()
         }
     }
-
-
 }
 
 let oldIconSrc;
 function overCircle(element){
 
     oldIconSrc = element.src;
-    element.src = '../ressources/img/icons/xmark-solid.svg';
+    element.src = '/web/ressources/img/icons/xmark-solid.svg';
     element.classList.add("crossIcon");
 }
 
@@ -332,25 +330,23 @@ document.getElementById("ville2").addEventListener('click', ()=>{showOldAutocomp
 
 
 function autoCompletion(element,i){
-
-
     if(element.value.length >2)
     {
         maRequeteAJAX(element.value,i);
     }
     else {
-
         videVille(i);
     }
 }
 
 function showOldAutocompletion(element,i){
     if( element.contains( event.target ) && element.value.length >2){
-
         maRequeteAJAX(element.value,i);
+        console.log("in")
     }
     else
     {
+        console.log("out")
         hide()
     }
 }
@@ -383,6 +379,7 @@ function checkKey(e) {
 }
 
 document.addEventListener('keydown', (event)=> {
+    console.log(event.code)
     if(event.code === 'Tab' || event.code === 'Escape' )
     {
         hide();
@@ -395,6 +392,7 @@ document.addEventListener('keydown', (event)=> {
     }
     else if(event.code === 'Enter'){
         select();
+        hide();
     }
 });
 
@@ -471,8 +469,6 @@ function highlightDown()
 }
 
 function select(){
-
-
     let autocompletion;
     for(let ac of document.getElementsByClassName("autocompletion"))
     {
@@ -481,7 +477,6 @@ function select(){
             autocompletion =ac;
         }
     }
-
 
     if(currentIndex !== -1 && autocompletion !== undefined)
     {

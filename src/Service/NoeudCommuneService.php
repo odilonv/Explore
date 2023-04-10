@@ -154,7 +154,6 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
         $resultat["nomCommuneDepart"] = $nomCommuneDepart;
         $resultat["nomCommuneArrivee"] = $nomCommuneArrivee;
         $resultat["distance"] = $distance;
-        $resultat["message"] = "Le plus court chemin entre $nomCommuneDepart et $nomCommuneArrivee mesure $distance km.";
 
         return $resultat;
     }
