@@ -71,7 +71,22 @@ class NoeudCommuneRepository extends AbstractRepository implements NoeudCommuneR
             "ville_tag" => $ville."%"
         ));
         return $pdoStatement->fetchAll($this->connexionBaseDeDonnees->getPdo()::FETCH_ASSOC);
-
     }
+
+    public function recupererParProximite(float $lat, float $lng): ?string
+    {
+        $requeteSQL = <<<SQL
+        (select nom_comm
+        from noeud_commune
+        order by (geom <-> st_setSrid(st_makepoint(:lng, :lat), 4326))
+        limit 1);
+        SQL;
+
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteSQL);
+        $pdoStatement->execute(['lat'=>$lat, 'lng'=>$lng]);
+
+        return $pdoStatement->fetch()['nom_comm'];
+    }
+
 
 }

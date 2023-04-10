@@ -29,4 +29,6 @@ interface NoeudCommuneRepositoryInterface
 
     public function recupererParClePrimaire(string $valeurClePrimaire): ?AbstractDataObject;
 
+    public function recupererParProximite(float $lat, float $lng): ?string;
+
 }

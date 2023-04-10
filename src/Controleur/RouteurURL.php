@@ -134,6 +134,14 @@ class RouteurURL
         $route->setMethods(["GET"]);
         $routes->add("getPlusCourt", $route);
 
+
+        $route = new Route("api/getNear/{lat}/{lng}",[
+            "_controller" => "noeudcommune_controleur_api::getNear"
+        ]);
+        $route->setMethods(["GET"]);
+        $routes->add("getNear", $route);
+
+
         $contexteRequete = (new RequestContext())->fromRequest($request);
         $assistantUrl = new UrlHelper(new RequestStack(), $contexteRequete);
         $generateurUrl = new UrlGenerator($routes, $contexteRequete);
