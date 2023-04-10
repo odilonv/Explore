@@ -125,9 +125,14 @@ class NoeudCommuneService implements NoeudCommuneServiceInterface
         $resultat = [];
 
         /** @var NoeudCommune $noeudCommuneDepart */
-        $noeudCommuneDepart = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart])[0];
+        $dep = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart]);
+        if(isNull($dep)){throw new ServiceException("La ville de départ n'existe pas", Response::HTTP_NOT_FOUND);}
+        $noeudCommuneDepart = $dep[0];
+
         /** @var NoeudCommune $noeudCommuneArrivee */
-        $noeudCommuneArrivee = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee])[0];
+        $arr = $this->noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee]);
+        if(isNull($arr)){throw new ServiceException("La ville d'arrivée n'existe pas", Response::HTTP_NOT_FOUND);}
+        $noeudCommuneArrivee = $arr[0];
 
         if (is_null($noeudCommuneDepart) || is_null($noeudCommuneArrivee)) {
             throw new ServiceException('départ ou arrivée inconnue.', Response::HTTP_NOT_FOUND);
