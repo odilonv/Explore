@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Response;
 class NoeudCommuneTest extends TestCase
 {
     private NoeudCommuneService $service;
-
     private NoeudCommuneRepositoryInterface $noeudCommuneRepositoryMock;
     private NoeudRoutierRepositoryInterface $noeudRoutierRepositoryMock;
     private PlusCourtCheminInterface $plusCourtCheminMock;
