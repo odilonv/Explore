@@ -51,7 +51,7 @@ class UtilisateurService implements UtilisateurServiceInterface
         // http://romainlebreton.github.io/R3.01-DeveloppementWeb/assets/tut4-complement.html
 
         if ($profilePictureData == null) {
-            $profilePictureData = 'unknown.jpg';
+            $pictureName = 'unknown.jpg';
         } else {
             // On récupère l'extension du fichier
             $explosion = explode('.', $profilePictureData['name']);
@@ -62,7 +62,7 @@ class UtilisateurService implements UtilisateurServiceInterface
             // La photo de profil sera enregistrée avec un nom de fichier aléatoire
             $pictureName = uniqid() . '.' . $fileExtension;
             $from = $profilePictureData['tmp_name'];
-            $to = __DIR__ . "/../../web/assets/img/utilisateurs/$pictureName";
+            $to = __DIR__ . "/../../web/ressources/img/utilisateurs/$pictureName";
             move_uploaded_file($from, $to);
         }
 
@@ -71,9 +71,36 @@ class UtilisateurService implements UtilisateurServiceInterface
             "login" => $login,
             "mdp" => $password,
             "email" => $adresseMail,
-            "profilePictureName" => $profilePictureData
+            "profilePictureName" => $pictureName
         ));
-        $utilisateurRepository->ajouter($utilisateur);
+
+        if (!$utilisateurRepository->ajouterUserAValider($utilisateur)) {
+            throw new ServiceException("Un user est déjà en cours de validation pour ce login");
+        }
+        else
+        {
+            $utilisateurRepository->ajouter($utilisateur);
+            (new ConnexionUtilisateur($utilisateurRepository))->connecter($login);
+        }
+    }
+
+    public function userEstAdmin($user):bool
+    {
+        //si la rep est null alors l'user n'est pas dans la table admin
+        return $this->utilisateurRepository->estAdmin($user);
+    }
+
+    public function userEstValide($user):bool
+    {
+        //si la rep est null alors l'user n'est pas dans la table a valider
+        return ($this->utilisateurRepository->getNonce($user) == null);
+    }
+
+
+    public function verifierNonce($user, $nonce):bool
+    {
+        return($this->utilisateurRepository->getNonce($user) == $nonce
+        && $this->utilisateurRepository->retirerUserAValider($user));
     }
 
     /**

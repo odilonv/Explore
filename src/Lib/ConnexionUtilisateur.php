@@ -2,13 +2,21 @@
 
 namespace Explore\Lib;
 
-use Explore\Lib\vieux\Utilisateur;
+use Explore\Configuration\ConfigurationBDDPostgreSQL;
+use Explore\Modele\DataObject\Utilisateur;
 use Explore\Modele\HTTP\Session;
+use Explore\Modele\Repository\ConnexionBaseDeDonnees;
 use Explore\Modele\Repository\UtilisateurRepository;
+use Explore\Modele\Repository\UtilisateurRepositoryInterface;
+use Explore\Service\UtilisateurService;
+use Explore\Service\UtilisateurServiceInterface;
 
 class ConnexionUtilisateur
 {
     private static string $cleConnexion = "_utilisateurConnecte";
+
+
+    private UtilisateurService $utilisateurService;
 
 
     public static function connecter(string $loginUtilisateur): void
@@ -53,10 +61,33 @@ class ConnexionUtilisateur
         if ($loginConnecte === null)
             return false;
 
-        $utilisateurRepository = new UtilisateurRepository();
-        /** @var Utilisateur $utilisateurConnecte */
-        $utilisateurConnecte = $utilisateurRepository->recupererParClePrimaire($loginConnecte);
 
-        return ($utilisateurConnecte !== null && $utilisateurConnecte->getEstAdmin());
+
+        /** @var Utilisateur $utilisateurConnecte */
+        $config = new ConfigurationBDDPostgreSQL();
+        $postgres = new ConnexionBaseDeDonnees($config);
+        $utilisateurRepository = new UtilisateurRepository($postgres);
+        $utilisateurService = new UtilisateurService($utilisateurRepository);
+
+        $utilisateurConnecte = $utilisateurService->recupererUtilisateur($loginConnecte);
+        return $utilisateurService->userEstAdmin($utilisateurConnecte);
+    }
+
+    public static function estValide(): bool
+    {
+        $loginConnecte = ConnexionUtilisateur::getLoginUtilisateurConnecte();
+
+        // Si personne n'est connecté
+        if ($loginConnecte === null)
+            return false;
+
+        /** @var Utilisateur $utilisateurConnecte */
+        $config = new ConfigurationBDDPostgreSQL();
+        $postgres = new ConnexionBaseDeDonnees($config);
+        $utilisateurRepository = new UtilisateurRepository($postgres);
+        $utilisateurService = new UtilisateurService($utilisateurRepository);
+
+        $utilisateurConnecte = $utilisateurService->recupererUtilisateur($loginConnecte);
+        return $utilisateurService->userEstValide($utilisateurConnecte);
     }
 }

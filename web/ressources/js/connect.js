@@ -1,13 +1,21 @@
 // Sélectionner les éléments HTML nécessaires
 const connect = document.querySelector('.connectFooter');
 const header = document.querySelector('.connectHeader');
-const imgPP = header.querySelector('img');
+
+const imgPP = header.querySelector('.icons');
+
+
 
 const newHeader = document.createElement('div');
 
 let initialContent = connect.innerHTML;
 
-header.addEventListener('click', addForm);
+if(document.getElementById("connected") == null)
+{
+    header.addEventListener('click', addForm);
+}
+
+
 
 // Fonction pour ajouter le formulaire
 function addForm() {
