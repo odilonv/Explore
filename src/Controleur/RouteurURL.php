@@ -80,6 +80,21 @@ class RouteurURL
         $routes->add("creerDepuisFormulaire", $route);
 
 
+        $route = new Route("/validation", [
+            "_controller" => "utilisateur_controleur::afficherFormulaireValidation",
+
+        ]);
+        $route->setMethods(["GET"]);
+        $routes->add("afficherFormulaireValidation", $route);
+
+        $route = new Route("/validation", [
+            "_controller" => "utilisateur_controleur::validerUtilisateur",
+
+        ]);
+        $route->setMethods(["POST"]);
+        $routes->add("validerUtilisateur", $route);
+
+
 
         $route = new Route("/modification/{idUser}", [
             "_controller" => "utilisateur_controleur::afficherFormulaireMiseAJour",
@@ -143,13 +158,25 @@ class RouteurURL
         );
 
         //Ajout aux variables globales de Twig la vérif de la connexion d'un user
+
+        //A CHANGER
+
+        /*
         $utilisateurConnecte = new ConnexionUtilisateur();
         $idUtilisateurConnecte = $utilisateurConnecte->getLoginUtilisateurConnecte();
+        */
+        $idUtilisateurConnecte = "TEMP";
         $twig->addGlobal('idUtilisateurConnecte', $idUtilisateurConnecte);
 
         //Ajout aux variables globales de Twig la vérif de l'admin
+
+        //A CHANGER
+        /*
         $administrateur = new ConnexionUtilisateur();
         $adminConnecte = $administrateur->estAdministrateur();
+        */
+
+        $adminConnecte = true;
         $twig->addGlobal('adminConnecte', $adminConnecte);
 
         //Ajout aux variables globales de Twig les messages flashs

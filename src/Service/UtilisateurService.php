@@ -80,6 +80,7 @@ class UtilisateurService implements UtilisateurServiceInterface
         else
         {
             $utilisateurRepository->ajouter($utilisateur);
+            (new ConnexionUtilisateur($utilisateurRepository))->connecter($login);
         }
 
 

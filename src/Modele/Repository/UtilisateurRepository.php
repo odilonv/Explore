@@ -66,7 +66,7 @@ class UtilisateurRepository extends AbstractRepository implements UtilisateurRep
 
         $pdoStatement->execute($values);
         $result = $pdoStatement->fetch();
-        if($result == null)
+        if($result != null)
         {
             return false;
         }
@@ -78,7 +78,7 @@ class UtilisateurRepository extends AbstractRepository implements UtilisateurRep
         $values = array(
             "loginTag" => $user->getLogin(),
             "nonceTag" => $this->genererNonce(),
-            "mailTag" => $user->getEmail()
+            "emailTag" => $user->getEmail()
         );
 
         $pdoStatement->execute($values);
