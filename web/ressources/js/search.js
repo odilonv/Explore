@@ -379,7 +379,6 @@ function checkKey(e) {
 }
 
 document.addEventListener('keydown', (event)=> {
-    console.log(event.code)
     if(event.code === 'Tab' || event.code === 'Escape' )
     {
         hide();

@@ -8,8 +8,6 @@ use Explore\Modele\Repository\NoeudRoutierRepositoryInterface;
 
 class PlusCourtChemin
 {
-    private array $distances;
-    private array $noeudsALaFrontiere;
     private NoeudRoutierRepositoryInterface $noeudRoutierRepository;
 
     public function __construct(
@@ -28,10 +26,9 @@ class PlusCourtChemin
         do {
             $dernierNoeud = $queuStar->removeTop();
 
-            $dernierNoeud->selectionner();
+            $noeuds = $dernierNoeud->selectionner();
 
-            foreach ($dernierNoeud->getNoeudsVoisins() as $infosVoisin){
-                $voisin = $infosVoisin['voisin'];
+            foreach ($noeuds as $voisin){
                 if($voisin->getState() == EtatNoeud::PAUSE){
                     $voisin->setState(EtatNoeud::POSSIBLE);
                     $queuStar->insert($voisin);
