@@ -1,8 +1,9 @@
 <?php
 
-/** @var \Explore\Modele\DataObject\Utilisateur $utilisateur */
+/** @var Utilisateur $utilisateur */
 
 use Explore\Lib\ConnexionUtilisateur;
+use Explore\Modele\DataObject\Utilisateur;
 
 $login = $utilisateur->getLogin();
 $loginHTML = htmlspecialchars($login);
@@ -19,7 +20,7 @@ $picture = $utilisateur->getProfilePictureName();
 
         <h2><?php echo $login?></h2>
         <br>
-        <img id="profilePicture" src="<?= $assistant->getAbsoluteUrl("ressources/img/utilisateurs/".$picture)?>">
+        <img id="profilePicture" alt="<?=$picture?>" src="<?= $assistant->getAbsoluteUrl("ressources/img/utilisateurs/".$picture)?>">
 
 
         <?php
