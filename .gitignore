@@ -1,6 +1,6 @@
 
-src/Configuration/
+
 /vendor/
 /composer.lock
-
+src/Configuration/
 /.idea/
