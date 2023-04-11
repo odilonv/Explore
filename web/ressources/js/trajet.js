@@ -25,7 +25,7 @@ async function combineRoads(){
         addMarker(map, points[points.length - 1].lat, points[points.length - 1].lng);
         points.pop();
         addRoad(map, points);
-        notif('success', `La distance pour ce trajet est de ${distance}km.`);
+        notif('success', `La distance pour la totalité ce trajet est de ${Math.round(distance)}km.`);
     }
     catch (error) {
         notif('danger', error.message);
