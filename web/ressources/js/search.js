@@ -174,11 +174,14 @@ function overCircle(element){
 function outCircle(element){
     if(indexInput > 3)
     {
+        element.src = '../web/ressources/img/icons/location-dot-solid.svg';
+    }
+    else
+    {
         element.src = oldIconSrc;
-        element.classList.remove("crossIcon");
-        oldIconSrc = undefined;
     }
 
+        element.classList.remove("crossIcon");
 }
 
 function deleteLocation(element){
