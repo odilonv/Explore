@@ -189,8 +189,8 @@ class NoeudRoutierRepository extends AbstractRepository implements NoeudRoutierR
         $directionNorm->x /= 6;
         $directionNorm->y /= 6;
         $perpendiculaire = new Vector($direction->y, -$direction->x, true);
-        $perpendiculaire->x /= 3;
-        $perpendiculaire->y /= 3;
+        $perpendiculaire->x *= 2;
+        $perpendiculaire->y *= 2;
 
         $pt1 = new Vector($startPoint['x'] - $directionNorm->x - $perpendiculaire->x, $startPoint['y'] - $directionNorm->y - $perpendiculaire->y);
         $pt2 = new Vector($pt1->x + $direction->x + $directionNorm->x * 2, $pt1->y + $direction->y + $directionNorm->y * 2);
@@ -204,6 +204,7 @@ class NoeudRoutierRepository extends AbstractRepository implements NoeudRoutierR
             $pt4->x . ' ' . $pt4->y . ',' .
             $pt1->x . ' ' . $pt1->y . ')';
 
+        json_encode(['a' => $vecString]);
         return $vecString;
     }
 }
