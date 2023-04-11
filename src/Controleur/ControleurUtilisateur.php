@@ -58,8 +58,7 @@ class ControleurUtilisateur extends ControleurGenerique
 
     public function creerDepuisFormulaire(): Response
     {
-
-       try {
+        try {
             //Enregistrer l'utilisateur via le service
             $login = $_POST['login'] ?? null;
             $password = $_POST['mdp'] ?? null;
@@ -78,7 +77,7 @@ class ControleurUtilisateur extends ControleurGenerique
             return ControleurUtilisateur::rediriger("afficherFormulaireValidation");
 
         } catch (ServiceException $e) {
-            MessageFlash::ajouter('error', $e->getMessage());
+            MessageFlash::ajouter('danger', $e->getMessage());
             return ControleurUtilisateur::rediriger("afficherFormulaireCreation");
         }
     }
@@ -156,7 +155,7 @@ class ControleurUtilisateur extends ControleurGenerique
             MessageFlash::ajouter("success", "Connexion effectuée.");
             return ControleurUtilisateur::rediriger("plusCourt");
         } catch (ServiceException $e) {
-            MessageFlash::ajouter('error', $e->getMessage());
+            MessageFlash::ajouter('danger', $e->getMessage());
             return ControleurUtilisateur::rediriger("plusCourt");
         }
     }
@@ -168,7 +167,7 @@ class ControleurUtilisateur extends ControleurGenerique
             MessageFlash::ajouter("success", "L'utilisateur a bien été déconnecté.");
             return ControleurNoeudCommune::rediriger("plusCourt");
         } catch (ServiceException $e) {
-            MessageFlash::ajouter('error', $e->getMessage());
+            MessageFlash::ajouter('danger', $e->getMessage());
             return ControleurNoeudCommune::rediriger("plusCourt");
         }
     }
@@ -230,14 +229,12 @@ class ControleurUtilisateur extends ControleurGenerique
     }
 
     public function mettreAJour(){
-
        try{
             $profilePicture = $_FILES['profilePicture'] ?? null;
             if($profilePicture == null)
             {
                 throw new ServiceException("Veuillez renseigner un fichier");
             }
-
             $login = ConnexionUtilisateur::getLoginUtilisateurConnecte();
             if($login == null)
             {

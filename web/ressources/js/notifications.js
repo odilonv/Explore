@@ -1,6 +1,6 @@
 
 const notification = document.getElementById("notif");
-let exitCrossNotif = document.getElementById("icon-exit-notif")
+let exitCrossNotif = document.getElementById("icon-exit-notif");
 
 exitCrossNotif.addEventListener('click', () =>{
     notification.classList.add('notification-hidden');

@@ -75,7 +75,7 @@ class UtilisateurService implements UtilisateurServiceInterface
         ));
 
         if (!$utilisateurRepository->ajouterUserAValider($utilisateur)) {
-            throw new ServiceException("Un user est déjà en cours de validation pour ce login");
+            throw new ServiceException("Un utilisateur est déjà en cours de validation pour ce login");
         }
         else
         {
@@ -133,7 +133,7 @@ class UtilisateurService implements UtilisateurServiceInterface
     public function recupererUtilisateur($idUtilisateur, $autoriserNull = true)
     {
         $utilisateur = $this->utilisateurRepository->recupererParClePrimaire($idUtilisateur);
-        if (!$autoriserNull && $utilisateur == null) {
+        if (!$autoriserNull || $utilisateur == null) {
             throw new ServiceException('L\'utilisateur n\'existe pas !');
         }
         return $utilisateur;
@@ -154,14 +154,14 @@ class UtilisateurService implements UtilisateurServiceInterface
     /**
      * @throws ServiceException
      */
-    public function recupererHistorique($idUser, $autoriserNull = true){
+    /*public function recupererHistorique($idUser, $autoriserNull = true){
         $historique = $this->utilisateurRepository->getHistorique($idUser);
         if (!$autoriserNull && $historique == null) {
             throw new ServiceException('Vous n\'êtes pas connecté !');
         } else {
             return $historique;
         }
-    }
+    }*/
 
     /**
      * @throws ServiceException
@@ -176,13 +176,11 @@ class UtilisateurService implements UtilisateurServiceInterface
         $utilisateur = $utilisateurRepository->recupererParClePrimaire($login);
 
         if ($utilisateur == null) {
-            throw new ServiceException("utilisateur inexistant");
+            throw new ServiceException("Utilisateur inexistant");
         }
 
-
-
         if (!MotDePasse::verifier($password, $utilisateur->getMdpHache())) {
-            throw new ServiceException("mot de passe incorrect");
+            throw new ServiceException("Mot de passe incorrect");
         }
         ConnexionUtilisateur::connecter($utilisateur->getLogin());
     }
