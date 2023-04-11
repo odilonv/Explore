@@ -1,19 +1,9 @@
-
-<!-- 
------------------------    
-PAGE A NE PLUS UTILISER  
------------------------
--->
-
-
 <?php
-
 use Explore\Lib\ConnexionUtilisateur;
 use Explore\Lib\Conteneur;
 use Explore\Lib\Utils;
 use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\Routing\Generator\UrlGenerator;
-
 /** @var UrlGenerator $generateur */
 $generateur = Conteneur::recupererService("generateur");
 /** @var UrlHelper $assistant */
@@ -29,7 +19,7 @@ $assistant = Conteneur::recupererService("assistant");
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     <title><?= $pagetitle ?></title>
-    <link rel="shortcut icon" type="image/png" href="<?= $assistant->getAbsoluteUrl("ressources/img/3d-illustration-travel-location.png") ?>" />
+    <link rel="shortcut icon" type="image/png" href="<?= $assistant->getAbsoluteUrl( "ressources/img/3d-illustration-travel-location.png" ) ?>" />
 
     <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
     <script defer type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
@@ -60,12 +50,13 @@ $assistant = Conteneur::recupererService("assistant");
                     
                     ';
     } else if (ConnexionUtilisateur::estConnecte() /*&& $admin*/) {
-        echo '    
-                    <ul id="sousmenu" class="sousmenu-hidden">
-                        <!--<li><a href="'. $generateur->generate("historique") .'">
+        echo
+
+                        /*<li><a href="'. $generateur->generate("historique") .'">
                             <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/clock-solid.svg") . '" class="icons">
                             <h3>Historique</h3> 
-                        </a></li>-->
+                        </a></li>*/
+                       '<ul id="sousmenu" class="sousmenu-hidden">
                         <li><a href="'. $generateur->generate("noeudscommune") .'">
                             <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/compass-solid.svg") . '" class="icons">
                             <h3>Communes</h3> 
@@ -77,7 +68,7 @@ $assistant = Conteneur::recupererService("assistant");
                         
                     </ul>
                     ';
-    } else if (ConnexionUtilisateur::estConnecte()) {
+    } /*else if (ConnexionUtilisateur::estConnecte()) {
         echo '
                     <ul id="sousmenu" class="sousmenu-hidden">
                         <li><a href="">
@@ -87,7 +78,7 @@ $assistant = Conteneur::recupererService("assistant");
                     </ul>
                     
                     ';
-    }
+    }*/
     ?>
 
 

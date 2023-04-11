@@ -6,7 +6,7 @@
         <h1>Noeuds Communes</h1>
         <?php
         foreach ($noeudsCommunes as $noeudCommune) {
-            echo '<li>';
+            echo '<li class="linoeudsCommunes">';
             require __DIR__ . "/detail.php";
             echo '</li>';
         }
