@@ -19,6 +19,7 @@
 </head>
 
 <body>
+<p>{{ 'Base.html.twig'}}</p>
     <div id="mapContainer"></div>
 
     <div id="logo">
@@ -32,26 +33,24 @@
             <p>Connecte-toi pour accéder à plus d'informations.</p> 
             </li>
         </ul>
-    {% elseif idUtilisateurConnecte and adminConnecte %}
+    {% elseif idUtilisateurConnecte %}
         <ul id="sousmenu" class="sousmenu-hidden">
+            {#
             <li>
-            <img src="{{ asset("ressources/img/icons/clock-solid.svg") }}" class="icons">
-            <h3>Historique</h3> 
+                <a href="{{ route("historique") }}">
+                <img src="{{ asset("ressources/img/icons/clock-solid.svg") }}" class="icons">
+                <h3>Historique</h3> 
             </li>
+            #}
             <li>
+            <a href="{{ route("noeudscommune") }}">
             <img src="{{ asset("ressources/img/icons/compass-solid.svg") }}" class="icons">
-            <h3>Communes</h3> 
+            <h3>Communes</h3> </a>
             </li>
             <li>
+            <a href="{{ route("afficherListe") }}">
             <img src="{{ asset("ressources/img/icons/user-solid.svg") }}" class="icons">
-            <h3>Utilisateurs</h3> 
-            </li>
-        </ul>
-          {% elseif idUtilisateurConnecte %}
-        <ul id="sousmenu" class="sousmenu-hidden">
-            <li>
-            <img src="{{ asset("ressources/img/icons/clock-solid.svg") }}" class="icons">
-            <h3>Historique</h3> 
+            <h3>Utilisateurs</h3> </a>
             </li>
         </ul>
     {% endif %}
@@ -68,17 +67,17 @@
 
 
     <footer>
-        {% for type in ['success', 'info', 'warning', 'danger'] %}
+        {% for type in ['success', 'danger'] %}
             {% for messageFlash in messagesFlash[type] %}
                 <div class="notification-hidden" id="notif">
-                    <div class="messageFlash">
+                    <div class="messageFlash alert-{{ type }}">
                         <div class="separate">
-                            <h3>Message d'Explorateur</h3>
+                            <h3>Message de ton ami Explorateur</h3>
                             <img id="icon-exit-notif" src="{{ asset("ressources/img/icons/xmark-solid-white.svg") }}">
                         </div>
                         <div class="ligne"></div>
                         <div class="separate">
-
+                            <img id="imgnotif" src="{{ asset("ressources/img/icons/" ~ type ~ "-solid.svg") }}">
                             <p>{{ messageFlash }}</p>
                         </div>
 
@@ -87,22 +86,31 @@
             {% endfor %}
         {% endfor %}
 
-        {% if not (idUtilisateurConnecte) %}
+        {% if not ConnexionUtilisateur.estConnecte() %}
+    <div class="connectFooter clickable">
+        <div class="connectHeader">
+            <img alt="profil" src="{{ asset('ressources/img/icons/user-solid.svg') }}" class="icons">
+            <h2>Se connecter</h2>
+        </div>
+    </div>
+        {% else %}
+            {% set loginHTML = ConnexionUtilisateur.getLoginUtilisateurConnecte() | raw %}
+            {% set loginURL = ConnexionUtilisateur.getLoginUtilisateurConnecte() | rawurl_encode %}
             <div class="connectFooter clickable">
-                <div class="connectHeader">
-                    <img src="{{ asset("ressources/img/icons/user-solid.svg") }}" class="icons">
-                    <h2 id="h2Connexion">Se connecter</h2>
+                <div class="connectHeader" id="connected">
+                    <a href="{{ route('afficherDetail', {'loginUser': ConnexionUtilisateur.getLoginUtilisateurConnecte() }) }}" id="connectFooter">
+                        <img alt="detailUser" src="{{ asset('ressources/img/icons/user-solid.svg') }}" class="icons">
+                    </a>
+                                                
+                    <a href="{{ route('afficherDetail', {'loginUser': ConnexionUtilisateur.getLoginUtilisateurConnecte() }) }}" id="connectFooter">
+                        <h2>{{ loginHTML }}</h2>
+                    </a>
+                                                
+                    <a href="{{ reout('deconnecter') }}">
+                        <img alt="deconnecter" src="{{ asset('ressources/img/icons/arrow-right-from-bracket-solid.svg') }}" class="icons">
+                    </a>
                 </div>
             </div>
-        {% else %}
-            {% set loginHTML = idUtilisateurConnecte|escape %}
-            {% set loginURL = idUtilisateurConnecte|url_encode %}
-            <form class="connectFooter clickable">
-                <a href="/utilisateur/{{ loginURL }}" id="connectFooter">
-                    <img src="{{ asset("ressources/img/icons/user-solid.svg") }}" class="icons">
-                    <h2>{{ loginHTML }}</h2>
-                </a>
-            </form>
         {% endif %}
 
         <script defer type="text/javascript" src="{{ asset("ressources/js/connect.js") }}"></script>

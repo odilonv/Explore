@@ -6,10 +6,14 @@
         <h1>Noeuds Communes</h1>
         <?php
         foreach ($noeudsCommunes as $noeudCommune) {
-            echo '<li class="linoeudsCommunes">';
-            require __DIR__ . "/detail.php";
-            echo '</li>';
+            echo '<li class="linoeudsCommunes">
+            
+            <span>Commune de <strong><?= $noeudCommune->getNomCommune() ?></strong></span>
+            <span>
+                Gid : <strong><?= $noeudCommune->getGid() ?></strong>,
+                Identifiant Route : <strong><?= $noeudCommune->getId_rte500() ?></strong>
+            </span></li>';
         }
-        echo "</ul>\n";
+        ;
         ?>
 </section>

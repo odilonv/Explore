@@ -1,0 +1,14 @@
+<section class="fond-page">
+    <form class="box-inscription" style="height: 250px;width:300px" method="POST" action="{{ route('plusCourt') }}">
+        <div class="exitLine">
+            <a class="exitButton" href="{{ route('plusCourt') }}">
+                <img class="icons" src="{{ asset('ressources/img/icons/xmark-solid.svg') }}" alt="exit">
+            </a>
+        </div>
+
+        <h2>Utilisateur inconnu</h2>
+        <br>
+        <img id="notFound" alt="error" src="{{ asset('ressources/img/icons/face-grimace-solid.svg') }}">
+
+    </form>
+</section>
