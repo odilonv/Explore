@@ -30,4 +30,13 @@ interface UtilisateurServiceInterface
      * @throws ServiceException
      */
     public function deconnecterUtilisateur();
+
+    /**
+     * @throws ServiceException
+     */
+    public function userEstValide($user):bool;
+
+    public function userEstAdmin($user):bool;
+
+    public function verifierNonce($user, $nonce):bool;
 }
