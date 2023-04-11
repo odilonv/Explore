@@ -190,19 +190,21 @@ class ControleurUtilisateur extends ControleurGenerique
     public function afficherDetail($loginUser)
     {
         try {
-            $user = $this->utilisateurService->recupererUtilisateur($loginUser,false);
+            $user = $this->utilisateurService->recupererUtilisateur($loginUser,true);
+            return ControleurUtilisateur::afficherVue('vueGenerale.php', [
+                "utilisateur" => $user,
+                "pagetitle" => "Profil de ".$loginUser,
+                "cheminVueBody" => "utilisateur/detail.php"
+            ]);
         }
-        catch (ServiceException $e)
+       catch (ServiceException $e)
         {
             MessageFlash::ajouter('error', $e->getMessage());
             return ControleurNoeudCommune::rediriger("utilisateurInconnu");
         }
 
-        return ControleurUtilisateur::afficherVue('vueGenerale.php', [
-            "utilisateur" => $user,
-            "pagetitle" => "Profil de ".$loginUser,
-            "cheminVueBody" => "utilisateur/detail.php"
-        ]);
+
+
     }
 
     public function utilisateurInconnu()

@@ -26,7 +26,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
         <div class="exitLine">
             <a class="exitButton" href="<?= $generateur->generate("plusCourt"); ?>"><img class="icons" src="<?= $assistant->getAbsoluteUrl("ressources/img/icons/xmark-solid.svg"); ?>" alt="exit"></a>
         </div>
-        <label for="nonce" id="inputNonce">Code de validation
+        <label for="nonce" id="inputNonce" class="labelresponsive">Code de validation
             <input style="width:100px" class="inputForm" type="text" placeholder="123 456" name="nonce" id="nonce" value="">
         </label>
 

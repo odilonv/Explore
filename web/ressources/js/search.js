@@ -189,85 +189,88 @@ function deleteLocation(element){
 
     let i = parseInt(element.id.slice(-1));
 
-    console.log(i);
 
     if(element.contains( event.target )){
-        if(i === indexInput-1)
+        if(i > 2)
         {
-            document.getElementById("lineTravel"+(i-1)).remove();
-            document.getElementById("circles"+(i-1)).remove();
-
-            document.getElementById("ville"+i).id = "ville"+(i-1);
-            document.getElementById("autocompletion"+i).id = "autocompletion"+(i-1);
-            document.getElementById("iconTrajet"+(i)).id = "iconTrajet"+(i-1);
-            document.getElementById("lineTravel"+(i)).id = "lineTravel"+(i-1);
-
-            if(i !== 8)
+            if(i === indexInput-1)
             {
-                document.getElementById("circles"+(i)).id = "circles"+(i-1);
-            }
-        }
-        else
-        {
-            document.getElementById("lineTravel"+(i)).remove()
-            for(let j = i+1; j<indexInput;j++)
-            {
-                document.getElementById("ville"+j).id = "ville"+(j-1);
-                document.getElementById("autocompletion"+j).id = "autocompletion"+(j-1);
-                document.getElementById("iconTrajet"+(j)).id = "iconTrajet"+(j-1);
-                document.getElementById("lineTravel"+(j)).id = "lineTravel"+(j-1);
+                document.getElementById("lineTravel"+(i-1)).remove();
+                document.getElementById("circles"+(i-1)).remove();
 
-                if(document.getElementById("circles"+(j)) !== null)
+                document.getElementById("ville"+i).id = "ville"+(i-1);
+                document.getElementById("autocompletion"+i).id = "autocompletion"+(i-1);
+                document.getElementById("iconTrajet"+(i)).id = "iconTrajet"+(i-1);
+                document.getElementById("lineTravel"+(i)).id = "lineTravel"+(i-1);
+
+                if(i !== 8)
                 {
-                    document.getElementById("circles"+(j)).id = "circles"+(j-1);
+                    document.getElementById("circles"+(i)).id = "circles"+(i-1);
+                }
+            }
+            else
+            {
+                document.getElementById("lineTravel"+(i)).remove()
+                for(let j = i+1; j<indexInput;j++)
+                {
+                    document.getElementById("ville"+j).id = "ville"+(j-1);
+                    document.getElementById("autocompletion"+j).id = "autocompletion"+(j-1);
+                    document.getElementById("iconTrajet"+(j)).id = "iconTrajet"+(j-1);
+                    document.getElementById("lineTravel"+(j)).id = "lineTravel"+(j-1);
+
+                    if(document.getElementById("circles"+(j)) !== null)
+                    {
+                        document.getElementById("circles"+(j)).id = "circles"+(j-1);
+                    }
+
+                }
+                document.getElementById("circles"+i).remove()
+            }
+
+
+            if(indexInput === 9)
+            {
+                const newCircleAdd = document.createElement('img');
+                newCircleAdd.src = '../web/ressources/img/icons/circle-regular.svg';
+                newCircleAdd.classList.add('iconsLocationStart');
+
+                const newButton = document.createElement('button');
+                newButton.classList.add('addDest');
+                newButton.textContent = 'Ajouter une destination';
+                newButton.addEventListener('click', addInputDest);
+
+
+                const newCircles = document.createElement('div');
+                newCircles.classList.add('circles');
+                newCircles.id = 'circles7';
+
+                for (let i = 0; i < 3; i++) {
+                    const newCircle = circleTemplate.cloneNode(true);
+                    newCircles.appendChild(newCircle);
                 }
 
+                insideDivide.appendChild(newCircles);
+
+                const newLineTravel = document.createElement('div');
+                newLineTravel.classList.add('underlineTravel');
+                newLineTravel.id = 'lineTravel'+i
+                newLineTravel.appendChild(newCircleAdd);
+                newLineTravel.appendChild(newButton);
+
+                insideDivide.appendChild(newLineTravel);
+
+                oldLine = newLineTravel;
+                oldInput = document.getElementById("ville7");
+                oldIconLocation = document.getElementById("iconTrajet7");
+                oldCircle = newCircleAdd;
+
+                document.getElementById("ville7").addEventListener('input', ()=>{autoCompletion(document.getElementById("ville7"),7)});
+                document.getElementById("ville7").addEventListener('click', ()=>{showOldAutocompletion(document.getElementById("ville7"),7)});
+
             }
-            document.getElementById("circles"+i).remove()
+            indexInput--;
         }
 
-
-        if(indexInput === 9)
-        {
-            const newCircleAdd = document.createElement('img');
-            newCircleAdd.src = '../web/ressources/img/icons/circle-regular.svg';
-            newCircleAdd.classList.add('iconsLocationStart');
-
-            const newButton = document.createElement('button');
-            newButton.classList.add('addDest');
-            newButton.textContent = 'Ajouter une destination';
-            newButton.addEventListener('click', addInputDest);
-
-
-            const newCircles = document.createElement('div');
-            newCircles.classList.add('circles');
-            newCircles.id = 'circles7';
-
-            for (let i = 0; i < 3; i++) {
-                const newCircle = circleTemplate.cloneNode(true);
-                newCircles.appendChild(newCircle);
-            }
-
-            insideDivide.appendChild(newCircles);
-
-            const newLineTravel = document.createElement('div');
-            newLineTravel.classList.add('underlineTravel');
-            newLineTravel.id = 'lineTravel'+i
-            newLineTravel.appendChild(newCircleAdd);
-            newLineTravel.appendChild(newButton);
-
-            insideDivide.appendChild(newLineTravel);
-
-            oldLine = newLineTravel;
-            oldInput = document.getElementById("ville7");
-            oldIconLocation = document.getElementById("iconTrajet7");
-            oldCircle = newCircleAdd;
-
-            document.getElementById("ville7").addEventListener('input', ()=>{autoCompletion(document.getElementById("ville7"),7)});
-            document.getElementById("ville7").addEventListener('click', ()=>{showOldAutocompletion(document.getElementById("ville7"),7)});
-
-        }
-        indexInput--;
     }
 }
 
@@ -362,6 +365,7 @@ document.getElementById("recherche").addEventListener('click',hide);
 
 function autoCompletion(element,i){
     hide();
+
     if(element !== null)
     {
         if(element.value.length >2)

@@ -151,7 +151,7 @@ body {
     border-radius: 5px;
 }
 
-label{
+.labelresponsive{
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

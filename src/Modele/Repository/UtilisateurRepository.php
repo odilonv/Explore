@@ -14,19 +14,6 @@ class UtilisateurRepository extends AbstractRepository implements UtilisateurRep
         parent::__construct($connexionBaseDeDonnees);
     }
 
-//    /**
-//     * @return Utilisateur[]
-//     */
-//    public static function getUtilisateurs() : array {
-//        $pdoStatement = ConnexionBaseDeDonnees::getPdo()->query("SELECT * FROM utilisateur");
-//
-//        $utilisateurs = [];
-//        foreach($pdoStatement as $utilisateurFormatTableau) {
-//            $utilisateurs[] = UtilisateurRepository::construire($utilisateurFormatTableau);
-//        }
-//
-//        return $utilisateurs;
-//    }
 
     public function construireDepuisTableau(array $utilisateurTableau): Utilisateur
     {

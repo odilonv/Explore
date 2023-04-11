@@ -126,7 +126,6 @@ class RouteurURL
 
         $route = new Route("/utilisateur/{loginUser}", [
             "_controller" => "utilisateur_controleur::afficherDetail",
-
         ]);
         $route->setMethods(["GET"]);
         $routes->add("afficherDetail", $route);
