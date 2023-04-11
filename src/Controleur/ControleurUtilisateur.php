@@ -58,7 +58,6 @@ class ControleurUtilisateur extends ControleurGenerique
 
     public function creerDepuisFormulaire(): Response
     {
-
         try {
             //Enregistrer l'utilisateur via le service
             $login = $_POST['login'] ?? null;
@@ -72,13 +71,12 @@ class ControleurUtilisateur extends ControleurGenerique
             $user = $this->utilisateurService->recupererUtilisateur($login);
 
             MessageFlash::ajouter("success", "L'utilisateur a bien été créé !");
-
             VerificationEmail::envoiEmailValidation($user);
             //rediriger vers mail de validation plutot
             return ControleurUtilisateur::rediriger("afficherFormulaireValidation");
 
         } catch (ServiceException $e) {
-            MessageFlash::ajouter('error', $e->getMessage());
+            MessageFlash::ajouter('danger', $e->getMessage());
             return ControleurUtilisateur::rediriger("afficherFormulaireCreation");
         }
     }
@@ -206,7 +204,7 @@ class ControleurUtilisateur extends ControleurGenerique
             MessageFlash::ajouter("success", "Connexion effectuée.");
             return ControleurUtilisateur::rediriger("plusCourt");
         } catch (ServiceException $e) {
-            MessageFlash::ajouter('error', $e->getMessage());
+            MessageFlash::ajouter('danger', $e->getMessage());
             return ControleurUtilisateur::rediriger("plusCourt");
         }
     }
@@ -218,7 +216,7 @@ class ControleurUtilisateur extends ControleurGenerique
             MessageFlash::ajouter("success", "L'utilisateur a bien été déconnecté.");
             return ControleurNoeudCommune::rediriger("plusCourt");
         } catch (ServiceException $e) {
-            MessageFlash::ajouter('error', $e->getMessage());
+            MessageFlash::ajouter('danger', $e->getMessage());
             return ControleurNoeudCommune::rediriger("plusCourt");
         }
     }

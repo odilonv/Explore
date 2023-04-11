@@ -108,24 +108,23 @@ $assistant = Conteneur::recupererService("assistant");
     <div id="loader"></div>
     <footer>
         <?php
-
-        foreach (["success", "info", "warning", "danger"] as $type) {
+        foreach (["success", "danger"] as $type) {
             foreach ($messagesFlash[$type] as $messageFlash) {
-                echo '
-                            <div class="notification-hidden" id="notif">
-                            <div class="messageFlash alert-'.$type.'">
-                                <div class="separate"><h3>Message de ton ami Explorateur</h3>
-                                <img id="icon-exit-notif" src="' . $assistant->getAbsoluteUrl("ressources/img/icons/xmark-solid-white.svg") . '">
-                                </div>
-                                <div class="ligne"></div>
-                                <div class="separate"><img id="imgnotif" src="' . $assistant->getAbsoluteUrl("ressources/img/icons/$type-solid.svg") . '"><p>'.$messageFlash.'</p></div>
+                echo ' 
+                 <div class="notification-hidden" id="notif">
+                        <div class="messageFlash alert-'.$type.'">
+                            <div class="separate"><h3>Message de ton ami Explorateur</h3>
+                            <img id="icon-exit-notif" src="' . $assistant->getAbsoluteUrl("ressources/img/icons/xmark-solid-white.svg") . '">
                             </div>
-                            
-                            </div>
-                            ';
+                            <div class="ligne"></div>
+                            <div class="separate"><img id="imgnotif" src="' . $assistant->getAbsoluteUrl("ressources/img/icons/$type-solid.svg") . '"><p>'.$messageFlash.'</p></div>
+                        </div>
+                 </div>';
             }
         }
         ?>
+
+
 
         <?php
 
