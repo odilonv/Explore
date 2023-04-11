@@ -31,4 +31,13 @@ class UtilisateurTest extends TestCase
         $this->assertCount(2, $this->service->recupererListeUtilisateur());
     }
 
+    public function testListeUtilisateursVide()
+    {
+        $this->expectException(ServiceException::class);
+        $this->utilisateurRepositoryMock->method("recuperer")->willReturn([]);
+        $this->expectExceptionMessage('Aucun utilisateur n\'a été trouvé');
+        $this->assertEmpty($this->service->recupererListeUtilisateur());
+    }
+
+
 }
