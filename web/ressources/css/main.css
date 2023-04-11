@@ -102,8 +102,21 @@ body {
     filter: opacity(0.6);
 }
 
-.crossIcon{
-    margin-left: 1.5px;
+
+#crossIcon.iconsLocationStart{
+    width: 17px;
+    height: 17px;
+    margin-bottom: 4px;
+
+    position: relative;
+}
+
+#crossIcon.iconsLocation{
+    width: 22px;
+    height: 22px;
+    margin-bottom: 4px;
+
+    position: relative;
 }
 
 .contain{
@@ -301,13 +314,21 @@ button, .registerButton, .exitButton, .connectButton{
     background-color: white;
 }
 .connectHeader:hover,
+.connectHeader:hover > a,
 .registerButton:hover,
 #sousmenu li a:hover
 {
     color: rgba(15, 22, 33, 0.8);
+
+}
+
+.connectHeader> a
+{
+    color: rgba(15, 22, 33, 0.6);
 }
 
 .connectHeader:hover > img,
+.connectHeader:hover > a > img,
 .exitButton:hover > img,
 #sousmenu li a:hover > img{
 
@@ -468,6 +489,8 @@ footer{
     bottom: 25px;
     width: 150px;
 }
+
+
 
 @keyframes show {
     0% {

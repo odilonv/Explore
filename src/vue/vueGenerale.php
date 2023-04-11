@@ -134,7 +134,7 @@ $assistant = Conteneur::recupererService("assistant");
                     <div class="connectFooter clickable">
                         <div class="connectHeader">
                             <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/user-solid.svg") . '" class="icons">
-                            <h2 id="h2Connexion">Se connecter</h2>
+                            <h2>Se connecter</h2>
                         </div>
                     </div>
                     ';

@@ -165,14 +165,14 @@ function overCircle(element){
     {
         oldIconSrc = element.src;
         element.src = '../web/ressources/img/icons/xmark-solid.svg';
-        element.classList.add("crossIcon");
+        element.id = "crossIcon";
     }
 
 }
 
 
 function outCircle(element){
-    if(indexInput > 3)
+    if(indexInput <= 3)
     {
         element.src = '../web/ressources/img/icons/location-dot-solid.svg';
     }
@@ -181,7 +181,9 @@ function outCircle(element){
         element.src = oldIconSrc;
     }
 
-        element.classList.remove("crossIcon");
+    element.id = "";
+
+
 }
 
 function deleteLocation(element){
