@@ -178,4 +178,20 @@ class UtilisateurRepository extends AbstractRepository implements UtilisateurRep
 
         return $tab;
     }
+
+    public function updatePP($login, $ppName){
+        $sql = "UPDATE usersexplore SET profilePictureName = :profilePicture WHERE login = :loginTag";
+
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($sql);
+
+        $values = array(
+            "loginTag" => $login,
+            "profilePicture" => $ppName
+        );
+
+
+        $pdoStatement->execute($values);
+
+        $pdoStatement->execute($values);
+    }
 }

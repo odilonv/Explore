@@ -50,7 +50,7 @@ $assistant = Conteneur::recupererService("assistant");
     </div>
 
     <?php
-    if (ConnexionUtilisateur::estConnecte()) {
+    if (!ConnexionUtilisateur::estConnecte()) {
         echo '
                     <ul id="sousmenu" class="sousmenu-hidden">
                     <li>
@@ -59,13 +59,13 @@ $assistant = Conteneur::recupererService("assistant");
                     </ul>
                     
                     ';
-    } else if (!ConnexionUtilisateur::estConnecte() /*&& $admin*/) {
+    } else if (ConnexionUtilisateur::estConnecte() /*&& $admin*/) {
         echo '    
                     <ul id="sousmenu" class="sousmenu-hidden">
-                        <li><a href="'. $generateur->generate("historique") .'">
+                        <!--<li><a href="'. $generateur->generate("historique") .'">
                             <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/clock-solid.svg") . '" class="icons">
                             <h3>Historique</h3> 
-                        </a></li>
+                        </a></li>-->
                         <li><a href="'. $generateur->generate("noeudscommune") .'">
                             <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/compass-solid.svg") . '" class="icons">
                             <h3>Communes</h3> 

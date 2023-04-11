@@ -165,7 +165,7 @@ function overCircle(element){
     {
         oldIconSrc = element.src;
         element.src = '../web/ressources/img/icons/xmark-solid.svg';
-        element.id = "crossIcon";
+        element.class = "crossIcon";
     }
 
 }
@@ -181,7 +181,6 @@ function outCircle(element){
         element.src = oldIconSrc;
     }
 
-    element.id = "";
 
 
 }

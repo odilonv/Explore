@@ -102,17 +102,19 @@ class RouteurURL
 
 
 
-        $route = new Route("/modification/{idUser}", [
+        $route = new Route("/modification/{loginUser}", [
             "_controller" => "utilisateur_controleur::afficherFormulaireMiseAJour",
 
         ]);
+        $route->setMethods(["GET"]);
         $routes->add("afficherFormulaireMiseAJour", $route);
 
-        $route = new Route("/modification/{idUser}", [
+        $route = new Route("/modification", [
             "_controller" => "utilisateur_controleur::mettreAJour",
 
         ]);
-        $routes->add("mettreAJour ", $route);
+        $route->setMethods(["POST"]);
+        $routes->add("mettreAJour", $route);
 
 
         $route = new Route("/utilisateurs", [
@@ -128,6 +130,14 @@ class RouteurURL
         ]);
         $route->setMethods(["GET"]);
         $routes->add("afficherDetail", $route);
+
+
+        $route = new Route("/supprimer/{loginUser}", [
+            "_controller" => "utilisateur_controleur::supprimerUser",
+
+        ]);
+        $route->setMethods(["GET"]);
+        $routes->add("supprimerUser", $route);
 
         $route = new Route("/utilisateurInconnu", [
             "_controller" => "utilisateur_controleur::utilisateurInconnu",

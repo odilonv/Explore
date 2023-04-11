@@ -59,7 +59,7 @@ function addConnectButton(text) {
     connectButton.type = "submit";
 
     connectButton.classList.add('connectButton');
-    connectButton.textContent = text;
+    connectButton.value = text;
 
 
     return connectButton;

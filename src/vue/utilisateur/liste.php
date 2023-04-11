@@ -15,11 +15,11 @@ use Explore\Modele\DataObject\Utilisateur;
         foreach ($utilisateurs as $utilisateur) {
             $loginHTML = htmlspecialchars($utilisateur->getLogin());
             $loginURL = rawurlencode($utilisateur->getLogin());
-            echo <<< HTML
+            echo '
                 <li>
-                    Utilisateur de login $loginHTML
-                </li>
-            HTML;
+                    <a class="lienProfil" href="'.$generateur->generate("afficherDetail", ["loginUser" => $loginHTML]).'">'.$loginHTML.'</a>
+                </li>';
+
         }
         echo "</ul>\n";
         ?>

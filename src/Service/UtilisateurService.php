@@ -50,7 +50,7 @@ class UtilisateurService implements UtilisateurServiceInterface
         // Plus d'informations :
         // http://romainlebreton.github.io/R3.01-DeveloppementWeb/assets/tut4-complement.html
 
-        if ($profilePictureData == null) {
+        if ($profilePictureData['name'] == "") {
             $pictureName = 'unknown.jpg';
         } else {
             // On récupère l'extension du fichier
@@ -83,6 +83,30 @@ class UtilisateurService implements UtilisateurServiceInterface
             ConnexionUtilisateur::connecter($login);
         }
     }
+
+    public function update($login, $profilePictureData)
+    {
+        $explosion = explode('.', $profilePictureData['name']);
+        $fileExtension = end($explosion);
+        if (!in_array($fileExtension, ['png', 'jpg', 'jpeg'])) {
+            throw new ServiceException("La photo de profil n'est pas au bon format!");
+        }
+        // La photo de profil sera enregistrée avec un nom de fichier aléatoire
+        $pictureName = uniqid() . '.' . $fileExtension;
+        $from = $profilePictureData['tmp_name'];
+        $to = __DIR__ . "/../../web/ressources/img/utilisateurs/$pictureName";
+        move_uploaded_file($from, $to);
+
+        $this->utilisateurRepository->updatePP($login,$pictureName);
+    }
+
+    public function delete($login)
+    {
+        if(!$this->utilisateurRepository->supprimer($login)){
+            throw new ServiceException('L\'utilisateur n\'existe pas !');
+        }
+    }
+
 
     public function userEstAdmin($user):bool
     {

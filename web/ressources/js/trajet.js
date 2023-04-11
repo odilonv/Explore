@@ -3,6 +3,8 @@ const loader = document.getElementById('loader');
 
 buttonSearch.addEventListener('click', search2);
 
+document.body.style.width = "0";
+
 let URLs = [];
 async function combineRoads(){
     let points = [];

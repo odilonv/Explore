@@ -41,7 +41,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
             <input class="InputAddOn-field" type="password" value="<?php echo 'motDePasse123' ?>" placeholder="" name="mdp2" id="mdp2_id" required>
         </label>
 
-        <label for="avatar">Avatar
+        <label for="avatar">Photo de profil
             <input type="file" id="profilePictureInput" name="profilePicture"  accept="image/png, image/jpeg, image/jpg">
         </label>
 
