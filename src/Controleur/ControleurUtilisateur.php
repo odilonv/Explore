@@ -194,6 +194,7 @@ class ControleurUtilisateur extends ControleurGenerique
     public function afficherDetail($loginUser)
     {
         try {
+            $loginUser = rawurldecode($loginUser);
             $user = $this->utilisateurService->recupererUtilisateur($loginUser,true);
             return ControleurUtilisateur::afficherVue('vueGenerale.php', [
                 "utilisateur" => $user,
@@ -265,6 +266,7 @@ class ControleurUtilisateur extends ControleurGenerique
 
     public function supprimerUser($loginUser){
         try{
+            $loginUser = rawurldecode($loginUser);
             if(!ConnexionUtilisateur::estAdministrateur() && ConnexionUtilisateur::getLoginUtilisateurConnecte() != $loginUser)
             {
                 throw new ServiceException("Vous n'avez pas les droits pour");

@@ -135,11 +135,11 @@ $assistant = Conteneur::recupererService("assistant");
                                 <div class="connectFooter clickable">
                                     <div class="connectHeader" id="connected">
                                         <!--<a href="controleurFrontal.php?action=afficherDetail&controleur=utilisateur&login=$loginURL" id="connectFooter">¡-->
-                                        <a href="'.$generateur->generate("afficherDetail", ["loginUser" => ConnexionUtilisateur::getLoginUtilisateurConnecte()]).'" id="connectFooter">
+                                        <a href="'.$generateur->generate("afficherDetail", ["loginUser" => $loginURL]).'" id="connectFooter">
                                         <img alt="detailUser" src="' . $assistant->getAbsoluteUrl("ressources/img/icons/user-solid.svg") . '" class="icons">
                                         </a>
                                         
-                                        <a href="'.$generateur->generate("afficherDetail", ["loginUser" => ConnexionUtilisateur::getLoginUtilisateurConnecte()]).'" id="connectFooter">
+                                        <a href="'.$generateur->generate("afficherDetail", ["loginUser" => $loginURL]).'" id="connectFooter">
                                             <h2>' . $loginHTML . '</h2>
                                         </a>
                                         

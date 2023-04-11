@@ -18,7 +18,7 @@ $picture = $utilisateur->getProfilePictureName();
         </div>
 
 
-        <h2><?php echo $login?></h2>
+        <h2><?php echo $loginHTML?></h2>
         <br>
         <img id="profilePicture" alt="<?=$picture?>" src="<?= $assistant->getAbsoluteUrl("ressources/img/utilisateurs/".$picture)?>">
 
@@ -41,7 +41,7 @@ $picture = $utilisateur->getProfilePictureName();
         {
             echo '
             <br>
-            <a class="lienProfil" href="'.$generateur->generate("supprimerUser", ["loginUser" => $login]).'"> Supprimer le profil </a>
+            <a class="lienProfil" href="'.$generateur->generate("supprimerUser", ["loginUser" => $loginURL]).'"> Supprimer le profil </a>
             ';
         }
         ?>
