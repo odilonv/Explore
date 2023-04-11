@@ -32,8 +32,8 @@ function addForm() {
     connectForm.method = "post";
     connectForm.action = "../web/connexion";
 
-    connectForm.appendChild(addInput("text","Login","login","invite"));
-    connectForm.appendChild(addInput("password","********","mdp","motDePasse123"));
+    connectForm.appendChild(addInput("text","Login","login",""));
+    connectForm.appendChild(addInput("password","********","mdp",""));
     connectForm.appendChild(addConnectButton('se connecter'));
 
     connect.appendChild(connectForm)

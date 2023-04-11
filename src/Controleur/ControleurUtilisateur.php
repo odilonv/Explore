@@ -62,10 +62,14 @@ class ControleurUtilisateur extends ControleurGenerique
             //Enregistrer l'utilisateur via le service
             $login = $_POST['login'] ?? null;
             $password = $_POST['mdp'] ?? null;
+            $passwordVerif = $_POST['mdp2'] ?? null;
             $adresseMail = $_POST['email'] ?? null;
             $profilePicture = $_FILES['profilePicture'] ?? null;
 
-
+            if($password != $passwordVerif)
+            {
+                throw new ServiceException("les mots de passe sont différents");
+            }
 
             $this->utilisateurService->creerUtilisateur($login, $password, $adresseMail, $profilePicture);
             $user = $this->utilisateurService->recupererUtilisateur($login);
