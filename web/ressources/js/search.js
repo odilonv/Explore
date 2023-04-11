@@ -161,10 +161,15 @@ function addInputDest() {
 let oldIconSrc;
 function overCircle(element){
 
-    if(indexInput > 3)
+    let i = parseInt(element.id.slice(-1));
+    if(indexInput > 3 )
     {
         oldIconSrc = element.src;
-        element.src = '../web/ressources/img/icons/xmark-solid.svg';
+        if(i>2)
+        {
+            element.src = '../web/ressources/img/icons/xmark-solid.svg';
+        }
+
         element.class = "crossIcon";
     }
 
@@ -180,9 +185,6 @@ function outCircle(element){
     {
         element.src = oldIconSrc;
     }
-
-
-
 }
 
 function deleteLocation(element){
