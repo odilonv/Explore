@@ -123,15 +123,4 @@ class UtilisateurTest extends TestCase
     }*/
 
 
-
-
-
-
-
-
-/*if (!in_array($fileExtension, ['png', 'jpg', 'jpeg'])) {
-throw new ServiceException("La photo de profil n'est pas au bon format!");
-}*/
-
-
 }
