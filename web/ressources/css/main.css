@@ -169,6 +169,11 @@ body {
     transition: 0.1s linear;
 }
 
+.lienProfil{
+    text-align: center;
+    font-size: 1em;
+}
+
 #renvoyerCode:hover,
 .lienProfil:hover{
     color: #ffae9e;
@@ -227,19 +232,32 @@ body {
 .box-liste{
     overflow-y: scroll;
     width: 60%;
+    position: absolute;
+    top: 50px;
+    bottom: 50px;
 }
 
 .box-liste{
     padding: 20px;
 }
 
-.box-liste > li{
+.box-liste li .linoeudsCommunes{
     padding: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
     font-size: 0.8em;
+}
+
+.box-liste .liusers{
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 1.2em;
+    list-style: none;
 }
 
 
@@ -444,7 +462,7 @@ footer{
     transition: 0.5s;
 }
 .addDest:hover{
-    scale: 0.98;
+    transform: scale(0.98);
 }
 
 #logo{

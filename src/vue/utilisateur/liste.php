@@ -16,7 +16,7 @@ use Explore\Modele\DataObject\Utilisateur;
             $loginHTML = htmlspecialchars($utilisateur->getLogin());
             $loginURL = rawurlencode($utilisateur->getLogin());
             echo '
-                <li>
+                <li class="liusers">
                     <a class="lienProfil" href="'.$generateur->generate("afficherDetail", ["loginUser" => $loginHTML]).'">'.$loginHTML.'</a>
                 </li>';
 

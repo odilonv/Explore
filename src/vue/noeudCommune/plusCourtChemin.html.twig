@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+
+{% block page_content %}
+
+    <div class="contain" id="recherche">
+        <div id="form" class="insideDivide">
+            <label class="underlineTravel">
+                <img src="{{ asset("ressources/img/icons/circle-solid.svg") }}" class="iconsLocationStart">
+                <div class="autocompletion" id="autocompletion1"></div>
+                <input autocomplete="off" class="inputVille" id="ville1" placeholder="Une ville de départ ? Ex: Montpellier" name="nomCommuneDepart" type="text">
+            </label>
+            <div class="circles">
+                <img src="{{ asset("ressources/img/icons/circle-solid.svg") }}" class="circleTransition">
+                <img src="{{ asset("ressources/img/icons/circle-solid.svg") }}" class="circleTransition">
+                <img src="{{ asset("ressources/img/icons/circle-solid.svg") }}" class="circleTransition">
+            </div>
+            <label class="underlineTravel" id="lineTravel2">
+                <img src="{{ asset("ressources/img/icons/location-dot-solid.svg") }}" class="iconsLocation">
+                <div class="autocompletion" id="autocompletion2"></div>
+                <input autocomplete="off" class="inputVille nomCommuneArrivee" id="ville2" placeholder="Où allons-nous ?" type="text" name="nomCommuneArrivee">
+                <button id='searchButton'>
+                    <img src="{{ asset("ressources/img/icons/location-arrow-solid.svg") }}"></button>
+            </label>
+        </div>
+    </div>
+    
+    <script defer type="text/javascript" src="{{ asset("ressources/js/search.js") }}"></script>
+    <script defer type="text/javascript" src="{{ asset("ressources/js/trajet.js") }}"></script>
+    <script defer type="text/javascript" src="{{ asset("ressources/js/autocompletion.js") }}"></script>
+
+{% endblock %}

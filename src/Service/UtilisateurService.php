@@ -100,6 +100,9 @@ class UtilisateurService implements UtilisateurServiceInterface
         $this->utilisateurRepository->updatePP($login,$pictureName);
     }
 
+    /**
+     * @throws ServiceException
+     */
     public function delete($login)
     {
         if(!$this->utilisateurRepository->supprimer($login)){

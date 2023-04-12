@@ -10,7 +10,7 @@
 
         <h2>Utilisateur inconnu</h2>
         <br>
-        <img id="notFound" src="ressources/img/icons/face-grimace-solid.svg">
+        <img id="notFound" alt="error" src="<?= $assistant->getAbsoluteUrl('ressources/img/icons/face-grimace-solid.svg')?>">
 
 
 
