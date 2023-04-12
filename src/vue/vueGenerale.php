@@ -35,10 +35,6 @@ $assistant = Conteneur::recupererService("assistant");
 <body>
 
     <div id="mapContainer" data-onclick="mapTools.mouseCoord()"></div>
-    <div style="position: fixed; top: 50px; right: 200px; background-color: red;">
-        <p data-textvar="mapTools.clickedCity"> SALUT </p>
-        <button data-onclick="mapTools.registerToClipboard()">register</button>
-    </div>
     <div id="logo">
         <h1>Explore</h1>
         <img alt="iconmenu" id="iconmenu" src="<?= $assistant->getAbsoluteUrl("ressources/img/icons/caret-down-solid.svg") ?>">

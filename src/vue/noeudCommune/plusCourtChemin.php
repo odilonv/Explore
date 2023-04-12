@@ -29,6 +29,12 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
             </label>
         </div>
 </div>
+
+<div class="contain" style="margin-top: 10px;">
+    <p data-textvar="mapTools.clickedCity"> SALUT </p>
+    <button data-onclick="mapTools.registerToClipboard()">register</button>
+</div>
+
 <script defer type="text/javascript" src="<?= $assistant->getAbsoluteUrl("ressources/js/search.js") ?>"></script>
 <script defer type="text/javascript" src="<?= $assistant->getAbsoluteUrl("ressources/js/trajet.js") ?>"></script>
 <script defer type="text/javascript" src="<?= $assistant->getAbsoluteUrl("ressources/js/autocompletion.js") ?>"></script>
