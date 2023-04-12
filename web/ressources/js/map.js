@@ -51,15 +51,3 @@ for (let i=1; i<menuEntries.length; i++)
 window.onload = function () {
     moveMapToFrance(map);
 }
-
-
-map.addEventListener('tap', function (evt) {
-    var coord = map.screenToGeo(evt.currentPointer.viewportX,
-        evt.currentPointer.viewportY);
-    getNearCoord(coord.lat, coord.lng);
-});
-
-async function getNearCoord(lat, lng){
-    let requete = new URL(`api/getNear/${lat}/${lng}`, document.baseURI);
-    fetch(requete.href).then(reponse => reponse.json()).then(data => console.log(data));
-}

@@ -26,6 +26,7 @@ $assistant = Conteneur::recupererService("assistant");
     <script defer type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
     <script defer type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
     <script defer type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+    <script defer type="module" src="<?= $assistant->getAbsoluteUrl('ressources/js/mapTools.js') ?>"></script>
 
 
     <link rel="stylesheet" href="<?= $assistant->getAbsoluteUrl("ressources/css/main.css") ?>">
@@ -33,7 +34,11 @@ $assistant = Conteneur::recupererService("assistant");
 
 <body>
 
-    <div id="mapContainer"></div>
+    <div id="mapContainer" data-onclick="mapTools.mouseCoord()"></div>
+    <div style="position: fixed; top: 50px; right: 200px; background-color: red;">
+        <p data-textvar="mapTools.clickedCity"> SALUT </p>
+        <button data-onclick="mapTools.registerToClipboard()">register</button>
+    </div>
     <div id="logo">
         <h1>Explore</h1>
         <img alt="iconmenu" id="iconmenu" src="<?= $assistant->getAbsoluteUrl("ressources/img/icons/caret-down-solid.svg") ?>">
@@ -51,11 +56,6 @@ $assistant = Conteneur::recupererService("assistant");
                     ';
     } else if (ConnexionUtilisateur::estConnecte() /*&& $admin*/) {
         echo
-
-                        /*<li><a href="'. $generateur->generate("historique") .'">
-                            <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/clock-solid.svg") . '" class="icons">
-                            <h3>Historique</h3> 
-                        </a></li>*/
                        '<ul id="sousmenu" class="sousmenu-hidden">
                         <li><a href="'. $generateur->generate("noeudscommune") .'">
                             <img alt="boussole" src="' . $assistant->getAbsoluteUrl("ressources/img/icons/compass-solid.svg") . '" class="icons">
@@ -68,17 +68,7 @@ $assistant = Conteneur::recupererService("assistant");
                         
                     </ul>
                     ';
-    } /*else if (ConnexionUtilisateur::estConnecte()) {
-        echo '
-                    <ul id="sousmenu" class="sousmenu-hidden">
-                        <li><a href="">
-                        <img src="' . $assistant->getAbsoluteUrl("ressources/img/icons/clock-solid.svg") . '" class="icons">
-                        <h3>Historique</h3> 
-                        </a></li>
-                    </ul>
-                    
-                    ';
-    }*/
+    }
     ?>
 
 
