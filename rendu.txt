@@ -1,0 +1,22 @@
+Odilon : 30%
+De mon côté, j’ai réalisé l’interface du site, ce qui comprend le design et le développement des vues en HTML et PHP (hormis utilisateur/detail.php et utilisateur/inconnu.php), pratiquement l’entièreté du CSS ainsi que différentes interactions javascript tels que menu.js et une légère partie de search.js. Aussi, j’ai mis en place l’API Here Maps et ses différentes caractéristiques (markers, emplacement). Par la suite, j’ai réalisé les notifications.js (messagesFlash).
+J’ai également réalisé l’entièreté de l’implémentation du TP SAE, ce qui comprend la mise en place de services (NoeudCommuneService, UtilisateurService). La mise en place d’interfaces, la mise en place d’exceptions, la gestion du routeur url ainsi que ses différentes instanciations de repository, de contrôleurs et de services.
+Aussi, j’ai réalisé l’entièreté des fichiers tests qui réalisent une importante couverture de code.
+Enfin, j’ai débuté l’ajout d’une fonctionnalité d’historique de trajets et j’ai essayé d’intégrer une base de données de tests avec un fichier SQLite, je n’ai pas eu le temps d’aboutir ces fonctionnalités complètement donc j’ai décidé de ne pas les intégrer.
+
+Nathan : 30%
+Je me suis occupé de l'optimisation du code. Cela implique les modifications faites sur la base de données mais aussi les classes intervenants dans la résolution de l'algorithme (NoeudRoutierRepository, NoeudStar, QueueStar). Naturellement, j'ai cherché les structures de données et algorithmes pour trouver le plus court chemin. 
+Pour récupérer les coordonnées du chemin à afficher ainsi que pour la ville à proximité du curseur, j’ai implémenté l’API Rest.J'ai aussi implémenté du réactif dans le site web pour afficher la ville la plus proche du curseur et la copier dans le presse-papier (mapTools et réactif).
+Pour m'aider à mesurer les temps d'exécution du code, j'ai réalisé la classe Utils qui permettait également d'afficher des logs dans la page.
+J'ai également implémenté le patron observateur mais je ne m'en suis finalement pas servi.
+
+Loïc : 25%
+Personnellement je me suis principalement occupé de l’aspect utilisateur. J’ai modifié la base de données fournie pour mieux convenir à nos besoins. J’ai géré la sécurité, càd l’encryptage des mots de passe, la vérification des utilisateurs par mail (personnalisé), les administrateurs, la gestion des photos de profil, les injections, etc.. 
+J’ai donc géré la logique des différentes vues utilisateurs (inscription, connexion, validation et détails).
+J’ai également appliqué le TD1 sur notre projet, j’ai donc géré le routage de notre site avec les différents composants de composer. 
+J’ai implémenté le système d'auto complétion des villes et son visuel avec les requêtes AJAX au niveau du Js
+Enfin, j’ai créé un système de gestion du trajet avec la possibilité d’ajouter ou de retirer des étapes au trajet au niveau du JS.
+
+Thomas : 15%
+Dans le cadre de la SAE j’ai mis en place différents contenus de TP vu en cours et principalement le TP2. Je me suis donc chargé de la mise en place du langage twig dans les différentes vues de l’application, des modifications du routeur et des controlleurs. Mais par manque d’organisation, je n’ai pas pu implémenter totalement ma branche dans le rendu final. J’ai également mis en place les réponses et les exceptions HTTP. 
+Par la suite, je me suis orienté sur l’écriture du rapport.
