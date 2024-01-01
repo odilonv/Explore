@@ -4,6 +4,14 @@
 
 Welcome to the route planning application! This application has been developed by a team of 4 individuals, combining advanced technologies to provide an optimal user experience in route planning.
 
+## Preview
+
+![Alt text](web/ressources/img/readme/InterfaceG%C3%A9n%C3%A9raleApplication.png) 
+
+![Alt text](web/ressources/img/readme/InterfaceInscriptionApplication.png) 
+
+![Alt text](web/ressources/img/readme/notification.png)
+
 ## Key Features
 
 - **A* Algorithm:** The application utilizes the A* algorithm to calculate efficient routes between different points on the map.
